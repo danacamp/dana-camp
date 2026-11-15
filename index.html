@@ -245,7 +245,7 @@
         <p>© 2026 دانه كامب - العريش (Dana Camp). جميع الحقوق محفوظة.</p>
     </footer>
 
-    <!-- سكربت التشغيل الذكي -->
+    <!-- سكربت التشغيل الذكي والمضبوط -->
     <script>
         const courts = [
             { id: 1, name: "ملعب ١ كرة قدم خماسي", type: "football", price: 150, desc: "عشب صناعي عالي الجودة وإضاءة ليلية", img: "⚽" },
@@ -260,16 +260,16 @@
 
         // إعداد الساعات بنظام 12 ساعة (من 4 عصراً إلى 2 صباحاً اليوم التالي)
         const timeSlotsConfig = [
-            { hour24: 16, label: "4:00 م - 5:00 م", isNextDay: false },
-            { hour24: 17, label: "5:00 م - 6:00 م", isNextDay: false },
-            { hour24: 18, label: "6:00 م - 7:00 م", isNextDay: false },
-            { hour24: 19, label: "7:00 م - 8:00 م", isNextDay: false },
-            { hour24: 20, label: "8:00 م - 9:00 م", isNextDay: false },
-            { hour24: 21, label: "9:00 م - 10:00 م", isNextDay: false },
-            { hour24: 22, label: "10:00 م - 11:00 م", isNextDay: false },
-            { hour24: 23, label: "11:00 م - 12:00 ص", isNextDay: false },
-            { hour24: 0,  label: "12:00 ص - 1:00 ص (اليوم التالي)", isNextDay: true },
-            { hour24: 1,  label: "1:00 ص - 2:00 ص (اليوم التالي)", isNextDay: true }
+            { startHour: 16, label: "4:00 م - 5:00 م", isNextDay: false },
+            { startHour: 17, label: "5:00 م - 6:00 م", isNextDay: false },
+            { startHour: 18, label: "6:00 م - 7:00 م", isNextDay: false },
+            { startHour: 19, label: "7:00 م - 8:00 م", isNextDay: false },
+            { startHour: 20, label: "8:00 م - 9:00 م", isNextDay: false },
+            { startHour: 21, label: "9:00 م - 10:00 م", isNextDay: false },
+            { startHour: 22, label: "10:00 م - 11:00 م", isNextDay: false },
+            { startHour: 23, label: "11:00 م - 12:00 ص", isNextDay: false },
+            { startHour: 0,  label: "12:00 ص - 1:00 ص (اليوم التالي)", isNextDay: true },
+            { startHour: 1,  label: "1:00 ص - 2:00 ص (اليوم التالي)", isNextDay: true }
         ];
 
         function initDays() {
@@ -343,17 +343,24 @@
             container.innerHTML = timeSlotsConfig.map(slot => {
                 let isExpired = false;
                 
-                // إذا كان الحجز لنفس اليوم، نقوم بفلترة الساعات المنقضية بناءً على وقت الجهاز
+                // مقارنة دقيقة للساعات المنقضية في نفس اليوم
                 if (isToday) {
-                    if (!slot.isNextDay && slot.hour24 <= currentHour) {
-                        isExpired = true;
+                    if (!slot.isNextDay) {
+                        if (currentHour >= slot.startHour) {
+                            isExpired = true;
+                        }
+                    } else {
+                        // الساعات التي بعد منتصف الليل (0 و 1 ص) لا تعتبر منقضية إلا إذا وصلنا لساعات الفجر المبكرة (من 2 إلى 15 عصراً)
+                        if (currentHour >= 2 && currentHour < 16) {
+                            isExpired = true;
+                        }
                     }
                 }
 
-                // إذا كانت الساعة منقضية، نعرضها بلون مغاير (رمادي داكن مع شطب) وبدون تفعيل الضغط
+                // عرض الساعات المنقضية بلون رمادي داكن ومشطوب مع منع النقر
                 if (isExpired) {
                     return `
-                        <div class="p-3 rounded-xl text-xs font-bold bg-[#141413] text-gray-600 border border-gray-900/80 line-through opacity-40 cursor-not-allowed flex items-center justify-center select-none" title="هذه الساعة قد انتهت">
+                        <div class="p-3 rounded-xl text-xs font-bold bg-[#141413] text-gray-600 border border-gray-900 line-through opacity-40 cursor-not-allowed flex items-center justify-center select-none" title="هذه الساعة قد انتهت">
                             ${slot.label}
                         </div>
                     `;
@@ -477,7 +484,6 @@
         
         function verifyAdmin() {
             const pin = document.getElementById('admin-pin-input').value;
-            // التحقق من كلمة المرور الخاصة بالإدارة مع تنبيه دقيق عند الخطأ
             if (pin === 'Gar123dana') {
                 closeAdminLoginModal();
                 openAdminDashboard();
