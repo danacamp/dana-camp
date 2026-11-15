@@ -13,47 +13,13 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between">
 
-    <!-- الهيدر والشعار الحقيقي (النخلات الثلاث) -->
+    <!-- الهيدر مع صورة الشعار الحقيقية الخاصة بك -->
     <header class="bg-[#1a1a18] border-b border-[#C5A059]/30 sticky top-0 z-50 shadow-xl">
         <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-3">
-                <div class="w-12 h-12 bg-[#141413] border border-[#C5A059]/40 rounded-xl flex items-center justify-center p-1 shadow-inner">
-                    <!-- شعار النخلات الثلاث المستوحى من تصميمك الأصلي -->
-                    <svg viewBox="0 0 100 100" class="w-full h-full text-[#C5A059]" fill="currentColor">
-                        <!-- القاعدة المنظورية المربعة -->
-                        <polygon points="50,75 80,85 50,95 20,85" fill="#332918" stroke="#C5A059" stroke-width="1.5"/>
-                        <line x1="50" y1="75" x2="50" y2="95" stroke="#C5A059" stroke-width="1"/>
-                        <line x1="35" y1="80" x2="65" y2="90" stroke="#C5A059" stroke-width="1"/>
-                        
-                        <!-- النخلة اليسرى -->
-                        <rect x="37" y="45" width="2" height="33" fill="#C5A059"/>
-                        <path d="M38,45 Q32,35 25,40 Q35,43 38,45" fill="#C5A059"/>
-                        <path d="M38,45 Q35,33 28,37 Q37,42 38,45" fill="#C5A059"/>
-                        <path d="M38,45 Q38,30 32,32 Q39,40 38,45" fill="#C5A059"/>
-                        <path d="M38,45 Q42,30 38,32 Q41,40 38,45" fill="#C5A059"/>
-                        <path d="M38,45 Q45,33 44,37 Q43,42 38,45" fill="#C5A059"/>
-                        <path d="M38,45 Q48,35 50,40 Q43,43 38,45" fill="#C5A059"/>
-
-                        <!-- النخلة اليمنى -->
-                        <rect x="61" y="45" width="2" height="33" fill="#C5A059"/>
-                        <path d="M62,45 Q56,35 49,40 Q59,43 62,45" fill="#C5A059"/>
-                        <path d="M62,45 Q59,33 52,37 Q61,42 62,45" fill="#C5A059"/>
-                        <path d="M62,45 Q62,30 56,32 Q63,40 62,45" fill="#C5A059"/>
-                        <path d="M62,45 Q66,30 62,32 Q65,40 62,45" fill="#C5A059"/>
-                        <path d="M62,45 Q69,33 68,37 Q67,42 62,45" fill="#C5A059"/>
-                        <path d="M62,45 Q72,35 74,40 Q67,43 62,45" fill="#C5A059"/>
-
-                        <!-- النخلة الوسطى الكبرى -->
-                        <rect x="48" y="25" width="3" height="55" fill="#C5A059"/>
-                        <path d="M49,25 Q40,15 30,22 Q43,23 49,25" fill="#C5A059"/>
-                        <path d="M49,25 Q43,12 33,17 Q45,22 49,25" fill="#C5A059"/>
-                        <path d="M49,25 Q46,10 37,13 Q47,20 49,25" fill="#C5A059"/>
-                        <path d="M49,25 Q49,8 44,10 Q50,20 49,25" fill="#C5A059"/>
-                        <path d="M49,25 Q54,8 53,10 Q51,20 49,25" fill="#C5A059"/>
-                        <path d="M49,25 Q57,10 61,13 Q51,20 49,25" fill="#C5A059"/>
-                        <path d="M49,25 Q60,12 65,17 Q53,22 49,25" fill="#C5A059"/>
-                        <path d="M49,25 Q63,15 68,22 Q55,23 49,25" fill="#C5A059"/>
-                    </svg>
+                <!-- استخدام صورة الشعار المرفوعة مباشرة -->
+                <div class="w-12 h-12 bg-[#141413] border border-[#C5A059]/40 rounded-xl overflow-hidden flex items-center justify-center p-1 shadow-inner">
+                    <img src="logo.png" alt="شعار دانه كامب" class="w-full h-full object-contain">
                 </div>
                 <div>
                     <h1 class="text-xl font-black text-[#C5A059] tracking-wider">Dana Camp</h1>
@@ -526,7 +492,7 @@
         function verifyAdmin() {
             const pin = document.getElementById('admin-pin-input').value;
             if (pin === 'Gar123dana') {
-                closeAdminLoginModal();
+                closeAdminLoginManager ? closeAdminLoginModal() : closeAdminLoginModal();
                 openAdminDashboard();
                 document.getElementById('admin-pin-input').value = '';
             } else { 
