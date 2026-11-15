@@ -77,8 +77,11 @@
                 </div>
 
                 <div>
-                    <label class="block text-sm font-bold text-gray-300 mb-3">اختر الساعات (بمضاعفات الساعة):</label>
-                    <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3" id="slots-container"></div>
+                    <div class="flex justify-between items-center mb-3">
+                        <label class="block text-sm font-bold text-gray-300">اختر الساعات المتاحة:</label>
+                        <span class="text-xs text-gray-500">الساعات المشطوبة باللون الرمادي منقضية ولا يمكن حجزها</span>
+                    </div>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-3" id="slots-container"></div>
                 </div>
 
                 <div class="bg-[#141413] p-4 rounded-xl border border-gray-800 flex items-center justify-between">
@@ -242,7 +245,7 @@
         <p>© 2026 دانه كامب - العريش (Dana Camp). جميع الحقوق محفوظة.</p>
     </footer>
 
-    <!-- سكربت التشغيل المتكامل -->
+    <!-- سكربت التشغيل الذكي -->
     <script>
         const courts = [
             { id: 1, name: "ملعب ١ كرة قدم خماسي", type: "football", price: 150, desc: "عشب صناعي عالي الجودة وإضاءة ليلية", img: "⚽" },
@@ -255,6 +258,20 @@
         let selectedSlots = [];
         let daysList = [];
 
+        // إعداد الساعات بنظام 12 ساعة (من 4 عصراً إلى 2 صباحاً اليوم التالي)
+        const timeSlotsConfig = [
+            { hour24: 16, label: "4:00 م - 5:00 م", isNextDay: false },
+            { hour24: 17, label: "5:00 م - 6:00 م", isNextDay: false },
+            { hour24: 18, label: "6:00 م - 7:00 م", isNextDay: false },
+            { hour24: 19, label: "7:00 م - 8:00 م", isNextDay: false },
+            { hour24: 20, label: "8:00 م - 9:00 م", isNextDay: false },
+            { hour24: 21, label: "9:00 م - 10:00 م", isNextDay: false },
+            { hour24: 22, label: "10:00 م - 11:00 م", isNextDay: false },
+            { hour24: 23, label: "11:00 م - 12:00 ص", isNextDay: false },
+            { hour24: 0,  label: "12:00 ص - 1:00 ص (اليوم التالي)", isNextDay: true },
+            { hour24: 1,  label: "1:00 ص - 2:00 ص (اليوم التالي)", isNextDay: true }
+        ];
+
         function initDays() {
             daysList = [];
             const daysNames = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
@@ -263,7 +280,7 @@
                 d.setDate(d.getDate() + i);
                 const dayName = i === 0 ? 'اليوم' : daysNames[d.getDay()];
                 const dateStr = d.toISOString().split('T')[0];
-                daysList.push({ label: dayName, date: dateStr });
+                daysList.push({ label: dayName, date: dateStr, isToday: (i === 0) });
             }
         }
 
@@ -319,12 +336,33 @@
 
         function renderSlots() {
             const container = document.getElementById('slots-container');
-            const times = ["16:00 - 17:00", "17:00 - 18:00", "18:00 - 19:00", "19:00 - 20:00", "20:00 - 21:00", "21:00 - 22:00", "22:00 - 23:00", "23:00 - 00:00", "00:00 - 01:00", "01:00 - 02:00"];
-            container.innerHTML = times.map(t => {
-                const isSelected = selectedSlots.includes(t);
+            const now = new Date();
+            const currentHour = now.getHours();
+            const isToday = daysList[selectedDayIndex].isToday;
+
+            container.innerHTML = timeSlotsConfig.map(slot => {
+                let isExpired = false;
+                
+                // إذا كان الحجز لنفس اليوم، نقوم بفلترة الساعات المنقضية بناءً على وقت الجهاز
+                if (isToday) {
+                    if (!slot.isNextDay && slot.hour24 <= currentHour) {
+                        isExpired = true;
+                    }
+                }
+
+                // إذا كانت الساعة منقضية، نعرضها بلون مغاير (رمادي داكن مع شطب) وبدون تفعيل الضغط
+                if (isExpired) {
+                    return `
+                        <div class="p-3 rounded-xl text-xs font-bold bg-[#141413] text-gray-600 border border-gray-900/80 line-through opacity-40 cursor-not-allowed flex items-center justify-center select-none" title="هذه الساعة قد انتهت">
+                            ${slot.label}
+                        </div>
+                    `;
+                }
+
+                const isSelected = selectedSlots.includes(slot.label);
                 return `
-                    <button onclick="toggleSlot('${t}')" class="p-3 rounded-xl text-xs font-bold transition border ${isSelected ? 'bg-[#C5A059] text-gray-900 border-[#C5A059] shadow-lg' : 'bg-[#141413] text-gray-300 border-gray-800 hover:border-gray-600'}">
-                        ${t}
+                    <button onclick="toggleSlot('${slot.label}')" class="p-3 rounded-xl text-xs font-bold transition border ${isSelected ? 'bg-[#C5A059] text-gray-900 border-[#C5A059] shadow-lg' : 'bg-[#141413] text-gray-300 border-gray-800 hover:border-gray-600'}">
+                        ${slot.label}
                     </button>
                 `;
             }).join('');
@@ -439,6 +477,7 @@
         
         function verifyAdmin() {
             const pin = document.getElementById('admin-pin-input').value;
+            // التحقق من كلمة المرور الخاصة بالإدارة مع تنبيه دقيق عند الخطأ
             if (pin === 'Gar123dana') {
                 closeAdminLoginModal();
                 openAdminDashboard();
@@ -486,7 +525,6 @@
             }
         }
 
-        // تشغيل التهيئة عند تحميل الصفحة
         window.onload = function() {
             initDays();
             renderCourts();
@@ -494,4 +532,3 @@
     </script>
 </body>
 </html>
-
