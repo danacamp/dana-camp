@@ -245,7 +245,7 @@
         <p>© 2026 دانه كامب - العريش (Dana Camp). جميع الحقوق محفوظة.</p>
     </footer>
 
-    <!-- سكربت التشغيل الذكي -->
+    <!-- سكربت التشغيل المتكامل -->
     <script>
         const courts = [
             { id: 1, name: "ملعب ١ كرة قدم خماسي", type: "football", price: 150, desc: "عشب صناعي عالي الجودة وإضاءة ليلية", img: "⚽" },
@@ -260,24 +260,24 @@
 
         // إعداد الساعات بنظام 12 ساعة من 12 ظهراً حتى 6 صباحاً اليوم التالي
         const timeSlotsConfig = [
-            { id: 12, label: "12:00 م - 1:00 م", isNextDay: false, sortVal: 12 },
-            { id: 13, label: "1:00 م - 2:00 م", isNextDay: false, sortVal: 13 },
-            { id: 14, label: "2:00 م - 3:00 م", isNextDay: false, sortVal: 14 },
-            { id: 15, label: "3:00 م - 4:00 م", isNextDay: false, sortVal: 15 },
-            { id: 16, label: "4:00 م - 5:00 م", isNextDay: false, sortVal: 16 },
-            { id: 17, label: "5:00 م - 6:00 م", isNextDay: false, sortVal: 17 },
-            { id: 18, label: "6:00 م - 7:00 م", isNextDay: false, sortVal: 18 },
-            { id: 19, label: "7:00 م - 8:00 م", isNextDay: false, sortVal: 19 },
-            { id: 20, label: "8:00 م - 9:00 م", isNextDay: false, sortVal: 20 },
-            { id: 21, label: "9:00 م - 10:00 م", isNextDay: false, sortVal: 21 },
-            { id: 22, label: "10:00 م - 11:00 م", isNextDay: false, sortVal: 22 },
-            { id: 23, label: "11:00 م - 12:00 ص", isNextDay: false, sortVal: 23 },
-            { id: 0,  label: "12:00 ص - 1:00 ص (اليوم التالي)", isNextDay: true, sortVal: 24 },
-            { id: 1,  label: "1:00 ص - 2:00 ص (اليوم التالي)", isNextDay: true, sortVal: 25 },
-            { id: 2,  label: "2:00 ص - 3:00 ص (اليوم التالي)", isNextDay: true, sortVal: 26 },
-            { id: 3,  label: "3:00 ص - 4:00 ص (اليوم التالي)", isNextDay: true, sortVal: 27 },
-            { id: 4,  label: "4:00 ص - 5:00 ص (اليوم التالي)", isNextDay: true, sortVal: 28 },
-            { id: 5,  label: "5:00 ص - 6:00 ص (اليوم التالي)", isNextDay: true, sortVal: 29 }
+            { id: 12, label: "12:00 م - 1:00 م", isNextDay: false },
+            { id: 13, label: "1:00 م - 2:00 م", isNextDay: false },
+            { id: 14, label: "2:00 م - 3:00 م", isNextDay: false },
+            { id: 15, label: "3:00 م - 4:00 م", isNextDay: false },
+            { id: 16, label: "4:00 م - 5:00 م", isNextDay: false },
+            { id: 17, label: "5:00 م - 6:00 م", isNextDay: false },
+            { id: 18, label: "6:00 م - 7:00 م", isNextDay: false },
+            { id: 19, label: "7:00 م - 8:00 م", isNextDay: false },
+            { id: 20, label: "8:00 م - 9:00 م", isNextDay: false },
+            { id: 21, label: "9:00 م - 10:00 م", isNextDay: false },
+            { id: 22, label: "10:00 م - 11:00 م", isNextDay: false },
+            { id: 23, label: "11:00 م - 12:00 ص", isNextDay: false },
+            { id: 0,  label: "12:00 ص - 1:00 ص (اليوم التالي)", isNextDay: true },
+            { id: 1,  label: "1:00 ص - 2:00 ص (اليوم التالي)", isNextDay: true },
+            { id: 2,  label: "2:00 ص - 3:00 ص (اليوم التالي)", isNextDay: true },
+            { id: 3,  label: "3:00 ص - 4:00 ص (اليوم التالي)", isNextDay: true },
+            { id: 4,  label: "4:00 ص - 5:00 ص (اليوم التالي)", isNextDay: true },
+            { id: 5,  label: "5:00 ص - 6:00 ص (اليوم التالي)", isNextDay: true }
         ];
 
         function initDays() {
@@ -330,7 +330,6 @@
         function renderDays() {
             const container = document.getElementById('days-container');
             container.innerHTML = daysList.map((d, index) => `
-                // عرض الأيام وتاريخها الصحيح
                 <button onclick="selectDay(${index})" class="px-3 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap ${selectedDayIndex === index ? 'bg-[#C5A059] text-gray-900' : 'bg-[#141413] text-gray-300 border border-gray-800'}">
                     ${d.label} (${d.date.slice(5)})
                 </button>
@@ -346,31 +345,34 @@
         function renderSlots() {
             const container = document.getElementById('slots-container');
             const now = new Date();
-            const currentHour = now.getHours(); // من 0 إلى 23
+            const currentHour = now.getHours(); // 0 إلى 23
             const isToday = daysList[selectedDayIndex].isToday;
 
             container.innerHTML = timeSlotsConfig.map(slot => {
                 let isExpired = false;
                 
                 if (isToday) {
-                    // إذا كنا في أوقات الصباح الباكر (من 6 صباحاً وحتى 11:59 ظهراً)، فكل ساعات اليوم السابق انتهت بالكامل
+                    // إذا كنا في الصباح (من 6 صباحاً وحتى 11:59 ظهراً)، فكل ساعات اليوم السابق انتهت
                     if (currentHour >= 6 && currentHour < 12) {
                         isExpired = true;
                     } 
-                    // إذا كنا بعد منتصف الليل (مثلاً الساعة 12:47 ص)، فإن كل الساعات من 12 ظهراً وحتى 12 منتصف الليل تعتبر منقضية، بينما الساعات الحالية (مثل 12 ص، 1 ص فما بعد) تظل جارية ومتاحة للحجز
+                    // إذا كنا بعد منتصف الليل (مثلاً الساعة 12:51 ص)، فإن كل الساعات من 12 ظهراً وحتى 1 صباحاً أصبحت منقضية ولا يمكن حجزها
                     else if (currentHour >= 0 && currentHour < 6) {
                         if (!slot.isNextDay) {
-                            isExpired = true; // ساعات النهار والمساء السابقة من اليوم الماضي انتهت
+                            isExpired = true; // ساعات النهار والمساء السابقة منتهية
                         } else {
-                            if (slot.id <= currentHour) isExpired = true; // الساعات الليلية المنقضية فقط
+                            // الساعات من 12ص لـ 1ص (id=0) تعتبر منقضية أيضاً بناءً على طلبك
+                            if (slot.id === 0 || slot.id <= currentHour) {
+                                isExpired = true;
+                            }
                         }
                     } 
-                    // إذا كنا خلال النهار (من 12 ظهراً فصاعداً)، نقارن الساعة الحالية مباشرة
+                    // خلال النهار والمساء (من 12 ظهراً فصاعداً)
                     else {
                         if (!slot.isNextDay) {
                             if (slot.id <= currentHour) isExpired = true;
                         } else {
-                            isExpired = true; // ساعات اليوم التالي لا تفتح في نفس النهار
+                            isExpired = true;
                         }
                     }
                 }
@@ -507,7 +509,7 @@
                 document.getElementById('admin-pin-input').value = '';
             } else { 
                 alert('كلمة المرور غير صحيحة!'); 
-                document.getElementById('admin-pin-input'].focus();
+                document.getElementById('admin-pin-input').focus();
             }
         }
 
