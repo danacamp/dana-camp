@@ -160,15 +160,24 @@
         </section>
     </main>
 
-    <!-- التذكرة المنبثقة -->
+    <!-- التذكرة المنبثقة مع العداد التنازلي -->
     <div id="ticket-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-[#1a1a18] border border-[#C5A059] rounded-2xl max-w-md w-full p-6 space-y-6 shadow-2xl relative">
-            <div class="text-center space-y-2">
-                <div class="w-16 h-16 bg-[#C5A059]/20 text-[#C5A059] rounded-full flex items-center justify-center mx-auto text-3xl font-bold">✓</div>
-                <h3 class="text-2xl font-extrabold text-white">تم تأكيد حجزك بنجاح!</h3>
+        <div class="bg-[#1a1a18] border border-[#C5A059] rounded-2xl max-w-md w-full p-6 space-y-5 shadow-2xl relative">
+            
+            <!-- عداد تنازلي لمدة 10 دقائق -->
+            <div class="bg-[#C5A059]/10 border border-[#C5A059]/40 rounded-xl p-2.5 text-center flex items-center justify-between px-4">
+                <span class="text-xs text-gray-300">مهلة تأكيد الدفع:</span>
+                <span id="countdown-timer" class="font-mono font-black text-[#C5A059] text-base tracking-widest">10:00</span>
+            </div>
+
+            <div class="text-center space-y-1">
+                <div class="w-14 h-14 bg-[#C5A059]/20 text-[#C5A059] rounded-full flex items-center justify-center mx-auto text-2xl font-bold">✓</div>
+                <h3 class="text-xl font-extrabold text-white">تم تأكيد حجزك بنجاح!</h3>
                 <p class="text-xs text-gray-400">ننتظركم في دانه كامب - العريش</p>
             </div>
+            
             <div id="ticket-content" class="bg-[#141413] border border-gray-800 p-4 rounded-xl space-y-3 font-mono text-sm"></div>
+            
             <div class="flex gap-3">
                 <a id="whatsapp-share-btn" href="#" target="_blank" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl transition text-center text-sm flex items-center justify-center gap-2">إرسال للإدارة واتساب 💬</a>
                 <button onclick="closeTicketModal()" class="flex-1 bg-gray-800 hover:bg-gray-700 text-white font-bold py-3 rounded-xl transition text-sm">إغلاق</button>
@@ -232,13 +241,13 @@
         </div>
     </div>
 
-    <!-- التذييل المحدث مع اسم م. عمرو الغول -->
+    <!-- التذييل -->
     <footer class="bg-[#1a1a18] border-t border-gray-800 py-6 mt-12 text-center text-xs text-gray-400 space-y-1">
         <p>© 2026 دانه كامب - العريش (Dana Camp). جميع الحقوق محفوظة.</p>
         <p class="text-[#C5A059] font-semibold">تصميم وتطوير: م. عمرو الغول</p>
     </footer>
 
-    <!-- سكربت التشغيل المتكامل -->
+    <!-- سكربت التشغيل المتكامل والعداد التنازلي -->
     <script>
         const courts = [
             { id: 1, name: "ملعب ١ كرة قدم خماسي", type: "football", price: 150, desc: "عشب صناعي عالي الجودة وإضاءة ليلية", img: "⚽" },
@@ -250,8 +259,8 @@
         let selectedDayIndex = 0;
         let selectedSlots = [];
         let daysList = [];
+        let countdownInterval = null;
 
-        // إعداد الساعات من 12 ظهراً حتى 6 صباحاً اليوم التالي
         const timeSlotsConfig = [
             { id: 12, label: "12:00 م - 1:00 م", isNextDay: false },
             { id: 13, label: "1:00 م - 2:00 م", isNextDay: false },
@@ -338,7 +347,7 @@
         function renderSlots() {
             const container = document.getElementById('slots-container');
             const now = new Date();
-            const currentHour = now.getHours(); // 0 إلى 23
+            const currentHour = now.getHours();
             const isToday = daysList[selectedDayIndex].isToday;
 
             container.innerHTML = timeSlotsConfig.map(slot => {
@@ -455,9 +464,36 @@
             const waText = `مرحباً دانه كامب، لدي حجز جديد:%0A- رقم الحجز: ${data.bookingId}%0A- الملعب: ${data.courtName}%0A- الموعد: ${data.day} (${data.slots})%0A- الاسم: ${data.name}%0A- الإجمالي: ${data.total} جنيه`;
             document.getElementById('whatsapp-share-btn').href = `https://wa.me/201000000000?text=${waText}`;
             document.getElementById('ticket-modal').classList.remove('hidden');
+            
+            // تشغيل العداد التنازلي لمدة 10 دقائق (600 ثانية)
+            startCountdown(10 * 60);
+        }
+
+        function startCountdown(duration) {
+            let timer = duration, minutes, seconds;
+            const display = document.getElementById('countdown-timer');
+            
+            if (countdownInterval) clearInterval(countdownInterval);
+
+            countdownInterval = setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    clearInterval(countdownInterval);
+                    display.textContent = "انتهت المهلة";
+                    display.classList.add('text-red-500');
+                }
+            }, 1000);
         }
 
         function closeTicketModal() {
+            if (countdownInterval) clearInterval(countdownInterval);
             document.getElementById('ticket-modal').classList.add('hidden');
             switchTab('my-bookings');
         }
