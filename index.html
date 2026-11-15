@@ -56,7 +56,7 @@
                 </div>
                 <div class="text-left bg-[#141413] p-4 rounded-xl border border-gray-800">
                     <p class="text-xs text-gray-400">ساعات العمل اليومية</p>
-                    <p class="text-sm font-bold text-[#C5A059]">4:00 عصراً ⟵ 2:00 صباحاً</p>
+                    <p class="text-sm font-bold text-[#C5A059]">12:00 ظهراً ⟵ 6:00 صباحاً</p>
                 </div>
             </div>
 
@@ -81,7 +81,7 @@
                         <label class="block text-sm font-bold text-gray-300">اختر الساعات المتاحة:</label>
                         <span class="text-xs text-gray-500">الساعات المشطوبة باللون الرمادي منقضية ولا يمكن حجزها</span>
                     </div>
-                    <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-3" id="slots-container"></div>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3" id="slots-container"></div>
                 </div>
 
                 <div class="bg-[#141413] p-4 rounded-xl border border-gray-800 flex items-center justify-between">
@@ -245,7 +245,7 @@
         <p>© 2026 دانه كامب - العريش (Dana Camp). جميع الحقوق محفوظة.</p>
     </footer>
 
-    <!-- سكربت التشغيل الذكي والمضبوط تماماً -->
+    <!-- سكربت التشغيل المتطور والمحدث -->
     <script>
         const courts = [
             { id: 1, name: "ملعب ١ كرة قدم خماسي", type: "football", price: 150, desc: "عشب صناعي عالي الجودة وإضاءة ليلية", img: "⚽" },
@@ -258,8 +258,12 @@
         let selectedSlots = [];
         let daysList = [];
 
-        // إعداد الساعات بنظام 12 ساعة (من 4 عصراً إلى 2 صباحاً اليوم التالي)
+        // إعداد ساعات العمل الجديدة: من 12:00 ظهراً حتى 6:00 صباحاً (اليوم التالي)
         const timeSlotsConfig = [
+            { startHour: 12, label: "12:00 م - 1:00 م", isNextDay: false },
+            { startHour: 13, label: "1:00 م - 2:00 م", isNextDay: false },
+            { startHour: 14, label: "2:00 م - 3:00 م", isNextDay: false },
+            { startHour: 15, label: "3:00 م - 4:00 م", isNextDay: false },
             { startHour: 16, label: "4:00 م - 5:00 م", isNextDay: false },
             { startHour: 17, label: "5:00 م - 6:00 م", isNextDay: false },
             { startHour: 18, label: "6:00 م - 7:00 م", isNextDay: false },
@@ -269,7 +273,11 @@
             { startHour: 22, label: "10:00 م - 11:00 م", isNextDay: false },
             { startHour: 23, label: "11:00 م - 12:00 ص", isNextDay: false },
             { startHour: 0,  label: "12:00 ص - 1:00 ص (اليوم التالي)", isNextDay: true },
-            { startHour: 1,  label: "1:00 ص - 2:00 ص (اليوم التالي)", isNextDay: true }
+            { startHour: 1,  label: "1:00 ص - 2:00 ص (اليوم التالي)", isNextDay: true },
+            { startHour: 2,  label: "2:00 ص - 3:00 ص (اليوم التالي)", isNextDay: true },
+            { startHour: 3,  label: "3:00 ص - 4:00 ص (اليوم التالي)", isNextDay: true },
+            { startHour: 4,  label: "4:00 ص - 5:00 ص (اليوم التالي)", isNextDay: true },
+            { startHour: 5,  label: "5:00 ص - 6:00 ص (اليوم التالي)", isNextDay: true }
         ];
 
         function initDays() {
@@ -343,19 +351,16 @@
             container.innerHTML = timeSlotsConfig.map(slot => {
                 let isExpired = false;
                 
-                // المعالجة الدقيقة للساعات المنقضية حسب وقت الجهاز الحالي
+                // فلترة الساعات المنقضية في نفس اليوم بناءً على وقت الجهاز الحالي
                 if (isToday) {
-                    if (currentHour >= 2 && currentHour < 16) {
-                        // في أوقات الصباح والظهيرة (من 2 فجراً لـ 4 عصراً)، كل ساعات اليوم السابق تكون انتهت، والساعات الحالية تبدأ من 4
-                        // لكن إذا كنا بعد منتصف الليل مباشرة (مثل 12:35 ص)، ساعات 12ص و1ص تعتبر جارية ولا تعتبر منقضية!
-                        if (!slot.isNextDay) isExpired = true;
+                    if (!slot.isNextDay) {
+                        if (currentHour >= slot.startHour) isExpired = true;
                     } else {
-                        // إذا كنا ليلاً (مثلاً الساعة 12:35 ص)، فإن الساعات التي قبل الوقت الحالي (مثل 4 عصراً إلى 11 مساءً) تعتبر منقضية، أما 12ص و1ص فمتاحة للحجز لأنها تبدأ الآن
-                        if (!slot.isNextDay) {
-                            if (currentHour >= slot.startHour) isExpired = true;
-                        } else {
-                            // ساعات اليوم التالي (0 و 1) تنقضي إذا تجاوزناها
-                            if (slot.startHour <= currentHour && currentHour < 16) isExpired = true;
+                        // الساعات الصباحية (من 0 إلى 5 صباحاً) تنقضي إذا تجاوزناها وتصبح جارية إذا كنا فجراً
+                        if (currentHour >= 6 && currentHour < 12) {
+                            isExpired = true;
+                        } else if (currentHour >= slot.startHour && currentHour < 6) {
+                            isExpired = true;
                         }
                     }
                 }
