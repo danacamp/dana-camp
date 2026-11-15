@@ -245,7 +245,7 @@
         <p>© 2026 دانه كامب - العريش (Dana Camp). جميع الحقوق محفوظة.</p>
     </footer>
 
-    <!-- سكربت التشغيل المتطور والمحدث -->
+    <!-- سكربت التشغيل الذكي -->
     <script>
         const courts = [
             { id: 1, name: "ملعب ١ كرة قدم خماسي", type: "football", price: 150, desc: "عشب صناعي عالي الجودة وإضاءة ليلية", img: "⚽" },
@@ -258,26 +258,26 @@
         let selectedSlots = [];
         let daysList = [];
 
-        // إعداد ساعات العمل الجديدة: من 12:00 ظهراً حتى 6:00 صباحاً (اليوم التالي)
+        // إعداد الساعات بنظام 12 ساعة من 12 ظهراً حتى 6 صباحاً اليوم التالي
         const timeSlotsConfig = [
-            { startHour: 12, label: "12:00 م - 1:00 م", isNextDay: false },
-            { startHour: 13, label: "1:00 م - 2:00 م", isNextDay: false },
-            { startHour: 14, label: "2:00 م - 3:00 م", isNextDay: false },
-            { startHour: 15, label: "3:00 م - 4:00 م", isNextDay: false },
-            { startHour: 16, label: "4:00 م - 5:00 م", isNextDay: false },
-            { startHour: 17, label: "5:00 م - 6:00 م", isNextDay: false },
-            { startHour: 18, label: "6:00 م - 7:00 م", isNextDay: false },
-            { startHour: 19, label: "7:00 م - 8:00 م", isNextDay: false },
-            { startHour: 20, label: "8:00 م - 9:00 م", isNextDay: false },
-            { startHour: 21, label: "9:00 م - 10:00 م", isNextDay: false },
-            { startHour: 22, label: "10:00 م - 11:00 م", isNextDay: false },
-            { startHour: 23, label: "11:00 م - 12:00 ص", isNextDay: false },
-            { startHour: 0,  label: "12:00 ص - 1:00 ص (اليوم التالي)", isNextDay: true },
-            { startHour: 1,  label: "1:00 ص - 2:00 ص (اليوم التالي)", isNextDay: true },
-            { startHour: 2,  label: "2:00 ص - 3:00 ص (اليوم التالي)", isNextDay: true },
-            { startHour: 3,  label: "3:00 ص - 4:00 ص (اليوم التالي)", isNextDay: true },
-            { startHour: 4,  label: "4:00 ص - 5:00 ص (اليوم التالي)", isNextDay: true },
-            { startHour: 5,  label: "5:00 ص - 6:00 ص (اليوم التالي)", isNextDay: true }
+            { id: 12, label: "12:00 م - 1:00 م", isNextDay: false, sortVal: 12 },
+            { id: 13, label: "1:00 م - 2:00 م", isNextDay: false, sortVal: 13 },
+            { id: 14, label: "2:00 م - 3:00 م", isNextDay: false, sortVal: 14 },
+            { id: 15, label: "3:00 م - 4:00 م", isNextDay: false, sortVal: 15 },
+            { id: 16, label: "4:00 م - 5:00 م", isNextDay: false, sortVal: 16 },
+            { id: 17, label: "5:00 م - 6:00 م", isNextDay: false, sortVal: 17 },
+            { id: 18, label: "6:00 م - 7:00 م", isNextDay: false, sortVal: 18 },
+            { id: 19, label: "7:00 م - 8:00 م", isNextDay: false, sortVal: 19 },
+            { id: 20, label: "8:00 م - 9:00 م", isNextDay: false, sortVal: 20 },
+            { id: 21, label: "9:00 م - 10:00 م", isNextDay: false, sortVal: 21 },
+            { id: 22, label: "10:00 م - 11:00 م", isNextDay: false, sortVal: 22 },
+            { id: 23, label: "11:00 م - 12:00 ص", isNextDay: false, sortVal: 23 },
+            { id: 0,  label: "12:00 ص - 1:00 ص (اليوم التالي)", isNextDay: true, sortVal: 24 },
+            { id: 1,  label: "1:00 ص - 2:00 ص (اليوم التالي)", isNextDay: true, sortVal: 25 },
+            { id: 2,  label: "2:00 ص - 3:00 ص (اليوم التالي)", isNextDay: true, sortVal: 26 },
+            { id: 3,  label: "3:00 ص - 4:00 ص (اليوم التالي)", isNextDay: true, sortVal: 27 },
+            { id: 4,  label: "4:00 ص - 5:00 ص (اليوم التالي)", isNextDay: true, sortVal: 28 },
+            { id: 5,  label: "5:00 ص - 6:00 ص (اليوم التالي)", isNextDay: true, sortVal: 29 }
         ];
 
         function initDays() {
@@ -330,6 +330,7 @@
         function renderDays() {
             const container = document.getElementById('days-container');
             container.innerHTML = daysList.map((d, index) => `
+                // عرض الأيام وتاريخها الصحيح
                 <button onclick="selectDay(${index})" class="px-3 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap ${selectedDayIndex === index ? 'bg-[#C5A059] text-gray-900' : 'bg-[#141413] text-gray-300 border border-gray-800'}">
                     ${d.label} (${d.date.slice(5)})
                 </button>
@@ -345,27 +346,35 @@
         function renderSlots() {
             const container = document.getElementById('slots-container');
             const now = new Date();
-            const currentHour = now.getHours();
+            const currentHour = now.getHours(); // من 0 إلى 23
             const isToday = daysList[selectedDayIndex].isToday;
 
             container.innerHTML = timeSlotsConfig.map(slot => {
                 let isExpired = false;
                 
-                // فلترة الساعات المنقضية في نفس اليوم بناءً على وقت الجهاز الحالي
                 if (isToday) {
-                    if (!slot.isNextDay) {
-                        if (currentHour >= slot.startHour) isExpired = true;
-                    } else {
-                        // الساعات الصباحية (من 0 إلى 5 صباحاً) تنقضي إذا تجاوزناها وتصبح جارية إذا كنا فجراً
-                        if (currentHour >= 6 && currentHour < 12) {
-                            isExpired = true;
-                        } else if (currentHour >= slot.startHour && currentHour < 6) {
-                            isExpired = true;
+                    // إذا كنا في أوقات الصباح الباكر (من 6 صباحاً وحتى 11:59 ظهراً)، فكل ساعات اليوم السابق انتهت بالكامل
+                    if (currentHour >= 6 && currentHour < 12) {
+                        isExpired = true;
+                    } 
+                    // إذا كنا بعد منتصف الليل (مثلاً الساعة 12:47 ص)، فإن كل الساعات من 12 ظهراً وحتى 12 منتصف الليل تعتبر منقضية، بينما الساعات الحالية (مثل 12 ص، 1 ص فما بعد) تظل جارية ومتاحة للحجز
+                    else if (currentHour >= 0 && currentHour < 6) {
+                        if (!slot.isNextDay) {
+                            isExpired = true; // ساعات النهار والمساء السابقة من اليوم الماضي انتهت
+                        } else {
+                            if (slot.id <= currentHour) isExpired = true; // الساعات الليلية المنقضية فقط
+                        }
+                    } 
+                    // إذا كنا خلال النهار (من 12 ظهراً فصاعداً)، نقارن الساعة الحالية مباشرة
+                    else {
+                        if (!slot.isNextDay) {
+                            if (slot.id <= currentHour) isExpired = true;
+                        } else {
+                            isExpired = true; // ساعات اليوم التالي لا تفتح في نفس النهار
                         }
                     }
                 }
 
-                // عرض الساعات المنقضية بلون رمادي داكن ومشطوب مع منع النقر
                 if (isExpired) {
                     return `
                         <div class="p-3 rounded-xl text-xs font-bold bg-[#141413] text-gray-600 border border-gray-900 line-through opacity-40 cursor-not-allowed flex items-center justify-center select-none" title="هذه الساعة قد انتهت">
@@ -498,7 +507,7 @@
                 document.getElementById('admin-pin-input').value = '';
             } else { 
                 alert('كلمة المرور غير صحيحة!'); 
-                document.getElementById('admin-pin-input').focus();
+                document.getElementById('admin-pin-input'].focus();
             }
         }
 
