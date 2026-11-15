@@ -17,16 +17,13 @@
     <header class="bg-[#1a1a18] border-b border-[#C5A059]/30 sticky top-0 z-50 shadow-xl">
         <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-3">
-                <div class="w-12 h-12 bg-[#C5A059]/10 border border-[#C5A059] rounded-xl flex items-center justify-center p-1 shadow-inner">
-                    <svg viewBox="0 0 100 100" class="w-full h-full text-[#C5A059]" fill="currentColor">
-                        <polygon points="50,60 85,75 50,90 15,75" fill="#C5A059" opacity="0.3"/>
-                        <polygon points="50,65 75,76 50,87 25,76" fill="#141413"/>
-                        <rect x="48" y="35" width="4" height="35" fill="#C5A059"/>
-                        <circle cx="50" cy="33" r="12" fill="#C5A059"/>
-                        <rect x="30" y="45" width="3" height="25" fill="#C5A059"/>
-                        <circle cx="31" cy="43" r="8" fill="#C5A059"/>
-                        <rect x="67" y="45" width="3" height="25" fill="#C5A059"/>
-                        <circle cx="68" cy="43" r="8" fill="#C5A059"/>
+                <!-- الشعار الدائري المخصص لدانه كامب -->
+                <div class="w-12 h-12 bg-[#C5A059]/10 border-2 border-[#C5A059] rounded-full flex items-center justify-center p-1 shadow-inner overflow-hidden">
+                    <svg viewBox="0 0 200 200" class="w-full h-full text-[#C5A059]" fill="currentColor">
+                        <circle cx="100" cy="100" r="90" fill="#141413" stroke="#C5A059" stroke-width="8"/>
+                        <path d="M 60 130 Q 100 70 140 130 Z" fill="#C5A059" opacity="0.3"/>
+                        <circle cx="100" cy="80" r="25" fill="#C5A059"/>
+                        <path d="M 70 140 Q 100 110 130 140 Z" fill="#C5A059"/>
                     </svg>
                 </div>
                 <div>
@@ -258,7 +255,7 @@
         let selectedSlots = [];
         let daysList = [];
 
-        // إعداد الساعات بنظام 12 ساعة من 12 ظهراً حتى 6 صباحاً اليوم التالي
+        // إعداد الساعات من 12 ظهراً حتى 6 صباحاً اليوم التالي
         const timeSlotsConfig = [
             { id: 12, label: "12:00 م - 1:00 م", isNextDay: false },
             { id: 13, label: "1:00 م - 2:00 م", isNextDay: false },
@@ -352,17 +349,17 @@
                 let isExpired = false;
                 
                 if (isToday) {
-                    // إذا كنا في الصباح (من 6 صباحاً وحتى 11:59 ظهراً)، فكل ساعات اليوم السابق انتهت
+                    // إذا كنا في الصباح (من 6 صباحاً وحتى 11:59 ظهراً)، فكل ساعات اليوم السابق منتهية
                     if (currentHour >= 6 && currentHour < 12) {
                         isExpired = true;
                     } 
-                    // إذا كنا بعد منتصف الليل (مثلاً الساعة 12:51 ص)، فإن كل الساعات من 12 ظهراً وحتى 1 صباحاً أصبحت منقضية ولا يمكن حجزها
+                    // إذا كنا بعد منتصف الليل (مثلاً الساعة 12:56 ص)، فإن الساعات من 12 ظهراً وحتى 1 صباحاً أصبحت منقضية
                     else if (currentHour >= 0 && currentHour < 6) {
                         if (!slot.isNextDay) {
                             isExpired = true; // ساعات النهار والمساء السابقة منتهية
                         } else {
-                            // الساعات من 12ص لـ 1ص (id=0) تعتبر منقضية أيضاً بناءً على طلبك
-                            if (slot.id === 0 || slot.id <= currentHour) {
+                            // الساعات من 12ص إلى 1ص (id=0) والفترة الحالية تعتبر منقضية
+                            if (slot.id <= currentHour) {
                                 isExpired = true;
                             }
                         }
