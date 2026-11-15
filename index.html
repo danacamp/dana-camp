@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>دانه كامب - العريش | حجز الملاعب الرياضية</title>
-    <!-- Tailwind CSS (مكتبة التنسيق الرسمية) -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
@@ -45,6 +45,7 @@
 
     <!-- المحتوى الرئيسي -->
     <main class="max-w-6xl mx-auto px-4 py-8 flex-grow w-full">
+        
         <!-- تبويب الحجز -->
         <section id="tab-book" class="space-y-8">
             <div class="bg-gradient-to-r from-[#1f1f1c] to-[#141413] border border-[#C5A059]/20 p-6 rounded-2xl shadow-xl flex flex-col md:flex-row justify-between items-center gap-6">
@@ -111,26 +112,39 @@
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                             <label class="border border-gray-700 p-3 rounded-xl cursor-pointer hover:border-[#C5A059] transition flex flex-col gap-1 bg-[#141413] select-none">
                                 <div class="flex items-center gap-2">
-                                    <input type="radio" name="payment" value="deposit" checked>
+                                    <input type="radio" name="payment" value="deposit" checked onchange="togglePaymentDetails()">
                                     <span class="font-bold text-sm">عربون والباقي عند الوصول</span>
                                 </div>
                                 <span class="text-xs text-gray-400 mr-5">دفع 50 جنيه عربون والباقي في الكامب</span>
                             </label>
                             <label class="border border-gray-700 p-3 rounded-xl cursor-pointer hover:border-[#C5A059] transition flex flex-col gap-1 bg-[#141413] select-none">
                                 <div class="flex items-center gap-2">
-                                    <input type="radio" name="payment" value="vodafone">
+                                    <input type="radio" name="payment" value="vodafone" onchange="togglePaymentDetails()">
                                     <span class="font-bold text-sm">فودافون كاش</span>
                                 </div>
                                 <span class="text-xs text-gray-400 mr-5">تحويل المبلغ للمحفظة</span>
                             </label>
                             <label class="border border-gray-700 p-3 rounded-xl cursor-pointer hover:border-[#C5A059] transition flex flex-col gap-1 bg-[#141413] select-none">
                                 <div class="flex items-center gap-2">
-                                    <input type="radio" name="payment" value="card">
+                                    <input type="radio" name="payment" value="card" onchange="togglePaymentDetails()">
                                     <span class="font-bold text-sm">بطاقة بنكية</span>
                                 </div>
                                 <span class="text-xs text-gray-400 mr-5">خصم مباشر آمن</span>
                             </label>
                         </div>
+                    </div>
+
+                    <div id="vodafone-box" class="hidden bg-[#141413] p-4 rounded-xl border border-gray-700 text-sm space-y-2">
+                        <p class="text-[#C5A059] font-bold">حول المبلغ على رقم فودافون كاش التالي:</p>
+                        <div class="flex items-center justify-between bg-black/40 p-2 rounded-lg border border-gray-800">
+                            <span class="font-mono text-lg tracking-wider text-white">01012345678</span>
+                            <button onclick="navigator.clipboard.writeText('01012345678'); alert('تم نسخ الرقم')" class="text-xs bg-[#C5A059] text-gray-900 font-bold px-3 py-1.5 rounded-md">نسخ الرقم</button>
+                        </div>
+                    </div>
+
+                    <div id="card-box" class="hidden bg-[#141413] p-4 rounded-xl border border-gray-700 text-sm space-y-3">
+                        <p class="text-[#C5A059] font-bold">بيانات البطاقة البنكية</p>
+                        <input type="text" placeholder="رقم البطاقة (4111 2222 ...)" class="w-full bg-black/40 border border-gray-800 rounded-xl px-4 py-2 text-sm">
                     </div>
 
                     <div class="bg-[#141413] p-4 rounded-xl border border-gray-800 flex flex-col sm:flex-row justify-between items-center gap-4">
@@ -230,7 +244,7 @@
         <p>© 2026 دانه كامب - العريش (Dana Camp). جميع الحقوق محفوظة.</p>
     </footer>
 
-    <!-- جافاسكريبت التشغيل المباشر -->
+    <!-- سكربت التشغيل المتكامل -->
     <script>
         const courts = [
             { id: 1, name: "ملعب ١ كرة قدم خماسي", type: "football", price: 150, desc: "عشب صناعي عالي الجودة وإضاءة ليلية", img: "⚽" },
@@ -334,6 +348,12 @@
             document.getElementById('total-price-display').innerText = `${total} جنيه`;
         }
 
+        function togglePaymentDetails() {
+            const val = document.querySelector('input[name="payment"]:checked').value;
+            document.getElementById('vodafone-box').classList.toggle('hidden', val !== 'vodafone');
+            document.getElementById('card-box').classList.toggle('hidden', val !== 'card');
+        }
+
         function switchTab(tab) {
             document.getElementById('tab-book').classList.toggle('hidden', tab !== 'book');
             document.getElementById('tab-my-bookings').classList.toggle('hidden', tab !== 'my-bookings');
@@ -435,4 +455,36 @@
             document.getElementById('admin-total-revenue').innerText = totalRev + ' جنيه';
 
             const tbody = document.getElementById('admin-bookings-table');
-            if (bookings
+            if (bookings.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-gray-500">لا توجد حجوزات مسجلة</td></tr>`;
+                return;
+            }
+            tbody.innerHTML = bookings.reverse().map((b, index) => `
+                <tr class="border-b border-gray-800 hover:bg-[#141413]">
+                    <td class="p-3 font-mono text-[#C5A059]">${b.bookingId}</td>
+                    <td class="p-3">${b.name}<br><span class="text-xs text-gray-400">${b.phone}</span></td>
+                    <td class="p-3">${b.courtName}</td>
+                    <td class="p-3 text-xs">${b.day}<br>${b.slots}</td>
+                    <td class="p-3 font-bold text-[#C5A059]">${b.total} جنيه</td>
+                    <td class="p-3">
+                        <button onclick="deleteBooking(${bookings.length - 1 - index})" class="bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white px-3 py-1 rounded-lg text-xs font-bold transition">حذف</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function closeAdminDashboard() { document.getElementById('admin-dashboard-modal').classList.add('hidden'); }
+        function deleteBooking(index) {
+            if (confirm('هل أنت متأكد من حذف هذا الحجز؟')) {
+                let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
+                bookings.splice(index, 1);
+                localStorage.setItem('dana_camp_bookings', JSON.stringify(bookings));
+                openAdminDashboard();
+            }
+        }
+
+        initDays();
+        renderCourts();
+    </script>
+</body>
+</html>
