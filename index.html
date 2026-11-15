@@ -17,7 +17,6 @@
     <header class="bg-[#1a1a18] border-b border-[#C5A059]/30 sticky top-0 z-50 shadow-xl">
         <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-3">
-                <!-- استخدام صورة الشعار المرفوعة مباشرة باسم logo.png -->
                 <div class="w-12 h-12 bg-[#141413] border border-[#C5A059]/40 rounded-xl overflow-hidden flex items-center justify-center p-1 shadow-inner">
                     <img src="logo.png" alt="شعار دانه كامب" class="w-full h-full object-contain">
                 </div>
@@ -129,11 +128,12 @@
                         </div>
                     </div>
 
+                    <!-- تم تحديث رقم فودافون كاش إلى الرقم الصحيح -->
                     <div id="vodafone-box" class="hidden bg-[#141413] p-4 rounded-xl border border-gray-700 text-sm space-y-2">
                         <p class="text-[#C5A059] font-bold">حول المبلغ على رقم فودافون كاش التالي:</p>
                         <div class="flex items-center justify-between bg-black/40 p-2 rounded-lg border border-gray-800">
-                            <span class="font-mono text-lg tracking-wider text-white">01012345678</span>
-                            <button onclick="navigator.clipboard.writeText('01012345678'); alert('تم نسخ الرقم')" class="text-xs bg-[#C5A059] text-gray-900 font-bold px-3 py-1.5 rounded-md">نسخ الرقم</button>
+                            <span class="font-mono text-lg tracking-wider text-white">01006896895</span>
+                            <button onclick="navigator.clipboard.writeText('01006896895'); alert('تم نسخ الرقم')" class="text-xs bg-[#C5A059] text-gray-900 font-bold px-3 py-1.5 rounded-md">نسخ الرقم</button>
                         </div>
                     </div>
 
@@ -164,16 +164,15 @@
     <div id="ticket-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-[#1a1a18] border border-[#C5A059] rounded-2xl max-w-md w-full p-6 space-y-5 shadow-2xl relative">
             
-            <!-- عداد تنازلي لمدة 10 دقائق -->
             <div class="bg-[#C5A059]/10 border border-[#C5A059]/40 rounded-xl p-2.5 text-center flex items-center justify-between px-4">
-                <span class="text-xs text-gray-300">مهلة تأكيد الدفع:</span>
+                <span class="text-xs text-gray-300">مهلة تأكيد التحويل:</span>
                 <span id="countdown-timer" class="font-mono font-black text-[#C5A059] text-base tracking-widest">10:00</span>
             </div>
 
             <div class="text-center space-y-1">
                 <div class="w-14 h-14 bg-[#C5A059]/20 text-[#C5A059] rounded-full flex items-center justify-center mx-auto text-2xl font-bold">✓</div>
-                <h3 class="text-xl font-extrabold text-white">تم تأكيد حجزك بنجاح!</h3>
-                <p class="text-xs text-gray-400">ننتظركم في دانه كامب - العريش</p>
+                <h3 class="text-xl font-extrabold text-white">تم إرسال طلب حجزك بنجاح!</h3>
+                <p class="text-xs text-gray-400">سيتم تأكيد الحجز نهائياً بعد مراجعة التحويل من الإدارة</p>
             </div>
             
             <div id="ticket-content" class="bg-[#141413] border border-gray-800 p-4 rounded-xl space-y-3 font-mono text-sm"></div>
@@ -198,13 +197,13 @@
         </div>
     </div>
 
-    <!-- لوحة تحكم الإدارة -->
+    <!-- لوحة تحكم الإدارة مع زر تأكيد التحويل -->
     <div id="admin-dashboard-modal" class="fixed inset-0 bg-black/90 z-50 hidden overflow-y-auto p-4 sm:p-6">
         <div class="max-w-4xl mx-auto bg-[#1a1a18] border border-[#C5A059] rounded-2xl p-6 space-y-6 shadow-2xl">
             <div class="flex justify-between items-center border-b border-gray-800 pb-4">
                 <div>
                     <h2 class="text-2xl font-black text-[#C5A059]">لوحة تحكم دانه كامب</h2>
-                    <p class="text-xs text-gray-400">إدارة الحجوزات والملاعب والأسعار</p>
+                    <p class="text-xs text-gray-400">إدارة وحفض وحالة الحجوزات</p>
                 </div>
                 <button onclick="closeAdminDashboard()" class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-xl text-sm font-bold">إغلاق ✕</button>
             </div>
@@ -215,7 +214,7 @@
                     <p class="text-2xl font-black text-white mt-1" id="admin-total-bookings">0</p>
                 </div>
                 <div class="bg-[#141413] p-4 rounded-xl border border-gray-800">
-                    <p class="text-xs text-gray-400">الإيرادات المتوقعة</p>
+                    <p class="text-xs text-gray-400">الإيرادات المؤكدة</p>
                     <p class="text-2xl font-black text-[#C5A059] mt-1" id="admin-total-revenue">0 جنيه</p>
                 </div>
             </div>
@@ -230,8 +229,8 @@
                                 <th class="p-3">العميل</th>
                                 <th class="p-3">الملعب</th>
                                 <th class="p-3">اليوم والساعة</th>
-                                <th class="p-3">المبلغ</th>
-                                <th class="p-3">إجراء</th>
+                                <th class="p-3">الحالة / المبلغ</th>
+                                <th class="p-3">إجراء الأدمن</th>
                             </tr>
                         </thead>
                         <tbody id="admin-bookings-table" class="divide-y divide-gray-800"></tbody>
@@ -241,13 +240,13 @@
         </div>
     </div>
 
-    <!-- التذييل -->
+    <!-- التذييل مع اسمك الكريم -->
     <footer class="bg-[#1a1a18] border-t border-gray-800 py-6 mt-12 text-center text-xs text-gray-400 space-y-1">
         <p>© 2026 دانه كامب - العريش (Dana Camp). جميع الحقوق محفوظة.</p>
         <p class="text-[#C5A059] font-semibold">تصميم وتطوير: م. عمرو الغول</p>
     </footer>
 
-    <!-- سكربت التشغيل المتكامل والعداد التنازلي -->
+    <!-- سكربت التشغيل المتكامل -->
     <script>
         const courts = [
             { id: 1, name: "ملعب ١ كرة قدم خماسي", type: "football", price: 150, desc: "عشب صناعي عالي الجودة وإضاءة ليلية", img: "⚽" },
@@ -442,6 +441,7 @@
                 phone,
                 includeBall: includeBall ? 'نعم (+30ج/س)' : 'بدون كرة',
                 total,
+                status: 'قيد المراجعة', // الحجز يبدأ بانتظار تأكيد التحويل من الأدمن
                 createdAt: new Date().toLocaleString()
             };
 
@@ -459,13 +459,13 @@
                 <div class="flex justify-between border-b border-gray-800 pb-2"><span class="text-gray-400">الموعد:</span><span class="text-white">${data.day} | ${data.slots}</span></div>
                 <div class="flex justify-between border-b border-gray-800 pb-2"><span class="text-gray-400">الاسم:</span><span class="text-white">${data.name} (${data.phone})</span></div>
                 <div class="flex justify-between border-b border-gray-800 pb-2"><span class="text-gray-400">الكرة:</span><span class="text-white">${data.includeBall}</span></div>
+                <div class="flex justify-between border-b border-gray-800 pb-2"><span class="text-gray-400">الحالة:</span><span class="text-amber-400 font-bold">بانتظار تأكيد تحويل 01006896895</span></div>
                 <div class="flex justify-between pt-1 font-bold text-base"><span class="text-gray-400">الإجمالي:</span><span class="text-[#C5A059]">${data.total} جنيه</span></div>
             `;
-            const waText = `مرحباً دانه كامب، لدي حجز جديد:%0A- رقم الحجز: ${data.bookingId}%0A- الملعب: ${data.courtName}%0A- الموعد: ${data.day} (${data.slots})%0A- الاسم: ${data.name}%0A- الإجمالي: ${data.total} جنيه`;
-            document.getElementById('whatsapp-share-btn').href = `https://wa.me/201000000000?text=${waText}`;
+            const waText = `مرحباً دانه كامب، لقد قمت بإرسال طلب حجز جديد بانتظار التأكيد:%0A- رقم الحجز: ${data.bookingId}%0A- الملعب: ${data.courtName}%0A- الموعد: ${data.day} (${data.slots})%0A- الاسم: ${data.name}%0A- الهاتف: ${data.phone}%0A- الإجمالي: ${data.total} جنيه`;
+            document.getElementById('whatsapp-share-btn').href = `https://wa.me/201006896895?text=${waText}`;
             document.getElementById('ticket-modal').classList.remove('hidden');
             
-            // تشغيل العداد التنازلي لمدة 10 دقائق (600 ثانية)
             startCountdown(10 * 60);
         }
 
@@ -505,12 +505,18 @@
                 container.innerHTML = `<p class="text-gray-500 text-center py-8">لا توجد حجوزات مسجلة حالياً.</p>`;
                 return;
             }
-            container.innerHTML = bookings.reverse().map(b => `
+            container.innerHTML = bookings.reverse().map(b => {
+                let statusBadge = b.status === 'مؤكد' 
+                    ? '<span class="bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded text-xs font-bold">✓ مؤكد من الإدارة</span>' 
+                    : '<span class="bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded text-xs font-bold">⏳ بانتظار تأكيد التحويل</span>';
+                
+                return `
                 <div class="bg-[#1a1a18] border border-gray-800 p-5 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div class="space-y-1">
                         <div class="flex items-center gap-2">
                             <span class="bg-[#C5A059]/20 text-[#C5A059] text-xs font-bold px-2.5 py-0.5 rounded-full">${b.bookingId}</span>
                             <h4 class="font-bold text-white">${b.courtName}</h4>
+                            ${statusBadge}
                         </div>
                         <p class="text-xs text-gray-400">📅 ${b.day} ⟵ الساعات: ${b.slots}</p>
                         <p class="text-xs text-gray-400">👤 الحاجز: ${b.name} (${b.phone}) | ⚽ ${b.includeBall}</p>
@@ -520,7 +526,7 @@
                         <p class="text-lg font-black text-[#C5A059]">${b.total} جنيه</p>
                     </div>
                 </div>
-            `).join('');
+            `}).join('');
         }
 
         function openAdminModal() { document.getElementById('admin-login-modal').classList.remove('hidden'); }
@@ -541,7 +547,9 @@
         function openAdminDashboard() {
             document.getElementById('admin-dashboard-modal').classList.remove('hidden');
             let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
-            let totalRev = bookings.reduce((sum, b) => sum + Number(b.total || 0), 0);
+            
+            // حساب الإيرادات للحجوزات المؤكدة فقط
+            let totalRev = bookings.filter(b => b.status === 'مؤكد').reduce((sum, b) => sum + Number(b.total || 0), 0);
             
             document.getElementById('admin-total-bookings').innerText = bookings.length;
             document.getElementById('admin-total-revenue').innerText = totalRev + ' جنيه';
@@ -551,21 +559,38 @@
                 tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-gray-500">لا توجد حجوزات مسجلة</td></tr>`;
                 return;
             }
-            tbody.innerHTML = bookings.reverse().map((b, index) => `
+            tbody.innerHTML = bookings.reverse().map((b, index) => {
+                let actualIndex = bookings.length - 1 - index;
+                let isConfirmed = b.status === 'مؤكد';
+                
+                return `
                 <tr class="border-b border-gray-800 hover:bg-[#141413]">
                     <td class="p-3 font-mono text-[#C5A059]">${b.bookingId}</td>
                     <td class="p-3">${b.name}<br><span class="text-xs text-gray-400">${b.phone}</span></td>
                     <td class="p-3">${b.courtName}</td>
                     <td class="p-3 text-xs">${b.day}<br>${b.slots}</td>
-                    <td class="p-3 font-bold text-[#C5A059]">${b.total} جنيه</td>
                     <td class="p-3">
-                        <button onclick="deleteBooking(${bookings.length - 1 - index})" class="bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white px-3 py-1 rounded-lg text-xs font-bold transition">حذف</button>
+                        <span class="font-bold text-[#C5A059]">${b.total} جنيه</span><br>
+                        ${isConfirmed ? '<span class="text-emerald-400 text-xs">مؤكد</span>' : '<span class="text-amber-400 text-xs">بانتظار التحويل</span>'}
+                    </td>
+                    <td class="p-3 flex gap-2 items-center">
+                        ${!isConfirmed ? `<button onclick="approveBooking(${actualIndex})" class="bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500 hover:text-white px-3 py-1 rounded-lg text-xs font-bold transition">تأكيد التحويل ✓</button>` : `<span class="text-xs text-gray-500">تم التأكيد</span>`}
+                        <button onclick="deleteBooking(${actualIndex})" class="bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white px-3 py-1 rounded-lg text-xs font-bold transition">حذف</button>
                     </td>
                 </tr>
-            `).join('');
+            `}).join('');
+        }
+
+        function approveBooking(index) {
+            let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
+            bookings[index].status = 'مؤكد';
+            localStorage.setItem('dana_camp_bookings', JSON.stringify(bookings));
+            openAdminDashboard();
+            alert('تم تأكيد التحويل واعتماد الحجز بنجاح!');
         }
 
         function closeAdminDashboard() { document.getElementById('admin-dashboard-modal').classList.add('hidden'); }
+        
         function deleteBooking(index) {
             if (confirm('هل أنت متأكد من حذف هذا الحجز؟')) {
                 let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
