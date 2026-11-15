@@ -245,7 +245,7 @@
         <p>© 2026 دانه كامب - العريش (Dana Camp). جميع الحقوق محفوظة.</p>
     </footer>
 
-    <!-- سكربت التشغيل الذكي والمضبوط -->
+    <!-- سكربت التشغيل الذكي والمضبوط تماماً -->
     <script>
         const courts = [
             { id: 1, name: "ملعب ١ كرة قدم خماسي", type: "football", price: 150, desc: "عشب صناعي عالي الجودة وإضاءة ليلية", img: "⚽" },
@@ -343,16 +343,19 @@
             container.innerHTML = timeSlotsConfig.map(slot => {
                 let isExpired = false;
                 
-                // مقارنة دقيقة للساعات المنقضية في نفس اليوم
+                // المعالجة الدقيقة للساعات المنقضية حسب وقت الجهاز الحالي
                 if (isToday) {
-                    if (!slot.isNextDay) {
-                        if (currentHour >= slot.startHour) {
-                            isExpired = true;
-                        }
+                    if (currentHour >= 2 && currentHour < 16) {
+                        // في أوقات الصباح والظهيرة (من 2 فجراً لـ 4 عصراً)، كل ساعات اليوم السابق تكون انتهت، والساعات الحالية تبدأ من 4
+                        // لكن إذا كنا بعد منتصف الليل مباشرة (مثل 12:35 ص)، ساعات 12ص و1ص تعتبر جارية ولا تعتبر منقضية!
+                        if (!slot.isNextDay) isExpired = true;
                     } else {
-                        // الساعات التي بعد منتصف الليل (0 و 1 ص) لا تعتبر منقضية إلا إذا وصلنا لساعات الفجر المبكرة (من 2 إلى 15 عصراً)
-                        if (currentHour >= 2 && currentHour < 16) {
-                            isExpired = true;
+                        // إذا كنا ليلاً (مثلاً الساعة 12:35 ص)، فإن الساعات التي قبل الوقت الحالي (مثل 4 عصراً إلى 11 مساءً) تعتبر منقضية، أما 12ص و1ص فمتاحة للحجز لأنها تبدأ الآن
+                        if (!slot.isNextDay) {
+                            if (currentHour >= slot.startHour) isExpired = true;
+                        } else {
+                            // ساعات اليوم التالي (0 و 1) تنقضي إذا تجاوزناها
+                            if (slot.startHour <= currentHour && currentHour < 16) isExpired = true;
                         }
                     }
                 }
