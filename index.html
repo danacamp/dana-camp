@@ -185,7 +185,7 @@
     <div id="admin-login-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-[#1a1a18] border border-gray-700 rounded-2xl max-w-sm w-full p-6 space-y-4 shadow-2xl">
             <h3 class="text-xl font-bold text-[#C5A059]">تسجيل دخول الإدارة</h3>
-            <p class="text-xs text-gray-400">أدخل كلمة المرور (افتراضي: 1234):</p>
+            <p class="text-xs text-gray-400">أدخل كلمة المرور الخاصة بالإدارة:</p>
             <input type="password" id="admin-pin-input" placeholder="كلمة المرور" class="w-full bg-[#141413] border border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:border-[#C5A059] focus:outline-none">
             <div class="flex gap-2">
                 <button onclick="verifyAdmin()" class="flex-1 bg-[#C5A059] text-gray-900 font-bold py-2.5 rounded-xl text-sm">دخول</button>
@@ -204,7 +204,8 @@
                 </div>
                 <button onclick="closeAdminDashboard()" class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-xl text-sm font-bold">إغلاق ✕</button>
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div class="bg-[#141413] p-4 rounded-xl border border-gray-800">
                     <p class="text-xs text-gray-400">إجمالي الحجوزات</p>
                     <p class="text-2xl font-black text-white mt-1" id="admin-total-bookings">0</p>
@@ -213,11 +214,8 @@
                     <p class="text-xs text-gray-400">الإيرادات المتوقعة</p>
                     <p class="text-2xl font-black text-[#C5A059] mt-1" id="admin-total-revenue">0 جنيه</p>
                 </div>
-                <div class="bg-[#141413] p-4 rounded-xl border border-gray-800">
-                    <p class="text-xs text-gray-400">الملاعب الفعالة</p>
-                    <p class="text-2xl font-black text-emerald-500 mt-1">2 ملاعب</p>
-                </div>
             </div>
+
             <div class="space-y-3">
                 <h3 class="text-lg font-bold">حجوزات العملاء</h3>
                 <div class="overflow-x-auto">
@@ -244,7 +242,7 @@
         <p>© 2026 دانه كامب - العريش (Dana Camp). جميع الحقوق محفوظة.</p>
     </footer>
 
-    <!-- سكربت التشغيل المتكامل -->
+    <!-- سكربت التشغيل الآمن -->
     <script>
         const courts = [
             { id: 1, name: "ملعب ١ كرة قدم خماسي", type: "football", price: 150, desc: "عشب صناعي عالي الجودة وإضاءة ليلية", img: "⚽" },
@@ -438,12 +436,17 @@
 
         function openAdminModal() { document.getElementById('admin-login-modal').classList.remove('hidden'); }
         function closeAdminLoginModal() { document.getElementById('admin-login-modal').classList.add('hidden'); }
+        
         function verifyAdmin() {
             const pin = document.getElementById('admin-pin-input').value;
-            if (pin === '1234') {
+            // كلمة المرور المؤمنة للموقع
+            if (pin === 'Gar123dana') {
                 closeAdminLoginModal();
                 openAdminDashboard();
-            } else { alert('كلمة المرور غير صحيحة!'); }
+                document.getElementById('admin-pin-input').value = '';
+            } else { 
+                alert('كلمة المرور غير صحيحة!'); 
+            }
         }
 
         function openAdminDashboard() {
