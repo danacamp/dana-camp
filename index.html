@@ -114,9 +114,9 @@
                             <label class="border border-gray-700 p-3 rounded-xl cursor-pointer hover:border-[#C5A059] transition flex flex-col gap-1 bg-[#141413] select-none">
                                 <div class="flex items-center gap-2">
                                     <input type="radio" name="payment" value="bank" onchange="togglePaymentDetails()">
-                                    <span class="font-bold text-sm">تحويل بنكي</span>
+                                    <span class="font-bold text-sm">إنستا بي (InstaPay)</span>
                                 </div>
-                                <span class="text-xs text-gray-400 mr-5">تحويل العربون لحساب البنك</span>
+                                <span class="text-xs text-gray-400 mr-5">تحويل العربون عبر إنستا بي</span>
                             </label>
                         </div>
                     </div>
@@ -130,15 +130,15 @@
                         </div>
                     </div>
 
-                    <!-- صندوق تفاصيل التحويل البنكي -->
+                    <!-- صندوق تفاصيل إنستا بي (InstaPay) الجديد -->
                     <div id="bank-box" class="hidden bg-[#141413] p-4 rounded-xl border border-gray-700 text-sm space-y-2">
-                        <p class="text-[#C5A059] font-bold">بيانات التحويل البنكي:</p>
+                        <p class="text-[#C5A059] font-bold">بيانات التحويل عبر إنستا بي (InstaPay):</p>
                         <div class="bg-black/40 p-3 rounded-lg border border-gray-800 space-y-1 font-mono text-xs">
-                            <p class="text-white">البنك: التجاري الدولي CIB (مثال)</p>
-                            <p class="text-white">رقم الحساب: <span class="text-[#C5A059]">100023456789</span></p>
-                            <p class="text-white">اسم الحساب: دانه كامب</p>
+                            <p class="text-white">التطبيق: <span class="text-[#C5A059]">إنستا بي</span></p>
+                            <p class="text-white">رقم الحساب / الهاتف: <span class="text-[#C5A059]">01006896895</span></p>
+                            <p class="text-white">اسم الحساب: <span class="text-[#C5A059]">amr</span></p>
                         </div>
-                        <button onclick="navigator.clipboard.writeText('100023456789'); alert('تم نسخ رقم الحساب البنكي')" class="text-xs bg-[#C5A059] text-gray-900 font-bold px-3 py-1.5 rounded-md mt-1">نسخ رقم الحساب</button>
+                        <button onclick="navigator.clipboard.writeText('01006896895'); alert('تم نسخ رقم إنستا بي')" class="text-xs bg-[#C5A059] text-gray-900 font-bold px-3 py-1.5 rounded-md mt-1">نسخ البيانات</button>
                     </div>
 
                     <div class="bg-[#141413] p-4 rounded-xl border border-gray-800 flex flex-col sm:flex-row justify-between items-center gap-4">
@@ -444,7 +444,7 @@
                 name,
                 phone,
                 includeBall: includeBall ? 'نعم (+30ج/س)' : 'بدون كرة',
-                paymentMethod: paymentMethod === 'vodafone' ? 'فودافون كاش (01006896895)' : 'تحويل بنكي',
+                paymentMethod: paymentMethod === 'vodafone' ? 'فودافون كاش (01006896895)' : 'إنستا بي (01006896895 - amr)',
                 total,
                 deposit,
                 status: 'قيد المراجعة',
