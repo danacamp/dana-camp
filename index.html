@@ -17,7 +17,7 @@
             animation: pulse-slow 2s infinite;
         }
         
-        /* تأثير حركة الكرة وتواجدها */
+        /* تأثير حركة الكرة واصطدامها بالجوانب ثم استقرارها */
         @keyframes bounceAndSettle {
             0% { transform: translate(0, 0) rotate(0deg); }
             25% { transform: translate(300px, 150px) rotate(180deg); }
@@ -47,7 +47,7 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between relative">
 
-    <!-- الكرة المتحركة بذكاء -->
+    <!-- الكرة المتحركة -->
     <div id="moving-ball" class="animated-ball flex items-center justify-center text-3xl select-none" title="دانه كامب">
         ⚽
     </div>
@@ -479,7 +479,7 @@
             { id: 5,  label: "5:00 ص - 6:00 ص (اليوم التالي)", startHour: 5, isNextDay: true }
         ];
 
-        // تفعيل تحويل كلاس الكرة بعد انتهاء حركة الاصطدام لتستقر وتدور بهدوء
+        // التحقق من عمل سكريبت الكرة المتحركة عند اكتمال تحميل الصفحة
         window.addEventListener('DOMContentLoaded', () => {
             const ball = document.getElementById('moving-ball');
             if(ball) {
@@ -488,6 +488,8 @@
                     ball.classList.add('resting-ball');
                 }, 4000);
             }
+            initDays();
+            renderCourts();
         });
 
         function initDays() {
@@ -1020,11 +1022,6 @@
             a.click();
             document.body.removeChild(a);
         }
-
-        window.onload = function() {
-            initDays();
-            renderCourts();
-        };
     </script>
 </body>
 </html>
