@@ -102,48 +102,48 @@
                     </div>
 
                     <div>
-                        <label class="block text-sm font-semibold mb-2">طريقة الدفع المختارة</label>
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <label class="block text-sm font-semibold mb-2">طريقة دفع العربون (50 جنيه / ساعة)</label>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <label class="border border-gray-700 p-3 rounded-xl cursor-pointer hover:border-[#C5A059] transition flex flex-col gap-1 bg-[#141413] select-none">
                                 <div class="flex items-center gap-2">
-                                    <input type="radio" name="payment" value="deposit" checked onchange="togglePaymentDetails()">
-                                    <span class="font-bold text-sm">عربون والباقي عند الوصول</span>
-                                </div>
-                                <span class="text-xs text-gray-400 mr-5" id="deposit-label-desc">دفع عربون 50 جنيه / ساعة والباقي في الكامب</span>
-                            </label>
-                            <label class="border border-gray-700 p-3 rounded-xl cursor-pointer hover:border-[#C5A059] transition flex flex-col gap-1 bg-[#141413] select-none">
-                                <div class="flex items-center gap-2">
-                                    <input type="radio" name="payment" value="vodafone" onchange="togglePaymentDetails()">
+                                    <input type="radio" name="payment" value="vodafone" checked onchange="togglePaymentDetails()">
                                     <span class="font-bold text-sm">فودافون كاش</span>
                                 </div>
-                                <span class="text-xs text-gray-400 mr-5">تحويل المبلغ للمحفظة</span>
+                                <span class="text-xs text-gray-400 mr-5">تحويل العربون على المحفظة</span>
                             </label>
                             <label class="border border-gray-700 p-3 rounded-xl cursor-pointer hover:border-[#C5A059] transition flex flex-col gap-1 bg-[#141413] select-none">
                                 <div class="flex items-center gap-2">
-                                    <input type="radio" name="payment" value="card" onchange="togglePaymentDetails()">
-                                    <span class="font-bold text-sm">بطاقة بنكية</span>
+                                    <input type="radio" name="payment" value="bank" onchange="togglePaymentDetails()">
+                                    <span class="font-bold text-sm">تحويل بنكي</span>
                                 </div>
-                                <span class="text-xs text-gray-400 mr-5">خصم مباشر آمن</span>
+                                <span class="text-xs text-gray-400 mr-5">تحويل العربون لحساب البنك</span>
                             </label>
                         </div>
                     </div>
 
-                    <div id="vodafone-box" class="hidden bg-[#141413] p-4 rounded-xl border border-gray-700 text-sm space-y-2">
-                        <p class="text-[#C5A059] font-bold">حول المبلغ على رقم فودافون كاش التالي:</p>
+                    <!-- صندوق تفاصيل فودافون كاش -->
+                    <div id="vodafone-box" class="bg-[#141413] p-4 rounded-xl border border-gray-700 text-sm space-y-2">
+                        <p class="text-[#C5A059] font-bold">حول مبلغ العربون على رقم فودافون كاش التالي:</p>
                         <div class="flex items-center justify-between bg-black/40 p-2 rounded-lg border border-gray-800">
                             <span class="font-mono text-lg tracking-wider text-white">01006896895</span>
-                            <button onclick="navigator.clipboard.writeText('01006896895'); alert('تم نسخ الرقم')" class="text-xs bg-[#C5A059] text-gray-900 font-bold px-3 py-1.5 rounded-md">نسخ الرقم</button>
+                            <button onclick="navigator.clipboard.writeText('01006896895'); alert('تم نسخ رقم فودافون كاش')" class="text-xs bg-[#C5A059] text-gray-900 font-bold px-3 py-1.5 rounded-md">نسخ الرقم</button>
                         </div>
                     </div>
 
-                    <div id="card-box" class="hidden bg-[#141413] p-4 rounded-xl border border-gray-700 text-sm space-y-3">
-                        <p class="text-[#C5A059] font-bold">بيانات البطاقة البنكية</p>
-                        <input type="text" placeholder="رقم البطاقة (4111 2222 ...)" class="w-full bg-black/40 border border-gray-800 rounded-xl px-4 py-2 text-sm">
+                    <!-- صندوق تفاصيل التحويل البنكي -->
+                    <div id="bank-box" class="hidden bg-[#141413] p-4 rounded-xl border border-gray-700 text-sm space-y-2">
+                        <p class="text-[#C5A059] font-bold">بيانات التحويل البنكي:</p>
+                        <div class="bg-black/40 p-3 rounded-lg border border-gray-800 space-y-1 font-mono text-xs">
+                            <p class="text-white">البنك: التجاري الدولي CIB (مثال)</p>
+                            <p class="text-white">رقم الحساب: <span class="text-[#C5A059]">100023456789</span></p>
+                            <p class="text-white">اسم الحساب: دانه كامب</p>
+                        </div>
+                        <button onclick="navigator.clipboard.writeText('100023456789'); alert('تم نسخ رقم الحساب البنكي')" class="text-xs bg-[#C5A059] text-gray-900 font-bold px-3 py-1.5 rounded-md mt-1">نسخ رقم الحساب</button>
                     </div>
 
                     <div class="bg-[#141413] p-4 rounded-xl border border-gray-800 flex flex-col sm:flex-row justify-between items-center gap-4">
                         <div>
-                            <p class="text-xs text-gray-400">إجمالي التكلفة النهائية:</p>
+                            <p class="text-xs text-gray-400">إجمالي التكلفة النهائية | المطلوب كعربون:</p>
                             <p class="text-2xl font-black text-[#C5A059]" id="total-price-display">0 جنيه</p>
                         </div>
                         <button onclick="confirmBooking()" class="w-full sm:w-auto bg-[#C5A059] hover:bg-[#b08d4b] text-gray-900 font-black px-8 py-3 rounded-xl transition shadow-lg">تأكيد حجز الملعب الآن</button>
@@ -164,14 +164,14 @@
         <div class="bg-[#1a1a18] border border-[#C5A059] rounded-2xl max-w-md w-full p-6 space-y-5 shadow-2xl relative">
             
             <div class="bg-[#C5A059]/10 border border-[#C5A059]/40 rounded-xl p-2.5 text-center flex items-center justify-between px-4">
-                <span class="text-xs text-gray-300">مهلة تأكيد التحويل:</span>
+                <span class="text-xs text-gray-300">مهلة تأكيد تحويل العربون:</span>
                 <span id="countdown-timer" class="font-mono font-black text-[#C5A059] text-base tracking-widest">10:00</span>
             </div>
 
             <div class="text-center space-y-1">
                 <div class="w-14 h-14 bg-[#C5A059]/20 text-[#C5A059] rounded-full flex items-center justify-center mx-auto text-2xl font-bold">✓</div>
                 <h3 class="text-xl font-extrabold text-white">تم إرسال طلب حجزك بنجاح!</h3>
-                <p class="text-xs text-gray-400">سيتم تأكيد الحجز نهائياً بعد مراجعة التحويل من الإدارة</p>
+                <p class="text-xs text-gray-400">يرجى تحويل العربون وسيتم تأكيد الحجز من الإدارة فوراً</p>
             </div>
             
             <div id="ticket-content" class="bg-[#141413] border border-gray-800 p-4 rounded-xl space-y-3 font-mono text-sm"></div>
@@ -228,7 +228,7 @@
                                 <th class="p-3">العميل</th>
                                 <th class="p-3">الملعب</th>
                                 <th class="p-3">اليوم والساعة</th>
-                                <th class="p-3">الحالة / المبلغ</th>
+                                <th class="p-3">العربون / الإجمالي</th>
                                 <th class="p-3">إجراء الأدمن</th>
                             </tr>
                         </thead>
@@ -403,18 +403,15 @@
             const hoursCount = selectedSlots.length;
             const includeBall = document.getElementById('include-ball').checked;
             const total = (hoursCount * selectedCourt.price) + (includeBall ? (hoursCount * 30) : 0);
-            
-            // حساب العربون الموحد: 50 جنيه لكل ساعة حجز
             const depositTotal = hoursCount * 50;
             
-            document.getElementById('total-price-display').innerText = `${total} جنيه`;
-            document.getElementById('deposit-label-desc').innerText = `دفع عربون ${depositTotal} جنيه (${hoursCount} ساعات × 50ج) والباقي بالكامب`;
+            document.getElementById('total-price-display').innerText = `${total} جنيه (العربون: ${depositTotal}ج)`;
         }
 
         function togglePaymentDetails() {
             const val = document.querySelector('input[name="payment"]:checked').value;
             document.getElementById('vodafone-box').classList.toggle('hidden', val !== 'vodafone');
-            document.getElementById('card-box').classList.toggle('hidden', val !== 'card');
+            document.getElementById('bank-box').classList.toggle('hidden', val !== 'bank');
         }
 
         function switchTab(tab) {
@@ -428,13 +425,15 @@
         function confirmBooking() {
             const name = document.getElementById('user-name').value.trim();
             const phone = document.getElementById('user-phone').value.trim();
+            const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+            
             if (!name || !phone) { alert('يرجى إدخال الاسم ورقم الهاتف بشكل صحيح'); return; }
             if (selectedSlots.length === 0) { alert('يرجى اختيار ساعة واحدة على الأقل'); return; }
 
             const hoursCount = selectedSlots.length;
             const includeBall = document.getElementById('include-ball').checked;
             const total = (hoursCount * selectedCourt.price) + (includeBall ? (hoursCount * 30) : 0);
-            const deposit = hoursCount * 50; // العربون المحسوب بناءً على عدد الساعات
+            const deposit = hoursCount * 50;
             const bookingId = 'DC-' + Math.floor(100000 + Math.random() * 900000);
             
             const bookingData = {
@@ -445,6 +444,7 @@
                 name,
                 phone,
                 includeBall: includeBall ? 'نعم (+30ج/س)' : 'بدون كرة',
+                paymentMethod: paymentMethod === 'vodafone' ? 'فودافون كاش (01006896895)' : 'تحويل بنكي',
                 total,
                 deposit,
                 status: 'قيد المراجعة',
@@ -464,12 +464,12 @@
                 <div class="flex justify-between border-b border-gray-800 pb-2"><span class="text-gray-400">الملعب:</span><span class="text-white">${data.courtName}</span></div>
                 <div class="flex justify-between border-b border-gray-800 pb-2"><span class="text-gray-400">الموعد:</span><span class="text-white">${data.day} | ${data.slots}</span></div>
                 <div class="flex justify-between border-b border-gray-800 pb-2"><span class="text-gray-400">الاسم:</span><span class="text-white">${data.name} (${data.phone})</span></div>
-                <div class="flex justify-between border-b border-gray-800 pb-2"><span class="text-gray-400">الكرة:</span><span class="text-white">${data.includeBall}</span></div>
-                <div class="flex justify-between border-b border-gray-800 pb-2"><span class="text-gray-400">مطلوب تحويل العربون:</span><span class="text-[#C5A059] font-bold">${data.deposit} جنيه (${data.slots.split(',').length} ساعات × 50ج)</span></div>
-                <div class="flex justify-between border-b border-gray-800 pb-2"><span class="text-gray-400">الحالة:</span><span class="text-amber-400 font-bold">بانتظار تأكيد تحويل 01006896895</span></div>
+                <div class="flex justify-between border-b border-gray-800 pb-2"><span class="text-gray-400">طريقة العربون:</span><span class="text-white">${data.paymentMethod}</span></div>
+                <div class="flex justify-between border-b border-gray-800 pb-2"><span class="text-gray-400">مطلوب تحويل العربون:</span><span class="text-[#C5A059] font-bold">${data.deposit} جنيه</span></div>
+                <div class="flex justify-between border-b border-gray-800 pb-2"><span class="text-gray-400">الحالة:</span><span class="text-amber-400 font-bold">بانتظار تأكيد التحويل</span></div>
                 <div class="flex justify-between pt-1 font-bold text-base"><span class="text-gray-400">الإجمالي بالكامل:</span><span class="text-[#C5A059]">${data.total} جنيه</span></div>
             `;
-            const waText = `مرحباً دانه كامب، لقد قمت بإرسال طلب حجز جديد:%0A- رقم الحجز: ${data.bookingId}%0A- الملعب: ${data.courtName}%0A- الموعد: ${data.day} (${data.slots})%0A- الاسم: ${data.name}%0A- المطلوب تحويله (عربون): ${data.deposit} جنيه%0A- الإجمالي: ${data.total} جنيه`;
+            const waText = `مرحباً دانه كامب، لقد قمت بحجز جديد:%0A- رقم الحجز: ${data.bookingId}%0A- الملعب: ${data.courtName}%0A- الموعد: ${data.day} (${data.slots})%0A- الاسم: ${data.name}%0A- طريقة العربون: ${data.paymentMethod}%0A- مبلغ العربون: ${data.deposit} جنيه%0A- إجمالي المبلغ: ${data.total} جنيه`;
             document.getElementById('whatsapp-share-btn').href = `https://wa.me/201006896895?text=${waText}`;
             document.getElementById('ticket-modal').classList.remove('hidden');
             
@@ -529,7 +529,7 @@
                         <p class="text-xs text-gray-400">👤 الحاجز: ${b.name} (${b.phone}) | ⚽ ${b.includeBall}</p>
                     </div>
                     <div class="text-left">
-                        <p class="text-xs text-gray-400">إجمالي المبلغ</p>
+                        <p class="text-xs text-gray-400">الإجمالي (عربون: ${b.deposit}ج)</p>
                         <p class="text-lg font-black text-[#C5A059]">${b.total} جنيه</p>
                     </div>
                 </div>
@@ -577,7 +577,7 @@
                     <td class="p-3 text-xs">${b.day}<br>${b.slots}</td>
                     <td class="p-3">
                         <span class="font-bold text-[#C5A059]">${b.total} جنيه</span><br>
-                        <span class="text-xs text-gray-400">عربون: ${b.deposit || 50}ج</span>
+                        <span class="text-xs text-gray-400">عربون: ${b.deposit || 50}ج (${b.paymentMethod || 'فودافون'})</span>
                     </td>
                     <td class="p-3 flex gap-2 items-center">
                         ${!isConfirmed ? `<button onclick="approveBooking(${actualIndex})" class="bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500 hover:text-white px-3 py-1 rounded-lg text-xs font-bold transition">تأكيد التحويل ✓</button>` : `<span class="text-xs text-emerald-400 font-bold">مؤكد</span>`}
