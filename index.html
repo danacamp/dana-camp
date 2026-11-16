@@ -138,7 +138,7 @@
                 <div>
                     <div class="flex justify-between items-center mb-3">
                         <label class="block text-sm font-bold text-gray-300">اختر الساعات (بلمسة واحدة):</label>
-                        <span class="text-xs text-gray-500">يمكنك اختيار أكثر من ساعة</span>
+                        <span class="text-xs text-gray-500">الساعات المنقضية مخفية تلقائياً</span>
                     </div>
                     <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3" id="slots-container"></div>
                 </div>
@@ -423,7 +423,6 @@
 
     <!-- سكربت التشغيل -->
     <script>
-        // تعريف الملاعب بدقة: ملعبين كرة قدم خماسي + ملعب بادل قريباً
         const courts = [
             { id: 1, name: "ملعب 1 كرة قدم خماسي", price: 150, desc: "عشب صناعي عالي الجودة وإضاءة ليلية متميزة", img: "⚽" },
             { id: 2, name: "ملعب 2 كرة قدم خماسي", price: 150, desc: "مساحة واسعة وتجهيز كامل للمباريات القوية", img: "⚽" },
@@ -436,21 +435,26 @@
         let daysList = [];
         let countdownInterval = null;
 
+        // الساعات مرتبة تصاعدياً من 12 ظهراً وحتى 6 صباح اليوم التالي
         const timeSlotsConfig = [
-            { label: "04:00 م - 05:00 م" },
-            { label: "05:00 م - 06:00 م" },
-            { label: "06:00 م - 07:00 م" },
-            { label: "07:00 م - 08:00 م" },
-            { label: "08:00 م - 09:00 م" },
-            { label: "09:00 م - 10:00 م" },
-            { label: "10:00 م - 11:00 م" },
-            { label: "11:00 م - 12:00 ص" },
-            { label: "12:00 ص - 01:00 ص" },
-            { label: "01:00 ص - 02:00 ص" },
-            { label: "02:00 ص - 03:00 ص" },
-            { label: "03:00 ص - 04:00 ص" },
-            { label: "04:00 ص - 05:00 ص" },
-            { label: "05:00 ص - 06:00 ص" }
+            { label: "12:00 م - 01:00 م", startHour: 12 },
+            { label: "01:00 م - 02:00 م", startHour: 13 },
+            { label: "02:00 م - 03:00 م", startHour: 14 },
+            { label: "03:00 م - 04:00 م", startHour: 15 },
+            { label: "04:00 م - 05:00 م", startHour: 16 },
+            { label: "05:00 م - 06:00 م", startHour: 17 },
+            { label: "06:00 م - 07:00 م", startHour: 18 },
+            { label: "07:00 م - 08:00 م", startHour: 19 },
+            { label: "08:00 م - 09:00 م", startHour: 20 },
+            { label: "09:00 م - 10:00 م", startHour: 21 },
+            { label: "10:00 م - 11:00 م", startHour: 22 },
+            { label: "11:00 م - 12:00 ص", startHour: 23 },
+            { label: "12:00 ص - 01:00 ص", startHour: 0 },
+            { label: "01:00 ص - 02:00 ص", startHour: 1 },
+            { label: "02:00 ص - 03:00 ص", startHour: 2 },
+            { label: "03:00 ص - 04:00 ص", startHour: 3 },
+            { label: "04:00 ص - 05:00 ص", startHour: 4 },
+            { label: "05:00 ص - 06:00 ص", startHour: 5 }
         ];
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -536,16 +540,37 @@
 
         function selectDay(index) {
             selectedDayIndex = index;
+            selectedSlots = []; // إعادة تعيين الساعات المختارة عند تغيير اليوم
             renderDays();
             renderSlots();
+            updateTotalPrice();
         }
 
         function renderSlots() {
             const container = document.getElementById('slots-container');
             let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
             const currentDateStr = daysList[selectedDayIndex].date;
+            const isToday = daysList[selectedDayIndex].isToday;
+            const currentHour = new Date().getHours();
 
             container.innerHTML = timeSlotsConfig.map(slot => {
+                // التحقق مما إذا كانت الساعة قد انقضت اليوم
+                let isPastHour = false;
+                if (isToday) {
+                    // إذا كانت الساعة ليلاً (0 إلى 5 صباحاً)، تعتبر سارية لليوم الحالي المبكر، أما ساعات النهار الماضية فتعطل
+                    if (slot.startHour >= 12 && slot.startHour <= currentHour) {
+                        isPastHour = true;
+                    }
+                }
+
+                if (isPastHour) {
+                    return `
+                        <div class="p-3 rounded-xl text-xs font-bold bg-[#141413] text-gray-600 border border-gray-900 opacity-30 cursor-not-allowed flex items-center justify-center select-none" title="انقضى وقت هذه الساعة">
+                            ${slot.label} (منقضي)
+                        </div>
+                    `;
+                }
+
                 let isAlreadyBooked = bookings.some(b => 
                     b.courtName === selectedCourt.name && 
                     b.day.includes(currentDateStr) && 
