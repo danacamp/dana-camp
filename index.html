@@ -67,16 +67,16 @@
                 </div>
             </div>
 
-            <!-- بانر المفاجأة والعروض الترويجية -->
+            <!-- بانر العرض التحفيزي الجديد -->
             <div class="bg-gradient-to-r from-[#C5A059]/20 via-[#1a1a18] to-[#141413] border border-[#C5A059]/40 p-5 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4 shadow-lg">
                 <div class="flex items-center gap-4">
                     <span class="text-3xl">🎁</span>
                     <div>
-                        <h3 class="font-bold text-[#C5A059] text-base">مفاجأة دانه كامب للحجوزات المتكررة!</h3>
-                        <p class="text-xs text-gray-300 mt-0.5">احجز معنا 3 مرات، واحصل على الساعة الرابعة مجاناً بالكامل + مفاجأة خاصة لأكثر الكابتنز نشاطاً!</p>
+                        <h3 class="font-bold text-[#C5A059] text-base">عرض دانه كامب الحصري: خللي 4 عليك.. والـ 5 علينا!</h3>
+                        <p class="text-xs text-gray-300 mt-0.5">احجز معنا 4 مرات خلال الشهر، واحصل على الحجز الخامس مجاناً بالكامل + مفاجأة خاصة لأكثر الكابتنز نشاطاً!</p>
                     </div>
                 </div>
-                <span class="bg-[#C5A059] text-gray-900 font-black text-xs px-3 py-1.5 rounded-xl whitespace-nowrap shadow">عرض خاص</span>
+                <span class="bg-[#C5A059] text-gray-900 font-black text-xs px-3 py-1.5 rounded-xl whitespace-nowrap shadow">عرض شهري</span>
             </div>
 
             <div>
@@ -230,7 +230,7 @@
             <div class="flex justify-between items-center border-b border-gray-800 pb-4">
                 <div>
                     <h2 class="text-2xl font-black text-[#C5A059]">لوحة تحكم دانه كامب</h2>
-                    <p class="text-xs text-gray-400">إدارة الحجوزات ولوحة شرف الكابتنز</p>
+                    <p class="text-xs text-gray-400">إدارة الحجوزات ولوحة شرف الكابتنز الشهرية</p>
                 </div>
                 <div class="flex gap-2">
                     <button onclick="openManualBookingModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-2 rounded-xl text-xs font-bold transition">➕ حجز يدوي مباشر</button>
@@ -252,7 +252,7 @@
 
             <div class="space-y-3 bg-[#141413] p-4 rounded-xl border border-[#C5A059]/30">
                 <h3 class="text-md font-bold text-[#C5A059] flex items-center gap-2">
-                    <span>🏆</span> لوحة شرف الكابتنز (أكثر الأشخاص حجزاً)
+                    <span>🏆</span> لوحة شرف الكابتنز للشهر الحالي (أكثر الأشخاص حجزاً هذا الشهر)
                 </h3>
                 <div id="top-bookers-list" class="space-y-2 text-sm"></div>
             </div>
@@ -568,7 +568,8 @@
                 total,
                 deposit,
                 status: 'قيد المراجعة',
-                createdAt: new Date().toLocaleString()
+                createdAt: new Date().toLocaleString(),
+                rawDate: new Date().toISOString() // لتصفية شهرية دقيقة
             };
 
             let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
@@ -681,22 +682,29 @@
             document.getElementById('admin-total-bookings').innerText = bookings.length;
             document.getElementById('admin-total-revenue').innerText = totalRev + ' جنيه';
 
+            // تصفية الحجوزات لتكون لوحة الشرف "شهرية" بناءً على شهر وسنة التاريخ الحالي
+            const now = new Date();
+            const currentYearMonth = now.toISOString().slice(0, 7); // مثل "2026-11"
+
             let bookerCounts = {};
             bookings.forEach(b => {
-                let key = b.name + ' (' + b.phone + ')';
-                bookerCounts[key] = (bookerCounts[key] || 0) + 1;
+                let bookingMonth = b.rawDate ? b.rawDate.slice(0, 7) : currentYearMonth;
+                if (bookingMonth === currentYearMonth) {
+                    let key = b.name + ' (' + b.phone + ')';
+                    bookerCounts[key] = (bookerCounts[key] || 0) + 1;
+                }
             });
 
             let sortedBookers = Object.entries(bookerCounts).sort((a, b) => b[1] - a[1]);
             const topListContainer = document.getElementById('top-bookers-list');
             
             if (sortedBookers.length === 0) {
-                topListContainer.innerHTML = `<p class="text-xs text-gray-500">لا توجد حجوزات مسجلة حتى الآن.</p>`;
+                topListContainer.innerHTML = `<p class="text-xs text-gray-500">لا توجد حجوزات مسجلة خلال الشهر الحالي حتى الآن.</p>`;
             } else {
                 topListContainer.innerHTML = sortedBookers.slice(0, 5).map(([namePhone, count], idx) => `
                     <div class="flex justify-between items-center bg-black/40 p-2 rounded-lg border border-gray-800">
                         <span class="text-white font-semibold">${idx + 1}. كابتن: ${namePhone}</span>
-                        <span class="bg-[#C5A059]/20 text-[#C5A059] text-xs font-bold px-2.5 py-1 rounded-full">${count} حجوزات</span>
+                        <span class="bg-[#C5A059]/20 text-[#C5A059] text-xs font-bold px-2.5 py-1 rounded-full">${count} حجوزات هذا الشهر</span>
                     </div>
                 `).join('');
             }
@@ -770,7 +778,8 @@
                 total: Number(total),
                 deposit: Number(total),
                 status: 'مؤكد',
-                createdAt: new Date().toLocaleString()
+                createdAt: new Date().toLocaleString(),
+                rawDate: new Date().toISOString()
             };
 
             let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
