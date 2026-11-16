@@ -98,7 +98,7 @@
                 <div>
                     <div class="flex justify-between items-center mb-3">
                         <label class="block text-sm font-bold text-gray-300">اختر الساعات المتاحة:</label>
-                        <span class="text-xs text-gray-500">الساعات المشطوبة باللون الرمادي منقضية أو محجوزة مسبقاً</span>
+                        <span class="text-xs text-gray-500">الساعات المشطوبة باللون الرمادي محجوزة مسبقاً</span>
                     </div>
                     <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3" id="slots-container"></div>
                 </div>
@@ -459,39 +459,11 @@
 
         function renderSlots() {
             const container = document.getElementById('slots-container');
-            const now = new Date();
-            const currentHour = now.getHours();
-            const isToday = daysList[selectedDayIndex].isToday;
             const currentDateStr = daysList[selectedDayIndex].date;
             
             let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
 
             container.innerHTML = timeSlotsConfig.map(slot => {
-                let isExpired = false;
-                
-                // التحقق من انتهاء الساعة فقط إذا كان اليوم هو "اليوم الحالي"
-                if (isToday) {
-                    if (currentHour >= 6 && currentHour < 12) {
-                        isExpired = true;
-                    } 
-                    else if (currentHour >= 0 && currentHour < 6) {
-                        if (!slot.isNextDay) {
-                            isExpired = true;
-                        } else {
-                            if (slot.id <= currentHour) {
-                                isExpired = true;
-                            }
-                        }
-                    } 
-                    else {
-                        if (!slot.isNextDay) {
-                            if (slot.id <= currentHour) isExpired = true;
-                        } else {
-                            isExpired = true;
-                        }
-                    }
-                }
-
                 // التحقق مما إذا كانت الساعة محجوزة مسبقاً في هذا اليوم وهذا الملعب
                 let isAlreadyBooked = bookings.some(b => 
                     b.courtName === selectedCourt.name && 
@@ -499,10 +471,9 @@
                     b.slots.includes(slot.label)
                 );
 
-                if (isExpired || isAlreadyBooked) {
-                    let titleText = isExpired ? "هذه الساعة قد انتهت" : "هذه الساعة محجوزة مسبقاً";
+                if (isAlreadyBooked) {
                     return `
-                        <div class="p-3 rounded-xl text-xs font-bold bg-[#141413] text-gray-600 border border-gray-900 line-through opacity-40 cursor-not-allowed flex items-center justify-center select-none" title="${titleText}">
+                        <div class="p-3 rounded-xl text-xs font-bold bg-[#141413] text-gray-600 border border-gray-900 line-through opacity-40 cursor-not-allowed flex items-center justify-center select-none" title="هذه الساعة محجوزة مسبقاً">
                             ${slot.label}
                         </div>
                     `;
