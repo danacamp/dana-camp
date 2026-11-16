@@ -4,14 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>دانه كامب - العريش | حجز الملاعب الرياضية</title>
-    
-    <!-- Open Graph / Social Media Meta Tags -->
-    <meta property="og:title" content="دانه كامب - العريش | حجز الملاعب الرياضية">
-    <meta property="og:description" content="احجز ملعبك الرياضي بكل سهولة واستمتع بأقوى المباريات في دانه كامب بالعريش.">
-    <meta property="og:image" content="https://i.postimg.cc/d06GbyTv/logo.jpg">
-    <meta property="og:url" content="https://danacamp.github.io/dana-camp/">
-    <meta property="og:type" content="website">
-
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
@@ -25,6 +17,7 @@
             animation: pulse-slow 2s infinite;
         }
         
+        /* حركة الكرة يمين الشعار في الفراغ المخصص لها */
         @keyframes rightOfLogoBounce {
             0% { transform: translate(-30px, 10px) rotate(0deg); }
             30% { transform: translate(15px, -12px) rotate(180deg); }
@@ -49,98 +42,251 @@
             pointer-events: none;
             animation: rightOfLogoBounce 3.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
         }
+        .header-resting-ball {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            font-size: 22px;
+            position: relative;
+            z-index: 10;
+            pointer-events: none;
+            animation: gentleRotate 3s ease-in-out infinite;
+        }
     </style>
 </head>
-<body class="bg-[#141413] text-gray-100 min-h-screen flex flex-col justify-between">
+<body class="min-h-screen flex flex-col justify-between relative">
 
-    <!-- Header (خالي من أي أزرار إدارة) -->
-    <header class="w-full bg-[#1a1a18] border-b border-[#C5A059]/30 py-4 px-6 shadow-md">
-        <div class="max-w-4xl mx-auto flex items-center justify-between">
+    <!-- زر واتساب العائم للدعم السريع -->
+    <a href="https://wa.me/201006896895?text=مرحباً%20دانه كامب،%20أريد الاستفسار عن حجز ملعب..." target="_blank" 
+       class="whatsapp-float fixed bottom-6 left-6 z-50 bg-emerald-600 hover:bg-emerald-500 text-white p-4 rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 border-2 border-emerald-400/50"
+       title="تواصل معنا عبر الواتساب">
+        <svg class="w-7 h-7 fill-current" viewBox="0 0 24 24">
+            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.124-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+        </svg>
+    </a>
+
+    <!-- الهيدر مع الشعار والكرة في الفراغ يمينه -->
+    <header class="bg-[#1a1a18] border-b border-[#C5A059]/30 sticky top-0 z-50 shadow-xl">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-3">
-                <img src="https://i.postimg.cc/d06GbyTv/logo.jpg" alt="Logo" class="w-12 h-12 rounded-full border border-[#C5A059] object-cover">
-                <span class="text-xl font-black tracking-wider text-[#C5A059]">دانه كامب</span>
+                <!-- الكرة المتحركة في الفراغ يمين الشعار مباشرة -->
+                <div id="header-ball" class="header-animated-ball select-none" title="دانه كامب">⚽</div>
+
+                <div class="w-12 h-12 bg-[#141413] border border-[#C5A059]/40 rounded-xl overflow-hidden flex items-center justify-center p-1 shadow-inner">
+                    <img src="logo.png" alt="شعار دانه كامب" class="w-full h-full object-contain">
+                </div>
+                <div>
+                    <h1 class="text-xl font-black text-[#C5A059] tracking-wider">Dana Camp</h1>
+                    <p class="text-xs text-gray-400 font-semibold tracking-widest">El - ARISH</p>
+                </div>
             </div>
-            <!-- Animated Ball Element -->
-            <div id="header-ball" class="header-animated-ball">⚽</div>
+
+            <nav class="flex gap-2 bg-[#141413] p-1.5 rounded-xl border border-gray-800">
+                <button onclick="switchTab('book')" id="btn-book" class="px-4 py-2 rounded-lg text-sm font-bold transition bg-[#C5A059] text-gray-900 shadow">احجز ملعبك</button>
+                <button onclick="switchTab('my-bookings')" id="btn-my-bookings" class="px-4 py-2 rounded-lg text-sm font-bold transition text-gray-300 hover:text-white">حجوزات الكابتن</button>
+                <button onclick="openAdminModal()" class="px-4 py-2 rounded-lg text-sm font-bold transition text-[#C5A059] hover:bg-[#C5A059]/10">لوحة الإدارة ⚙️</button>
+            </nav>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="max-w-4xl mx-auto px-4 py-8 flex-1 w-full space-y-6">
-        <div class="text-center space-y-2">
-            <h1 class="text-2xl sm:text-3xl font-black text-white">حجز ملاعب دانه كامب - العريش</h1>
-            <p class="text-xs sm:text-sm text-gray-400">اختر الملعب والوقت المناسب لك واحجز بلمسة واحدة</p>
-        </div>
-
-        <!-- Booking Form Card -->
-        <div class="bg-[#1a1a18] border border-[#C5A059]/40 rounded-2xl p-6 shadow-xl space-y-4">
-            <h2 class="text-lg font-bold text-[#C5A059] border-b border-gray-800 pb-2">بيانات الحجز</h2>
-            
-            <div class="space-y-3">
+    <!-- المحتوى الرئيسي -->
+    <main class="max-w-6xl mx-auto px-4 py-8 flex-grow w-full space-y-8">
+        
+        <!-- تبويب الحجز -->
+        <section id="tab-book" class="space-y-8">
+            <div class="bg-gradient-to-r from-[#1f1f1c] to-[#141413] border border-[#C5A059]/20 p-6 rounded-2xl shadow-xl flex flex-col md:flex-row justify-between items-center gap-6">
                 <div>
-                    <label class="block text-xs font-semibold text-gray-300 mb-1">اسم العميل</label>
-                    <input type="text" id="client-name" placeholder="اكتب اسمك الكامل" class="w-full bg-[#141413] border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white focus:border-[#C5A059] outline-none transition">
+                    <span class="bg-[#C5A059]/20 text-[#C5A059] text-xs font-bold px-3 py-1 rounded-full">مرحباً بك في دانه كامب</span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold mt-2 text-white">احجز ملعبك الرياضي بكل سهولة</h2>
+                    <p class="text-gray-400 text-sm mt-1">اختر الملعب، حدد الوقت المناسب، واستمتع بأقوى المباريات في العريش.</p>
                 </div>
-
-                <div>
-                    <label class="block text-xs font-semibold text-gray-300 mb-1">رقم الهاتف</label>
-                    <input type="tel" id="client-phone" placeholder="01xxxxxxxx" class="w-full bg-[#141413] border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white focus:border-[#C5A059] outline-none transition">
+                <div class="text-left bg-[#141413] p-4 rounded-xl border border-gray-800">
+                    <p class="text-xs text-gray-400">ساعات العمل اليومية</p>
+                    <p class="text-sm font-bold text-[#C5A059]">12:00 ظهراً ⟵ 6:00 صباحاً</p>
                 </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-300 mb-1">اختر الملعب</label>
-                        <select id="court-select" class="w-full bg-[#141413] border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white focus:border-[#C5A059] outline-none transition">
-                            <option value="ملعب 1 كرة قدم خماسي">ملعب 1 كرة قدم خماسي</option>
-                            <option value="ملعب 2 بادل تنس">ملعب 2 بادل تنس</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-300 mb-1">تاريخ الحجز</label>
-                        <input type="date" id="booking-date" class="w-full bg-[#141413] border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white focus:border-[#C5A059] outline-none transition">
-                    </div>
-                </div>
-
-                <!-- أوقات سريعة بلمسة واحدة -->
-                <div>
-                    <label class="block text-xs font-semibold text-gray-300 mb-1">اختر الوقت المناسب</label>
-                    <div class="grid grid-cols-3 sm:grid-cols-4 gap-2">
-                        <button type="button" onclick="selectTime('04:00 م - 05:00 م', 180, 50)" class="time-btn bg-[#141413] border border-gray-800 hover:border-[#C5A059] p-2 rounded-xl text-xs text-center transition">04:00 م</button>
-                        <button type="button" onclick="selectTime('05:00 م - 06:00 م', 180, 50)" class="time-btn bg-[#141413] border border-gray-800 hover:border-[#C5A059] p-2 rounded-xl text-xs text-center transition">05:00 م</button>
-                        <button type="button" onclick="selectTime('06:00 م - 07:00 م', 200, 50)" class="time-btn bg-[#141413] border border-gray-800 hover:border-[#C5A059] p-2 rounded-xl text-xs text-center transition">06:00 م</button>
-                        <button type="button" onclick="selectTime('07:00 م - 08:00 م', 200, 50)" class="time-btn bg-[#141413] border border-gray-800 hover:border-[#C5A059] p-2 rounded-xl text-xs text-center transition">07:00 م</button>
-                        <button type="button" onclick="selectTime('08:00 م - 09:00 م', 200, 50)" class="time-btn bg-[#141413] border border-gray-800 hover:border-[#C5A059] p-2 rounded-xl text-xs text-center transition">08:00 م</button>
-                        <button type="button" onclick="selectTime('09:00 م - 10:00 م', 200, 50)" class="time-btn bg-[#141413] border border-gray-800 hover:border-[#C5A059] p-2 rounded-xl text-xs text-center transition">09:00 م</button>
-                    </div>
-                    <input type="hidden" id="selected-time" value="">
-                    <input type="hidden" id="total-price" value="180">
-                    <input type="hidden" id="deposit-price" value="50">
-                </div>
-
-                <!-- ملخص الحساب والعربون التلقائي -->
-                <div class="bg-[#141413] border border-gray-800 p-3 rounded-xl space-y-1.5 text-xs">
-                    <div class="flex justify-between text-gray-400">
-                        <span>إجمالي السعر:</span>
-                        <span id="display-total" class="font-bold text-white">180 جنيه</span>
-                    </div>
-                    <div class="flex justify-between text-gray-400">
-                        <span>العربون المطلوب تحويله:</span>
-                        <span id="display-deposit" class="font-bold text-[#C5A059]">50 جنيه</span>
-                    </div>
-                    <div class="flex justify-between text-gray-400 border-t border-gray-800 pt-1">
-                        <span>المتبقي للدفع عند الوصول:</span>
-                        <span id="display-remaining" class="font-bold text-emerald-400">130 جنيه</span>
-                    </div>
-                </div>
-
-                <button onclick="submitBooking()" class="w-full bg-[#C5A059] hover:bg-[#b08d4b] text-[#141413] font-black py-3 rounded-xl transition text-sm shadow-lg mt-2">إرسال طلب الحجز</button>
             </div>
-        </div>
+
+            <!-- بانر العرض التحفيزي مع زر العرض الشهري التفاعلي -->
+            <div class="bg-gradient-to-r from-[#C5A059]/20 via-[#1a1a18] to-[#141413] border border-[#C5A059]/40 p-5 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4 shadow-lg">
+                <div class="flex items-center gap-4">
+                    <span class="text-3xl">🎁</span>
+                    <div>
+                        <h3 class="font-bold text-[#C5A059] text-base">عرض دانه كامب الحصري: خللي 4 عليك.. والـ 5 علينا!</h3>
+                        <p class="text-xs text-gray-300 mt-0.5">احجز معنا 4 مرات خلال الشهر، واحصل على الحجز الخامس مجاناً بالكامل + مفاجأة خاصة لأكثر الكابتنز نشاطاً!</p>
+                    </div>
+                </div>
+                <button onclick="openMonthlyOfferModal()" class="bg-[#C5A059] hover:bg-[#b08d4b] text-gray-900 font-black text-xs px-5 py-2.5 rounded-xl whitespace-nowrap shadow transition flex items-center gap-2">
+                    <span>🏆</span> عرض شهري
+                </button>
+            </div>
+
+            <div>
+                <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-[#C5A059]"></span> الملاعب المتاحة وإحصائيات الحجز
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="courts-container"></div>
+            </div>
+
+            <div id="booking-section" class="hidden bg-[#1a1a18] border border-gray-800 p-6 rounded-2xl space-y-6 shadow-xl">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-gray-800 pb-4">
+                    <div>
+                        <h3 id="selected-court-title" class="text-xl font-bold text-[#C5A059]">ملعب 1 كرة قدم خماسي</h3>
+                        <p class="text-sm text-gray-400" id="selected-court-price">السعر: 150 جنيه / ساعة</p>
+                    </div>
+                    <div class="flex items-center gap-2 overflow-x-auto w-full sm:w-auto py-2" id="days-container"></div>
+                </div>
+
+                <div>
+                    <div class="flex justify-between items-center mb-3">
+                        <label class="block text-sm font-bold text-gray-300">اختر الساعات المتاحة:</label>
+                        <span class="text-xs text-gray-500">الساعات المشطوبة باللون الرمادي منقضية أو محجوزة مسبقاً</span>
+                    </div>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3" id="slots-container"></div>
+                </div>
+
+                <div class="bg-[#141413] p-4 rounded-xl border border-gray-800 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl">⚽</span>
+                        <div>
+                            <p class="font-bold text-sm">إضافة كرة قدم للملعب</p>
+                            <p class="text-xs text-gray-400">+30 جنيه للساعة الواحدة</p>
+                        </div>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="include-ball" class="sr-only peer" onchange="updateTotalPrice()">
+                        <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#C5A059]"></div>
+                    </label>
+                </div>
+
+                <div class="border-t border-gray-800 pt-6 space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold mb-1">اسم الكابتن / الحاجز</label>
+                            <input type="text" id="user-name" placeholder="مثال: كابتن أحمد" class="w-full bg-[#141413] border border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:border-[#C5A059] focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-1">رقم الهاتف (للتواصل / واتساب)</label>
+                            <input type="tel" id="user-phone" placeholder="01012345678" class="w-full bg-[#141413] border border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:border-[#C5A059] focus:outline-none">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">طريقة دفع العربون (50 جنيه / ساعة)</label>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <label class="border border-gray-700 p-3 rounded-xl cursor-pointer hover:border-[#C5A059] transition flex flex-col gap-1 bg-[#141413] select-none">
+                                <div class="flex items-center gap-2">
+                                    <input type="radio" name="payment" value="vodafone" checked onchange="togglePaymentDetails()">
+                                    <span class="font-bold text-sm">فودافون كاش</span>
+                                </div>
+                                <span class="text-xs text-gray-400 mr-5">تحويل العربون على المحفظة</span>
+                            </label>
+                            <label class="border border-gray-700 p-3 rounded-xl cursor-pointer hover:border-[#C5A059] transition flex flex-col gap-1 bg-[#141413] select-none">
+                                <div class="flex items-center gap-2">
+                                    <input type="radio" name="payment" value="bank" onchange="togglePaymentDetails()">
+                                    <span class="font-bold text-sm">إنستا بي (InstaPay)</span>
+                                </div>
+                                <span class="text-xs text-gray-400 mr-5">تحويل العربون عبر إنستا بي</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- فودافون كاش -->
+                    <div id="vodafone-box" class="bg-[#141413] p-4 rounded-xl border border-gray-700 text-sm space-y-2">
+                        <p class="text-[#C5A059] font-bold">حول مبلغ العربون على رقم فودافون كاش التالي:</p>
+                        <div class="flex items-center justify-between bg-black/40 p-2 rounded-lg border border-gray-800">
+                            <span class="font-mono text-lg tracking-wider text-white">01006896895</span>
+                            <button onclick="navigator.clipboard.writeText('01006896895'); alert('تم نسخ رقم فودافون كاش')" class="text-xs bg-[#C5A059] text-gray-900 font-bold px-3 py-1.5 rounded-md">نسخ الرقم</button>
+                        </div>
+                    </div>
+
+                    <!-- إنستا بي -->
+                    <div id="bank-box" class="hidden bg-[#141413] p-4 rounded-xl border border-gray-700 text-sm space-y-2">
+                        <p class="text-[#C5A059] font-bold">بيانات التحويل عبر إنستا بي (InstaPay):</p>
+                        <div class="bg-black/40 p-3 rounded-lg border border-gray-800 space-y-1 font-mono text-xs">
+                            <p class="text-white">التطبيق: <span class="text-[#C5A059]">إنستا بي</span></p>
+                            <p class="text-white">رقم الحساب / الهاتف: <span class="text-[#C5A059]">01006896895</span></p>
+                            <p class="text-white">اسم الحساب: <span class="text-[#C5A059]">amr</span></p>
+                        </div>
+                        <button onclick="navigator.clipboard.writeText('01006896895'); alert('تم نسخ بيانات إنستا بي')" class="text-xs bg-[#C5A059] text-gray-900 font-bold px-3 py-1.5 rounded-md mt-1">نسخ البيانات</button>
+                    </div>
+
+                    <div class="bg-[#141413] p-4 rounded-xl border border-gray-800 flex flex-col sm:flex-row justify-between items-center gap-4">
+                        <div>
+                            <p class="text-xs text-gray-400">إجمالي التكلفة النهائية | المطلوب كعربون:</p>
+                            <p class="text-2xl font-black text-[#C5A059]" id="total-price-display">0 جنيه</p>
+                        </div>
+                        <button onclick="confirmBooking()" class="w-full sm:w-auto bg-[#C5A059] hover:bg-[#b08d4b] text-gray-900 font-black px-8 py-3 rounded-xl transition shadow-lg">تأكيد حجز الملعب الآن</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- تبويب حجوزات الكابتن -->
+        <section id="tab-my-bookings" class="hidden space-y-6">
+            <h2 class="text-2xl font-extrabold text-[#C5A059]">حجوزاتي المؤكدة والمسجلة</h2>
+            <div id="my-bookings-container" class="space-y-4"></div>
+        </section>
     </main>
+
+    <!-- نافذة العرض الشهري ولوحة شرف الكابتنز للعملاء -->
+    <div id="monthly-offer-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-[#1a1a18] border border-[#C5A059] rounded-2xl max-w-md w-full p-6 space-y-5 shadow-2xl relative">
+            <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl">🏆</span>
+                    <h3 class="text-lg font-bold text-[#C5A059]">لوحة شرف الكابتنز (الشهر الحالي)</h3>
+                </div>
+                <button onclick="closeMonthlyOfferModal()" class="text-gray-400 hover:text-white font-bold text-lg">✕</button>
+            </div>
+            
+            <div class="bg-[#141413] p-4 rounded-xl border border-gray-800 space-y-3">
+                <p class="text-xs text-gray-300 text-center">أكثر الكابتنز نشاطاً وتصدرًا لحجوزات الملاعب هذا الشهر (أعلى 3 كابتنز):</p>
+                <div id="modal-top-bookers-list" class="space-y-2 text-sm"></div>
+            </div>
+
+            <div class="bg-[#C5A059]/10 border border-[#C5A059]/30 p-3 rounded-xl text-center">
+                <p class="text-xs text-[#C5A059] font-bold">🎁 عرض: خللي 4 عليك والـ 5 علينا!</p>
+                <p class="text-[11px] text-gray-300 mt-0.5">احجز 4 مرات خلال الشهر واحصل على الحجز الخامس مجاناً.</p>
+            </div>
+
+            <button onclick="closeMonthlyOfferModal()" class="w-full bg-[#C5A059] hover:bg-[#b08d4b] text-gray-900 font-bold py-2.5 rounded-xl text-sm transition shadow">متابعة الحجز واللعب ⚽</button>
+        </div>
+    </div>
+
+    <!-- نافذة ملعب البادل (سجل اهتمامك) التفاعلية -->
+    <div id="padel-interest-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-[#1a1a18] border border-amber-500/50 rounded-2xl max-w-md w-full p-6 space-y-5 shadow-2xl relative">
+            <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl">🎾</span>
+                    <h3 class="text-lg font-bold text-amber-400">ملعب البادل قريباً في دانه كامب!</h3>
+                </div>
+                <button onclick="closePadelModal()" class="text-gray-400 hover:text-white font-bold text-lg">✕</button>
+            </div>
+            
+            <p class="text-xs text-gray-300">المفاجأة الكبرى قادمة قريباً في دانه كامب! سجل بياناتك معنا لكونك من أوائل الكابتنز الذين يتم إبلاغهم فور افتتاح الملعب.</p>
+
+            <div class="space-y-3 bg-[#141413] p-4 rounded-xl border border-gray-800">
+                <div>
+                    <label class="block text-xs font-semibold mb-1 text-gray-300">اسم الكابتن:</label>
+                    <input type="text" id="padel-name" placeholder="مثال: كابتن محمد" class="w-full bg-[#1a1a18] border border-gray-700 rounded-xl px-3 py-2 text-sm focus:border-amber-400 focus:outline-none text-white">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold mb-1 text-gray-300">رقم الهاتف (للتواصل / واتساب):</label>
+                    <input type="tel" id="padel-phone" placeholder="01012345678" class="w-full bg-[#1a1a18] border border-gray-700 rounded-xl px-3 py-2 text-sm focus:border-amber-400 focus:outline-none text-white">
+                </div>
+                <button onclick="savePadelInterest()" class="w-full bg-amber-500 hover:bg-amber-400 text-gray-900 font-bold py-2.5 rounded-xl text-sm transition shadow mt-2">تسجيل بياناتي كمهتم 📝</button>
+            </div>
+
+            <button onclick="closePadelModal()" class="w-full bg-gray-800 hover:bg-gray-700 text-white font-bold py-2.5 rounded-xl text-sm transition">متابعة الحجز في ملاعب القدم ⚽</button>
+        </div>
+    </div>
 
     <!-- التذكرة المنبثقة -->
     <div id="ticket-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-[#1a1a18] border border-[#C5A059] rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+        <div class="bg-[#1a1a18] border border-[#C5A059] rounded-2xl max-w-md w-full p-6 space-y-5 shadow-2xl relative">
             
             <div class="bg-[#C5A059]/10 border border-[#C5A059]/40 rounded-xl p-2.5 text-center flex items-center justify-between px-4">
                 <span class="text-xs text-gray-300">مهلة تأكيد تحويل العربون:</span>
@@ -148,72 +294,742 @@
             </div>
 
             <div class="text-center space-y-1">
-                <div class="w-12 h-12 bg-[#C5A059]/20 text-[#C5A059] rounded-full flex items-center justify-center mx-auto text-xl font-bold">✓</div>
-                <h3 class="text-lg font-extrabold text-white">تم إرسال طلب حجزك بنجاح!</h3>
+                <div class="w-14 h-14 bg-[#C5A059]/20 text-[#C5A059] rounded-full flex items-center justify-center mx-auto text-2xl font-bold">✓</div>
+                <h3 class="text-xl font-extrabold text-white">تم إرسال طلب حجزك بنجاح!</h3>
                 <p class="text-xs text-gray-400">يرجى تحويل العربون وسيتم تأكيد الحجز من الإدارة فوراً</p>
             </div>
             
-            <div id="ticket-content" class="bg-[#141413] border border-gray-800 p-3 rounded-xl space-y-2 font-mono text-xs"></div>
+            <div id="ticket-content" class="bg-[#141413] border border-gray-800 p-4 rounded-xl space-y-3 font-mono text-sm"></div>
             
-            <div class="flex flex-col sm:flex-row gap-2 pt-2">
-                <a id="whatsapp-share-btn" href="#" target="_blank" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl transition text-center text-xs flex items-center justify-center gap-2">إرسال للإدارة واتساب 💬</a>
-                <button onclick="closeTicketModal()" class="flex-1 bg-gray-800 hover:bg-gray-700 text-white font-bold py-2.5 rounded-xl transition text-xs">إغلاق</button>
+            <div class="flex gap-3">
+                <a id="whatsapp-share-btn" href="#" target="_blank" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl transition text-center text-sm flex items-center justify-center gap-2">إرسال للإدارة واتساب 💬</a>
+                <button onclick="closeTicketModal()" class="flex-1 bg-gray-800 hover:bg-gray-700 text-white font-bold py-3 rounded-xl transition text-sm">إغلاق</button>
             </div>
         </div>
     </div>
 
-    <!-- JavaScript -->
-    <script>
-        function selectTime(timeStr, total, deposit) {
-            document.getElementById('selected-time').value = timeStr;
-            document.getElementById('total-price').value = total;
-            document.getElementById('deposit-price').value = deposit;
-            
-            document.getElementById('display-total').innerText = total + ' جنيه';
-            document.getElementById('display-deposit').innerText = deposit + ' جنيه';
-            document.getElementById('display-remaining').innerText = (total - deposit) + ' جنيه';
+    <!-- نافذة دخول الإدارة -->
+    <div id="admin-login-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-[#1a1a18] border border-gray-700 rounded-2xl max-w-sm w-full p-6 space-y-4 shadow-2xl">
+            <h3 class="text-xl font-bold text-[#C5A059]">تسجيل دخول الإدارة</h3>
+            <p class="text-xs text-gray-400">أدخل كلمة المرور الخاصة بالإدارة:</p>
+            <input type="password" id="admin-pin-input" placeholder="كلمة المرور" class="w-full bg-[#141413] border border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:border-[#C5A059] focus:outline-none">
+            <div class="flex gap-2">
+                <button onclick="verifyAdmin()" class="flex-1 bg-[#C5A059] text-gray-900 font-bold py-2.5 rounded-xl text-sm">دخول</button>
+                <button onclick="closeAdminLoginModal()" class="flex-1 bg-gray-800 text-white font-bold py-2.5 rounded-xl text-sm">إلغاء</button>
+            </div>
+        </div>
+    </div>
 
-            document.querySelectorAll('.time-btn').forEach(btn => {
-                btn.classList.remove('border-[#C5A059]', 'bg-[#C5A059]/10');
-            });
-            event.target.classList.add('border-[#C5A059]', 'bg-[#C5A059]/10');
+    <!-- لوحة تحكم الإدارة -->
+    <div id="admin-dashboard-modal" class="fixed inset-0 bg-black/90 z-50 hidden overflow-y-auto p-4 sm:p-6">
+        <div class="max-w-4xl mx-auto bg-[#1a1a18] border border-[#C5A059] rounded-2xl p-6 space-y-6 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-gray-800 pb-4">
+                <div>
+                    <h2 class="text-2xl font-black text-[#C5A059]">لوحة تحكم دانه كامب</h2>
+                    <p class="text-xs text-gray-400">إدارة الحجوزات ومهتمي ملعب البادل</p>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="openManualBookingModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-2 rounded-xl text-xs font-bold transition">➕ حجز يدوي مباشر</button>
+                    <button onclick="exportBookingsToCSV()" class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-2 rounded-xl text-xs font-bold transition">📥 تصدير إكسل (CSV)</button>
+                    <button onclick="closeAdminDashboard()" class="bg-gray-800 hover:bg-gray-700 text-white px-3 py-2 rounded-xl text-xs font-bold">إغلاق ✕</button>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="bg-[#141413] p-4 rounded-xl border border-gray-800">
+                    <p class="text-xs text-gray-400">إجمالي الحجوزات</p>
+                    <p class="text-2xl font-black text-white mt-1" id="admin-total-bookings">0</p>
+                </div>
+                <div class="bg-[#141413] p-4 rounded-xl border border-gray-800">
+                    <p class="text-xs text-gray-400">الإيرادات المؤكدة</p>
+                    <p class="text-2xl font-black text-[#C5A059] mt-1" id="admin-total-revenue">0 جنيه</p>
+                </div>
+            </div>
+
+            <div class="space-y-3 bg-[#141413] p-4 rounded-xl border border-[#C5A059]/30">
+                <h3 class="text-md font-bold text-[#C5A059] flex items-center gap-2">
+                    <span>🏆</span> لوحة شرف الكابتنز للشهر الحالي (أكثر الأشخاص حجزاً هذا الشهر)
+                </h3>
+                <div id="top-bookers-list" class="space-y-2 text-sm"></div>
+            </div>
+
+            <!-- قائمة مهتمي ملعب البادل للإدارة -->
+            <div class="space-y-3 bg-[#141413] p-4 rounded-xl border border-amber-500/30">
+                <h3 class="text-md font-bold text-amber-400 flex items-center gap-2">
+                    <span>🎾</span> قائمة الكابتنز المهتمين بملعب البادل
+                </h3>
+                <div id="admin-padel-list" class="space-y-2 text-sm max-h-40 overflow-y-auto"></div>
+            </div>
+
+            <div class="space-y-3">
+                <h3 class="text-lg font-bold">إدارة حجوزات العملاء</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-right text-sm">
+                        <thead class="bg-[#141413] text-gray-400 border-b border-gray-800">
+                            <tr>
+                                <th class="p-3">رقم التذكرة</th>
+                                <th class="p-3">العميل</th>
+                                <th class="p-3">الملعب</th>
+                                <th class="p-3">اليوم والساعة</th>
+                                <th class="p-3">العربون / الإجمالي</th>
+                                <th class="p-3">إجراء الأدمن</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-bookings-table" class="divide-y divide-gray-800"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة إضافة حجز يدوي مباشر -->
+    <div id="manual-booking-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
+        <div class="bg-[#1a1a18] border border-[#C5A059] rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
+            <h3 class="text-lg font-bold text-[#C5A059]">تسجيل حجز يدوي مباشر (للحاضرين للملعب)</h3>
+            <p class="text-xs text-gray-400">هذا الحجز سيصبح مؤكداً ويغلق الساعة فوراً لمنع التعارض:</p>
+            
+            <div class="space-y-3 text-sm">
+                <div>
+                    <label class="block text-xs font-semibold mb-1">اختر الملعب:</label>
+                    <select id="manual-court" class="w-full bg-[#141413] border border-gray-700 rounded-xl px-3 py-2 text-sm focus:border-[#C5A059] focus:outline-none text-white">
+                        <option value="ملعب ١ كرة قدم خماسي">ملعب ١ كرة قدم خماسي</option>
+                        <option value="ملعب ٢ كرة قدم خماسي">ملعب ٢ كرة قدم خماسي</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-xs font-semibold mb-1">التاريخ (اليوم):</label>
+                        <input type="date" id="manual-date" class="w-full bg-[#141413] border border-gray-700 rounded-xl px-3 py-2 text-sm focus:border-[#C5A059] focus:outline-none text-white">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold mb-1">الساعة المطلوبة:</label>
+                        <select id="manual-slot" class="w-full bg-[#141413] border border-gray-700 rounded-xl px-3 py-2 text-sm focus:border-[#C5A059] focus:outline-none text-white">
+                            <option value="12:00 م - 1:00 م">12:00 م - 1:00 م</option>
+                            <option value="1:00 م - 2:00 م">1:00 م - 2:00 م</option>
+                            <option value="2:00 م - 3:00 م">2:00 م - 3:00 م</option>
+                            <option value="3:00 م - 4:00 م">3:00 م - 4:00 م</option>
+                            <option value="4:00 م - 5:00 م">4:00 م - 5:00 م</option>
+                            <option value="5:00 م - 6:00 م">5:00 م - 6:00 م</option>
+                            <option value="6:00 م - 7:00 م">6:00 م - 7:00 م</option>
+                            <option value="7:00 م - 8:00 م">7:00 م - 8:00 م</option>
+                            <option value="8:00 م - 9:00 م">8:00 م - 9:00 م</option>
+                            <option value="9:00 م - 10:00 م">9:00 م - 10:00 م</option>
+                            <option value="10:00 م - 11:00 م">10:00 م - 11:00 م</option>
+                            <option value="11:00 م - 12:00 ص">11:00 م - 12:00 ص</option>
+                            <option value="12:00 ص - 1:00 ص (اليوم التالي)">12:00 ص - 1:00 ص</option>
+                            <option value="1:00 ص - 2:00 ص (اليوم التالي)">1:00 ص - 2:00 ص</option>
+                            <option value="2:00 ص - 3:00 ص (اليوم التالي)">2:00 ص - 3:00 ص</option>
+                            <option value="3:00 ص - 4:00 ص (اليوم التالي)">3:00 ص - 4:00 ص</option>
+                            <option value="4:00 ص - 5:00 ص (اليوم التالي)">4:00 ص - 5:00 ص</option>
+                            <option value="5:00 ص - 6:00 ص (اليوم التالي)">5:00 ص - 6:00 ص</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold mb-1">اسم الكابتن الحاضر:</label>
+                    <input type="text" id="manual-name" placeholder="مثال: كابتن محمود" class="w-full bg-[#141413] border border-gray-700 rounded-xl px-3 py-2 text-sm focus:border-[#C5A059] focus:outline-none text-white">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold mb-1">رقم الهاتف:</label>
+                    <input type="tel" id="manual-phone" placeholder="01012345678" class="w-full bg-[#141413] border border-gray-700 rounded-xl px-3 py-2 text-sm focus:border-[#C5A059] focus:outline-none text-white">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold mb-1">إجمالي المبلغ المحصيل (جنيه):</label>
+                    <input type="number" id="manual-total" value="150" class="w-full bg-[#141413] border border-gray-700 rounded-xl px-3 py-2 text-sm focus:border-[#C5A059] focus:outline-none text-white">
+                </div>
+            </div>
+
+            <div class="flex gap-2 pt-2">
+                <button onclick="saveManualBooking()" class="flex-1 bg-[#C5A059] hover:bg-[#b08d4b] text-gray-900 font-bold py-2.5 rounded-xl text-sm transition">حفظ وتأكيد الحجز</button>
+                <button onclick="closeManualBookingModal()" class="flex-1 bg-gray-800 hover:bg-gray-700 text-white font-bold py-2.5 rounded-xl text-sm transition">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- التذييل -->
+    <footer class="bg-[#1a1a18] border-t border-gray-800 py-6 mt-12 text-center text-xs text-gray-400 space-y-1">
+        <p>© 2026 دانه كامب - العريش (Dana Camp). جميع الحقوق محفوظة.</p>
+        <p class="text-[#C5A059] font-semibold">تصميم وتطوير: م. عمرو الغول</p>
+    </footer>
+
+    <!-- سكربت التشغيل المتكامل -->
+    <script>
+        const courts = [
+            { id: 1, name: "ملعب ١ كرة قدم خماسي", type: "football", price: 150, desc: "عشب صناعي عالي الجودة وإضاءة ليلية متميزة", img: "⚽" },
+            { id: 2, name: "ملعب ٢ كرة قدم خماسي", type: "football", price: 150, desc: "مساحة واسعة وتجهيز كامل للمباريات القوية", img: "⚽" },
+            { id: 3, name: "ملعب البادل (قريباً)", type: "padel", price: 0, desc: "المفاجأة الكبرى قادمة قريباً في دانه كامب", img: "🎾", comingSoon: true }
+        ];
+
+        let selectedCourt = null;
+        let selectedDayIndex = 0;
+        let selectedSlots = [];
+        let daysList = [];
+        let countdownInterval = null;
+
+        const timeSlotsConfig = [
+            { id: 12, label: "12:00 م - 1:00 م", startHour: 12, isNextDay: false },
+            { id: 13, label: "1:00 م - 2:00 م", startHour: 13, isNextDay: false },
+            { id: 14, label: "2:00 م - 3:00 م", startHour: 14, isNextDay: false },
+            { id: 15, label: "3:00 م - 4:00 م", startHour: 15, isNextDay: false },
+            { id: 16, label: "4:00 م - 5:00 م", startHour: 16, isNextDay: false },
+            { id: 17, label: "5:00 م - 6:00 م", startHour: 17, isNextDay: false },
+            { id: 18, label: "6:00 م - 7:00 م", startHour: 18, isNextDay: false },
+            { id: 19, label: "7:00 م - 8:00 م", startHour: 19, isNextDay: false },
+            { id: 20, label: "8:00 م - 9:00 م", startHour: 20, isNextDay: false },
+            { id: 21, label: "9:00 م - 10:00 م", startHour: 21, isNextDay: false },
+            { id: 22, label: "10:00 م - 11:00 م", startHour: 22, isNextDay: false },
+            { id: 23, label: "11:00 م - 12:00 ص", startHour: 23, isNextDay: false },
+            { id: 0,  label: "12:00 ص - 1:00 ص (اليوم التالي)", startHour: 0, isNextDay: true },
+            { id: 1,  label: "1:00 ص - 2:00 ص (اليوم التالي)", startHour: 1, isNextDay: true },
+            { id: 2,  label: "2:00 ص - 3:00 ص (اليوم التالي)", startHour: 2, isNextDay: true },
+            { id: 3,  label: "3:00 ص - 4:00 ص (اليوم التالي)", startHour: 3, isNextDay: true },
+            { id: 4,  label: "4:00 ص - 5:00 ص (اليوم التالي)", startHour: 4, isNextDay: true },
+            { id: 5,  label: "5:00 ص - 6:00 ص (اليوم التالي)", startHour: 5, isNextDay: true }
+        ];
+
+        // تفعيل تحويل حركة الكرة واستقرارها يمين الشعار
+        window.addEventListener('DOMContentLoaded', () => {
+            const hBall = document.getElementById('header-ball');
+            if(hBall) {
+                setTimeout(() => {
+                    hBall.classList.remove('header-animated-ball');
+                    hBall.classList.add('header-resting-ball');
+                }, 3500);
+            }
+            initDays();
+            renderCourts();
+        });
+
+        function initDays() {
+            daysList = [];
+            const daysNames = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+            for (let i = 0; i < 7; i++) {
+                const d = new Date();
+                d.setDate(d.getDate() + i);
+                const dayName = i === 0 ? 'اليوم' : daysNames[d.getDay()];
+                const dateStr = d.toISOString().split('T')[0];
+                daysList.push({ label: dayName, date: dateStr, isToday: (i === 0) });
+            }
+            const todayStr = new Date().toISOString().split('T')[0];
+            const manualDateEl = document.getElementById('manual-date');
+            if(manualDateEl) manualDateEl.value = todayStr;
         }
 
-        function submitBooking() {
-            const name = document.getElementById('client-name').value;
-            const phone = document.getElementById('client-phone').value;
-            const court = document.getElementById('court-select').value;
-            const date = document.getElementById('booking-date').value;
-            const time = document.getElementById('selected-time').value;
-            const total = document.getElementById('total-price').value;
-            const deposit = document.getElementById('deposit-price').value;
-            const remaining = total - deposit;
+        function getCourtBookingCount(courtName) {
+            let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
+            return bookings.filter(b => b.courtName === courtName).length + (courtName.includes('١') ? 24 : 19);
+        }
 
-            if(!name || !phone || !date || !time) {
-                alert('يرجى استكمال جميع بيانات الحجز واختيار الوقت!');
-                return;
-            }
+        function renderCourts() {
+            const container = document.getElementById('courts-container');
+            if(!container) return;
+            container.innerHTML = courts.map(c => {
+                const count = c.comingSoon ? 0 : getCourtBookingCount(c.name);
+                return `
+                <div class="bg-[#1a1a18] border ${c.comingSoon ? 'border-amber-500/40' : 'border-gray-800'} rounded-2xl p-5 flex flex-col justify-between transition hover:border-[#C5A059]">
+                    <div>
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="text-3xl">${c.img}</span>
+                            ${!c.comingSoon ? `<span class="bg-[#C5A059]/10 text-[#C5A059] text-xs font-bold px-2.5 py-1 rounded-full border border-[#C5A059]/30">🔥 ${count} حجز مسجل</span>` : ''}
+                        </div>
+                        <h4 class="text-lg font-bold text-white">${c.name}</h4>
+                        <p class="text-xs text-gray-400 mt-1">${c.desc}</p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-gray-800 flex items-center justify-between">
+                        <div>
+                            ${c.comingSoon ? '<span class="text-xs font-bold text-amber-400 bg-amber-400/10 px-2.5 py-1 rounded-full">قريباً جداً</span>' : `<span class="text-sm font-bold text-[#C5A059]">${c.price} جنيه</span> <span class="text-xs text-gray-400">/ساعة</span>`}
+                        </div>
+                        ${c.comingSoon ? 
+                            `<button onclick="openPadelModal()" class="bg-amber-500/20 hover:bg-amber-500 hover:text-gray-900 text-amber-300 px-4 py-2 rounded-xl text-xs font-bold transition">سجل اهتمامك</button>` :
+                            `<button onclick="selectCourt(${c.id})" class="bg-[#C5A059] hover:bg-[#b08d4b] text-gray-900 px-4 py-2 rounded-xl text-xs font-black transition">اختر الملعب</button>`
+                        }
+                    </div>
+                </div>
+            `}).join('');
+        }
 
-            const ticketHTML = `
-                <div>📌 رقم الحجز: <b>#DC-${Math.floor(100000 + Math.random() * 900000)}</b></div>
-                <div>🏟️ الملعب: <b>${court}</b></div>
-                <div>📅 الموعد: <b>${date} (${time})</b></div>
-                <div>👤 الكابتن: <b>${name} (${phone})</b></div>
-                <div>💳 طريقة العربون: <b>فودافون كاش (01006896895)</b></div>
-                <div>💰 المطلوب تحويل العربون: <b class="text-[#C5A059]">${deposit} جنيه</b></div>
-                <div>💵 المتبقي عند الوصول: <b class="text-emerald-400">${remaining} جنيه</b></div>
-                <div>🟢 الحالة: <span class="text-amber-400">بانتظار تأكيد التحويل</span></div>
+        function selectCourt(id) {
+            selectedCourt = courts.find(c => c.id === id);
+            selectedSlots = [];
+            document.getElementById('selected-court-title').innerText = selectedCourt.name;
+            document.getElementById('selected-court-price').innerText = `السعر: ${selectedCourt.price} جنيه / ساعة (بدون كرة)`;
+            document.getElementById('booking-section').classList.remove('hidden');
+            document.getElementById('booking-section').scrollIntoView({ behavior: 'smooth' });
+            renderDays();
+            renderSlots();
+            updateTotalPrice();
+        }
+
+        function renderDays() {
+            const container = document.getElementById('days-container');
+            container.innerHTML = daysList.map((d, index) => `
+                <button onclick="selectDay(${index})" class="px-3 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap ${selectedDayIndex === index ? 'bg-[#C5A059] text-gray-900' : 'bg-[#141413] text-gray-300 border border-gray-800'}">
+                    ${d.label} (${d.date.slice(5)})
+                </button>
+            `).join('');
+        }
+
+        function selectDay(index) {
+            selectedDayIndex = index;
+            renderDays();
+            renderSlots();
+        }
+
+        function renderSlots() {
+            const container = document.getElementById('slots-container');
+            const now = new Date();
+            const currentHour = now.getHours();
+            const isToday = daysList[selectedDayIndex].isToday;
+            const currentDateStr = daysList[selectedDayIndex].date;
+            
+            let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
+
+            container.innerHTML = timeSlotsConfig.map(slot => {
+                let isExpired = false;
+                
+                if (isToday) {
+                    if (!slot.isNextDay) {
+                        if (currentHour >= (slot.startHour + 1)) {
+                            isExpired = true;
+                        }
+                    } else {
+                        if (currentHour >= 6 && currentHour < 12) {
+                            isExpired = true;
+                        } else if (currentHour >= 0 && currentHour < 6) {
+                            if (currentHour >= (slot.startHour + 1)) {
+                                isExpired = true;
+                            }
+                        }
+                    }
+                }
+
+                let isAlreadyBooked = bookings.some(b => 
+                    b.courtName === selectedCourt.name && 
+                    b.day.includes(currentDateStr) && 
+                    b.slots.includes(slot.label)
+                );
+
+                if (isExpired || isAlreadyBooked) {
+                    let titleText = isExpired ? "هذه الساعة قد انتهت وانقضى وقتها" : "هذه الساعة محجوزة مسبقاً ومحظورة";
+                    return `
+                        <div class="p-3 rounded-xl text-xs font-bold bg-[#141413] text-gray-600 border border-gray-900 line-through opacity-40 cursor-not-allowed flex items-center justify-center select-none" title="${titleText}">
+                            ${slot.label}
+                        </div>
+                    `;
+                }
+
+                const isSelected = selectedSlots.includes(slot.label);
+                return `
+                    <button onclick="toggleSlot('${slot.label}')" class="p-3 rounded-xl text-xs font-bold transition border ${isSelected ? 'bg-[#C5A059] text-gray-900 border-[#C5A059] shadow-lg' : 'bg-[#141413] text-gray-300 border-gray-800 hover:border-gray-600'}">
+                        ${slot.label}
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function toggleSlot(time) {
+            const index = selectedSlots.indexOf(time);
+            if (index > -1) { selectedSlots.splice(index, 1); } 
+            else { selectedSlots.push(time); }
+            renderSlots();
+            updateTotalPrice();
+        }
+
+        function updateTotalPrice() {
+            if (!selectedCourt) return;
+            const hoursCount = selectedSlots.length;
+            const includeBall = document.getElementById('include-ball').checked;
+            const total = (hoursCount * selectedCourt.price) + (includeBall ? (hoursCount * 30) : 0);
+            const depositTotal = hoursCount * 50;
+            
+            document.getElementById('total-price-display').innerText = `${total} جنيه (العربون: ${depositTotal}ج)`;
+        }
+
+        function togglePaymentDetails() {
+            const val = document.querySelector('input[name="payment"]:checked').value;
+            document.getElementById('vodafone-box').classList.toggle('hidden', val !== 'vodafone');
+            document.getElementById('bank-box').classList.toggle('hidden', val !== 'bank');
+        }
+
+        function switchTab(tab) {
+            document.getElementById('tab-book').classList.toggle('hidden', tab !== 'book');
+            document.getElementById('tab-my-bookings').classList.toggle('hidden', tab !== 'my-bookings');
+            document.getElementById('btn-book').className = tab === 'book' ? 'px-4 py-2 rounded-lg text-sm font-bold transition bg-[#C5A059] text-gray-900 shadow' : 'px-4 py-2 rounded-lg text-sm font-bold transition text-gray-300 hover:text-white';
+            document.getElementById('btn-my-bookings').className = tab === 'my-bookings' ? 'px-4 py-2 rounded-lg text-sm font-bold transition bg-[#C5A059] text-gray-900 shadow' : 'px-4 py-2 rounded-lg text-sm font-bold transition text-gray-300 hover:text-white';
+            if (tab === 'my-bookings') loadMyBookings();
+        }
+
+        function confirmBooking() {
+            const name = document.getElementById('user-name').value.trim();
+            const phone = document.getElementById('user-phone').value.trim();
+            const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+            
+            if (!name || !phone) { alert('يرجى إدخال اسم الكابتن ورقم الهاتف بشكل صحيح'); return; }
+            if (selectedSlots.length === 0) { alert('يرجى اختيار ساعة واحدة على الأقل'); return; }
+
+            const hoursCount = selectedSlots.length;
+            const includeBall = document.getElementById('include-ball').checked;
+            const total = (hoursCount * selectedCourt.price) + (includeBall ? (hoursCount * 30) : 0);
+            const deposit = hoursCount * 50;
+            const bookingId = 'DC-' + Math.floor(100000 + Math.random() * 900000);
+            
+            const bookingData = {
+                bookingId,
+                courtName: selectedCourt.name,
+                day: daysList[selectedDayIndex].label + ' (' + daysList[selectedDayIndex].date + ')',
+                slots: selectedSlots.join(', '),
+                name,
+                phone,
+                includeBall: includeBall ? 'نعم (+30ج/س)' : 'بدون كرة',
+                paymentMethod: paymentMethod === 'vodafone' ? 'فودافون كاش (01006896895)' : 'إنستا بي (01006896895 - amr)',
+                total,
+                deposit,
+                status: 'قيد المراجعة',
+                createdAt: new Date().toLocaleString(),
+                rawDate: new Date().toISOString()
+            };
+
+            let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
+            bookings.push(bookingData);
+            localStorage.setItem('dana_camp_bookings', JSON.stringify(bookings));
+
+            renderCourts();
+            showTicket(bookingData);
+        }
+
+        function showTicket(data) {
+            document.getElementById('ticket-content').innerHTML = `
+                <div class="flex justify-between border-b border-gray-800 pb-2"><span class="text-gray-400">رقم الحجز:</span><span class="font-bold text-[#C5A059]">${data.bookingId}</span></div>
+                <div class="flex justify-between border-b border-gray-800 pb-2"><span class="text-gray-400">الملعب:</span><span class="text-white">${data.courtName}</span></div>
+                <div class="flex justify-between border-b border-gray-800 pb-2"><span class="text-gray-400">الموعد:</span><span class="text-white">${data.day} | ${data.slots}</span></div>
+                <div class="flex justify-between border-b border-gray-800 pb-2"><span class="text-gray-400">الكابتن:</span><span class="text-white">${data.name} (${data.phone})</span></div>
+                <div class="flex justify-between border-b border-gray-800 pb-2"><span class="text-gray-400">طريقة العربون:</span><span class="text-white">${data.paymentMethod}</span></div>
+                <div class="flex justify-between border-b border-gray-800 pb-2"><span class="text-gray-400">مطلوب تحويل العربون:</span><span class="text-[#C5A059] font-bold">${data.deposit} جنيه</span></div>
+                <div class="flex justify-between border-b border-gray-800 pb-2"><span class="text-gray-400">الحالة:</span><span class="text-amber-400 font-bold">بانتظار تأكيد التحويل</span></div>
+                <div class="flex justify-between pt-1 font-bold text-base"><span class="text-gray-400">الإجمالي بالكامل:</span><span class="text-[#C5A059]">${data.total} جنيه</span></div>
             `;
-
-            document.getElementById('ticket-content').innerHTML = ticketHTML;
+            const waText = `مرحباً دانه كامب، لقد قمت بحجز جديد:%0A- رقم الحجز: ${data.bookingId}%0A- الملعب: ${data.courtName}%0A- الموعد: ${data.day} (${data.slots})%0A- الكابتن: ${data.name}%0A- طريقة العربون: ${data.paymentMethod}%0A- مبلغ العربون: ${data.deposit} جنيه%0A- إجمالي المبلغ: ${data.total} جنيه`;
+            document.getElementById('whatsapp-share-btn').href = `https://wa.me/201006896895?text=${waText}`;
             document.getElementById('ticket-modal').classList.remove('hidden');
+            
+            startCountdown(10 * 60);
+        }
 
-            const msg = `مرحباً، أود تأكيد حجز جديد:%0A- الاسم: ${name}%0A- الهاتف: ${phone}%0A- الملعب: ${court}%0A- الموعد: ${date} (${time})%0A- العربون: ${deposit} جنيه`;
-            document.getElementById('whatsapp-share-btn').href = `https://wa.me/201006896895?text=${msg}`;
+        function startCountdown(duration) {
+            let timer = duration, minutes, seconds;
+            const display = document.getElementById('countdown-timer');
+            
+            if (countdownInterval) clearInterval(countdownInterval);
+
+            countdownInterval = setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    clearInterval(countdownInterval);
+                    display.textContent = "انتهت المهلة";
+                    display.classList.add('text-red-500');
+                }
+            }, 1000);
         }
 
         function closeTicketModal() {
+            if (countdownInterval) clearInterval(countdownInterval);
             document.getElementById('ticket-modal').classList.add('hidden');
+            switchTab('my-bookings');
+        }
+
+        function loadMyBookings() {
+            const container = document.getElementById('my-bookings-container');
+            let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
+            if (bookings.length === 0) {
+                container.innerHTML = `<p class="text-gray-500 text-center py-8">لا توجد حجوزات مسجلة حالياً.</p>`;
+                return;
+            }
+            container.innerHTML = bookings.reverse().map(b => {
+                let statusBadge = b.status === 'مؤكد' 
+                    ? '<span class="bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded text-xs font-bold">✓ مؤكد</span>' 
+                    : '<span class="bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded text-xs font-bold">⏳ قيد المراجعة</span>';
+                
+                return `
+                <div class="bg-[#1a1a18] border border-gray-800 p-5 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-2">
+                            <span class="bg-[#C5A059]/20 text-[#C5A059] text-xs font-bold px-2.5 py-0.5 rounded-full">${b.bookingId}</span>
+                            <h4 class="font-bold text-white">${b.courtName}</h4>
+                            ${statusBadge}
+                        </div>
+                        <p class="text-xs text-gray-400">📅 ${b.day} ⟵ الساعات: ${b.slots}</p>
+                        <p class="text-xs text-gray-400">👤 الكابتن: ${b.name} (${b.phone}) | ⚽ ${b.includeBall}</p>
+                    </div>
+                    <div class="text-left">
+                        <p class="text-xs text-gray-400">الإجمالي</p>
+                        <p class="text-lg font-black text-[#C5A059]">${b.total} جنيه</p>
+                    </div>
+                </div>
+            `}).join('');
+        }
+
+        // دوال نافذة العرض الشهري للعملاء
+        function openMonthlyOfferModal() {
+            document.getElementById('monthly-offer-modal').classList.remove('hidden');
+            let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
+            const now = new Date();
+            const currentYearMonth = now.toISOString().slice(0, 7);
+
+            let bookerCounts = {};
+            bookings.forEach(b => {
+                let bookingMonth = b.rawDate ? b.rawDate.slice(0, 7) : currentYearMonth;
+                if (bookingMonth === currentYearMonth) {
+                    let key = b.name + ' (' + b.phone + ')';
+                    bookerCounts[key] = (bookerCounts[key] || 0) + 1;
+                }
+            });
+
+            let sortedBookers = Object.entries(bookerCounts).sort((a, b) => b[1] - a[1]);
+            const modalListContainer = document.getElementById('modal-top-bookers-list');
+            
+            if (sortedBookers.length === 0) {
+                modalListContainer.innerHTML = `<p class="text-xs text-gray-500 text-center py-2">لا توجد حجوزات مسجلة خلال الشهر الحالي حتى الآن. كن أول الحاجزين!</p>`;
+            } else {
+                modalListContainer.innerHTML = sortedBookers.slice(0, 3).map(([namePhone, count], idx) => `
+                    <div class="flex justify-between items-center bg-black/40 p-2.5 rounded-lg border border-gray-800">
+                        <span class="text-white font-semibold text-xs">${idx + 1}. كابتن: ${namePhone}</span>
+                        <span class="bg-[#C5A059]/20 text-[#C5A059] text-xs font-bold px-2 py-0.5 rounded-full">${count} حجوزات</span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function closeMonthlyOfferModal() {
+            document.getElementById('monthly-offer-modal').classList.add('hidden');
+        }
+
+        // دوال نافذة ملعب البادل (سجل اهتمامك)
+        function openPadelModal() {
+            document.getElementById('padel-interest-modal').classList.remove('hidden');
+            document.getElementById('padel-name').value = '';
+            document.getElementById('padel-phone').value = '';
+        }
+
+        function closePadelModal() {
+            document.getElementById('padel-interest-modal').classList.add('hidden');
+        }
+
+        function savePadelInterest() {
+            const name = document.getElementById('padel-name').value.trim();
+            const phone = document.getElementById('padel-phone').value.trim();
+
+            if (!name || !phone) {
+                alert('يرجى إدخال الاسم ورقم الهاتف بشكل صحيح');
+                return;
+            }
+
+            let padelList = JSON.parse(localStorage.getItem('dana_camp_padel_interests') || '[]');
+            padelList.push({ name, phone, date: new Date().toLocaleString() });
+            localStorage.setItem('dana_camp_padel_interests', JSON.stringify(padelList));
+
+            alert('شكراً لك يا كابتن! تم تسجيل بياناتك بنجاح وسنبلغك فور افتتاح ملعب البادل.');
+            closePadelModal();
+        }
+
+        function openAdminModal() { document.getElementById('admin-login-modal').classList.remove('hidden'); }
+        function closeAdminLoginModal() { document.getElementById('admin-login-modal').classList.add('hidden'); }
+        
+        function verifyAdmin() {
+            const pin = document.getElementById('admin-pin-input').value;
+            if (pin === 'Gar123dana') {
+                closeAdminLoginModal();
+                openAdminDashboard();
+                document.getElementById('admin-pin-input').value = '';
+            } else { 
+                alert('كلمة المرور غير صحيحة!'); 
+                document.getElementById('admin-pin-input').focus();
+            }
+        }
+
+        function openAdminDashboard() {
+            document.getElementById('admin-dashboard-modal').classList.remove('hidden');
+            let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
+            
+            let totalRev = bookings.filter(b => b.status === 'مؤكد').reduce((sum, b) => sum + Number(b.total || 0), 0);
+            
+            document.getElementById('admin-total-bookings').innerText = bookings.length;
+            document.getElementById('admin-total-revenue').innerText = totalRev + ' جنيه';
+
+            const now = new Date();
+            const currentYearMonth = now.toISOString().slice(0, 7);
+
+            let bookerCounts = {};
+            bookings.forEach(b => {
+                let bookingMonth = b.rawDate ? b.rawDate.slice(0, 7) : currentYearMonth;
+                if (bookingMonth === currentYearMonth) {
+                    let key = b.name + ' (' + b.phone + ')';
+                    bookerCounts[key] = (bookerCounts[key] || 0) + 1;
+                }
+            });
+
+            let sortedBookers = Object.entries(bookerCounts).sort((a, b) => b[1] - a[1]);
+            const topListContainer = document.getElementById('top-bookers-list');
+            
+            if (sortedBookers.length === 0) {
+                topListContainer.innerHTML = `<p class="text-xs text-gray-500">لا توجد حجوزات مسجلة خلال الشهر الحالي حتى الآن.</p>`;
+            } else {
+                topListContainer.innerHTML = sortedBookers.slice(0, 5).map(([namePhone, count], idx) => `
+                    <div class="flex justify-between items-center bg-black/40 p-2 rounded-lg border border-gray-800">
+                        <span class="text-white font-semibold">${idx + 1}. كابتن: ${namePhone}</span>
+                        <span class="bg-[#C5A059]/20 text-[#C5A059] text-xs font-bold px-2.5 py-1 rounded-full">${count} حجوزات هذا الشهر</span>
+                    </div>
+                `).join('');
+            }
+
+            let padelList = JSON.parse(localStorage.getItem('dana_camp_padel_interests') || '[]');
+            const padelContainer = document.getElementById('admin-padel-list');
+            if (padelList.length === 0) {
+                padelContainer.innerHTML = `<p class="text-xs text-gray-500">لا توجد طلبات اهتمام مسجلة حتى الآن.</p>`;
+            } else {
+                padelContainer.innerHTML = padelList.reverse().map((p, idx) => `
+                    <div class="flex justify-between items-center bg-black/40 p-2 rounded-lg border border-gray-800">
+                        <span class="text-white font-semibold">${idx + 1}. ${p.name} (${p.phone})</span>
+                        <span class="text-[10px] text-gray-400">${p.date}</span>
+                    </div>
+                `).join('');
+            }
+
+            const tbody = document.getElementById('admin-bookings-table');
+            if (bookings.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-gray-500">لا توجد حجوزات مسجلة</td></tr>`;
+                return;
+            }
+            tbody.innerHTML = bookings.reverse().map((b, index) => {
+                let actualIndex = bookings.length - 1 - index;
+                let isConfirmed = b.status === 'مؤكد';
+                
+                return `
+                <tr class="border-b border-gray-800 hover:bg-[#141413]">
+                    <td class="p-3 font-mono text-[#C5A059]">${b.bookingId}</td>
+                    <td class="p-3">${b.name}<br><span class="text-xs text-gray-400">${b.phone}</span></td>
+                    <td class="p-3">${b.courtName}</td>
+                    <td class="p-3 text-xs">${b.day}<br>${b.slots}</td>
+                    <td class="p-3">
+                        <span class="font-bold text-[#C5A059]">${b.total} جنيه</span><br>
+                        <span class="text-xs text-gray-400">(${b.paymentMethod || 'يدوي'})</span>
+                    </td>
+                    <td class="p-3 flex gap-2 items-center">
+                        ${!isConfirmed ? `<button onclick="approveBooking(${actualIndex})" class="bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500 hover:text-white px-3 py-1 rounded-lg text-xs font-bold transition">تأكيد ✓</button>` : `<span class="text-xs text-emerald-400 font-bold">مؤكد</span>`}
+                        <button onclick="deleteBooking(${actualIndex})" class="bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white px-3 py-1 rounded-lg text-xs font-bold transition">حذف</button>
+                    </td>
+                </tr>
+            `}).join('');
+        }
+
+        function approveBooking(index) {
+            let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
+            bookings[index].status = 'مؤكد';
+            localStorage.setItem('dana_camp_bookings', JSON.stringify(bookings));
+            openAdminDashboard();
+            alert('تم تأكيد التحويل واعتماد الحجز بنجاح!');
+        }
+
+        function closeAdminDashboard() { document.getElementById('admin-dashboard-modal').classList.add('hidden'); }
+        
+        function openManualBookingModal() {
+            document.getElementById('manual-booking-modal').classList.remove('hidden');
+        }
+        function closeManualBookingModal() {
+            document.getElementById('manual-booking-modal').classList.add('hidden');
+        }
+        function saveManualBooking() {
+            const courtName = document.getElementById('manual-court').value;
+            const dateVal = document.getElementById('manual-date').value;
+            const slotVal = document.getElementById('manual-slot').value;
+            const name = document.getElementById('manual-name').value.trim();
+            const phone = document.getElementById('manual-phone').value.trim();
+            const total = document.getElementById('manual-total').value;
+
+            if (!name || !phone || !dateVal) {
+                alert('يرجى إكمال بيانات الكابتن والتاريخ بشكل صحيح');
+                return;
+            }
+
+            const bookingId = 'DC-M-' + Math.floor(1000 + Math.random() * 9000);
+            const manualBookingData = {
+                bookingId,
+                courtName,
+                day: 'حضور مباشر (' + dateVal + ')',
+                slots: slotVal,
+                name,
+                phone,
+                includeBall: 'حضور مباشر',
+                paymentMethod: 'حجز يدوي مباشر في الكامب',
+                total: Number(total),
+                deposit: Number(total),
+                status: 'مؤكد',
+                createdAt: new Date().toLocaleString(),
+                rawDate: new Date().toISOString()
+            };
+
+            let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
+            bookings.push(manualBookingData);
+            localStorage.setItem('dana_camp_bookings', JSON.stringify(bookings));
+
+            closeManualBookingModal();
+            openAdminDashboard();
+            renderCourts();
+            alert('تم تسجيل الحجز اليدوي وتأكيد الساعة وإغلاقها بنجاح!');
+        }
+
+        function deleteBooking(index) {
+            if (confirm('هل أنت متأكد من حذف هذا الحجز؟')) {
+                let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
+                bookings.splice(index, 1);
+                localStorage.setItem('dana_camp_bookings', JSON.stringify(bookings));
+                openAdminDashboard();
+                renderCourts();
+            }
+        }
+
+        function exportBookingsToCSV() {
+            let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
+            if (bookings.length === 0) {
+                alert('لا توجد حجوزات لتصديرها حالياً.');
+                return;
+            }
+
+            let csvContent = "\uFEFFرقم التذكرة,اسم الكابتن,رقم الهاتف,الملعب,اليوم والتاريخ,الساعات,الكرة,طريقة العربون,الإجمالي (جنيه),العربون (جنيه),الحالة,تاريخ التسجيل\n";
+
+            bookings.forEach(b => {
+                let row = [
+                    `"${b.bookingId || ''}"`,
+                    `"${b.name || ''}"`,
+                    `"${b.phone || ''}"`,
+                    `"${b.courtName || ''}"`,
+                    `"${b.day || ''}"`,
+                    `"${b.slots || ''}"`,
+                    `"${b.includeBall || ''}"`,
+                    `"${b.paymentMethod || ''}"`,
+                    `${b.total || 0}`,
+                    `${b.deposit || 0}`,
+                    `"${b.status || ''}"`,
+                    `"${b.createdAt || ''}"`
+                ];
+                csvContent += row.join(",") + "\n";
+            });
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.setAttribute('href', url);
+            a.setAttribute('download', 'dana_camp_bookings_' + new Date().toISOString().slice(0,10) + '.csv');
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         }
     </script>
 </body>
