@@ -224,7 +224,7 @@
         </div>
     </div>
 
-    <!-- لوحة تحكم الإدارة مع زر الحجز اليدوي المباشر -->
+    <!-- لوحة تحكم الإدارة -->
     <div id="admin-dashboard-modal" class="fixed inset-0 bg-black/90 z-50 hidden overflow-y-auto p-4 sm:p-6">
         <div class="max-w-4xl mx-auto bg-[#1a1a18] border border-[#C5A059] rounded-2xl p-6 space-y-6 shadow-2xl">
             <div class="flex justify-between items-center border-b border-gray-800 pb-4">
@@ -249,7 +249,6 @@
                 </div>
             </div>
 
-            <!-- لوحة شرف الكابتنز -->
             <div class="space-y-3 bg-[#141413] p-4 rounded-xl border border-[#C5A059]/30">
                 <h3 class="text-md font-bold text-[#C5A059] flex items-center gap-2">
                     <span>🏆</span> لوحة شرف الكابتنز (أكثر الأشخاص حجزاً)
@@ -278,7 +277,7 @@
         </div>
     </div>
 
-    <!-- نافذة إضافة حجز يدوي مباشر من الأدمن -->
+    <!-- نافذة إضافة حجز يدوي مباشر -->
     <div id="manual-booking-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
         <div class="bg-[#1a1a18] border border-[#C5A059] rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
             <h3 class="text-lg font-bold text-[#C5A059]">تسجيل حجز يدوي مباشر (للحاضرين للملعب)</h3>
@@ -393,7 +392,6 @@
                 const dateStr = d.toISOString().split('T')[0];
                 daysList.push({ label: dayName, date: dateStr, isToday: (i === 0) });
             }
-            // ضبط تاريخ اليوم افتراضياً في نافذة الحجز اليدوي
             const todayStr = new Date().toISOString().split('T')[0];
             const manualDateEl = document.getElementById('manual-date');
             if(manualDateEl) manualDateEl.value = todayStr;
@@ -466,12 +464,12 @@
             const isToday = daysList[selectedDayIndex].isToday;
             const currentDateStr = daysList[selectedDayIndex].date;
             
-            // جلب الحجوزات الحالية (المؤكدة أو قيد المراجعة) لمنع تكرار حجز نفس الساعة واليوم للملعب
             let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
 
             container.innerHTML = timeSlotsConfig.map(slot => {
                 let isExpired = false;
                 
+                // التحقق من انتهاء الساعة فقط إذا كان اليوم هو "اليوم الحالي"
                 if (isToday) {
                     if (currentHour >= 6 && currentHour < 12) {
                         isExpired = true;
@@ -494,7 +492,7 @@
                     }
                 }
 
-                // التحقق مما إذا كانت هذه الساعة محجوزة مسبقاً في نفس اليوم ونفس الملعب
+                // التحقق مما إذا كانت الساعة محجوزة مسبقاً في هذا اليوم وهذا الملعب
                 let isAlreadyBooked = bookings.some(b => 
                     b.courtName === selectedCourt.name && 
                     b.day.includes(currentDateStr) && 
@@ -690,7 +688,6 @@
             document.getElementById('admin-total-bookings').innerText = bookings.length;
             document.getElementById('admin-total-revenue').innerText = totalRev + ' جنيه';
 
-            // حساب وترتيب أكثر الكابتنز حجزاً
             let bookerCounts = {};
             bookings.forEach(b => {
                 let key = b.name + ' (' + b.phone + ')';
@@ -748,7 +745,6 @@
 
         function closeAdminDashboard() { document.getElementById('admin-dashboard-modal').classList.add('hidden'); }
         
-        // دوال الحجز اليدوي المباشر للأدمن
         function openManualBookingModal() {
             document.getElementById('manual-booking-modal').classList.remove('hidden');
         }
@@ -780,7 +776,7 @@
                 paymentMethod: 'حجز يدوي مباشر في الكامب',
                 total: Number(total),
                 deposit: Number(total),
-                status: 'مؤكد', // مؤكد فوراً ويغلق الساعة
+                status: 'مؤكد',
                 createdAt: new Date().toLocaleString()
             };
 
