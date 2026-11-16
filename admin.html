@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم الإدارة - دانه كامب</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Cairo', sans-serif; background-color: #141413; color: #f3f4f6; }
+    </style>
+</head>
+<body class="bg-[#141413] text-gray-100 min-h-screen flex flex-col justify-between">
+
+    <!-- Header -->
+    <header class="w-full bg-[#1a1a18] border-b border-[#C5A059]/30 py-4 px-6 shadow-md">
+        <div class="max-w-5xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <img src="https://i.postimg.cc/d06GbyTv/logo.jpg" alt="Logo" class="w-10 h-10 rounded-full border border-[#C5A059] object-cover">
+                <span class="text-lg font-black text-[#C5A059]">لوحة تحكم الإدارة - دانه كامب</span>
+            </div>
+            <a href="index.html" class="bg-gray-800 hover:bg-gray-700 text-white px-3 py-1.5 rounded-xl text-xs transition">العودة للموقع الرئيسي</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-5xl mx-auto px-4 py-6 flex-1 w-full space-y-6">
+        
+        <!-- إحصائيات سريعة -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="bg-[#1a1a18] border border-gray-800 p-4 rounded-2xl">
+                <span class="text-xs text-gray-400">إجمالي الحجوزات اليومية</span>
+                <h3 class="text-2xl font-black text-white mt-1" id="total-bookings-count">0</h3>
+            </div>
+            <div class="bg-[#1a1a18] border border-gray-800 p-4 rounded-2xl">
+                <span class="text-xs text-gray-400">إجمالي العربونات المحصلة</span>
+                <h3 class="text-2xl font-black text-[#C5A059] mt-1" id="total-deposits">0 جنيه</h3>
+            </div>
+            <div class="bg-[#1a1a18] border border-gray-800 p-4 rounded-2xl">
+                <span class="text-xs text-gray-400">المتبقي تحصيله عند الوصول</span>
+                <h3 class="text-2xl font-black text-emerald-400 mt-1" id="total-remaining">0 جنيه</h3>
+            </div>
+        </div>
+
+        <!-- إضافة حجز يدوي للإدارة -->
+        <div class="bg-[#1a1a18] border border-[#C5A059]/30 rounded-2xl p-5 space-y-4">
+            <h2 class="text-sm font-bold text-[#C5A059]">إضافة حجز يدوي جديد (هاتفي / مباشر)</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                <input type="text" id="admin-client" placeholder="اسم العميل" class="bg-[#141413] border border-gray-800 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#C5A059]">
+                <input type="tel" id="admin-phone" placeholder="رقم الهاتف" class="bg-[#141413] border border-gray-800 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#C5A059]">
+                <input type="date" id="admin-date" class="bg-[#141413] border border-gray-800 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#C5A059]">
+                <input type="text" id="admin-time" placeholder="الوقت (مثال: 5 م - 6 م)" class="bg-[#141413] border border-gray-800 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#C5A059]">
+            </div>
+            <button onclick="addManualBooking()" class="bg-[#C5A059] hover:bg-[#b08d4b] text-[#141413] font-black px-4 py-2 rounded-xl text-xs transition">حفظ وإضافة الحجز</button>
+        </div>
+
+        <!-- سجل الحجوزات -->
+        <div class="bg-[#1a1a18] border border-gray-800 rounded-2xl p-5 space-y-4">
+            <h2 class="text-sm font-bold text-white">سجل الحجوزات النشطة</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-right text-xs">
+                    <thead>
+                        <tr class="border-b border-gray-800 text-gray-400">
+                            <th class="pb-2">رقم الحجز</th>
+                            <th class="pb-2">العميل</th>
+                            <th class="pb-2">الملعب والموعد</th>
+                            <th class="pb-2">العربون</th>
+                            <th class="pb-2">الحالة</th>
+                            <th class="pb-2">إجراء</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-bookings-list" class="divide-y divide-gray-800">
+                        <tr>
+                            <td colspan="6" class="py-4 text-center text-gray-500">لا توجد حجوزات مسجلة حتى الآن</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // لوحة الإدارة البرمجية البسيطة
+        function addManualBooking() {
+            alert('تم حفظ الحجز اليدوي بنجاح!');
+        }
+    </script>
+</body>
+</html>
