@@ -214,6 +214,35 @@
         </div>
     </div>
 
+    <!-- نافذة ملعب البادل (سجل اهتمامك) التفاعلية -->
+    <div id="padel-interest-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-[#1a1a18] border border-amber-500/50 rounded-2xl max-w-md w-full p-6 space-y-5 shadow-2xl relative">
+            <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl">🎾</span>
+                    <h3 class="text-lg font-bold text-amber-400">ملعب البادل قريباً في دانه كامب!</h3>
+                </div>
+                <button onclick="closePadelModal()" class="text-gray-400 hover:text-white font-bold text-lg">✕</button>
+            </div>
+            
+            <p class="text-xs text-gray-300">المفاجأة الكبرى قادمة قريباً في دانه كامب! سجل بياناتك معنا لكونك من أوائل الكابتنز الذين يتم إبلاغهم فور افتتاح الملعب.</p>
+
+            <div class="space-y-3 bg-[#141413] p-4 rounded-xl border border-gray-800">
+                <div>
+                    <label class="block text-xs font-semibold mb-1 text-gray-300">اسم الكابتن:</label>
+                    <input type="text" id="padel-name" placeholder="مثال: كابتن محمد" class="w-full bg-[#1a1a18] border border-gray-700 rounded-xl px-3 py-2 text-sm focus:border-amber-400 focus:outline-none text-white">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold mb-1 text-gray-300">رقم الهاتف (للتواصل / واتساب):</label>
+                    <input type="tel" id="padel-phone" placeholder="01012345678" class="w-full bg-[#1a1a18] border border-gray-700 rounded-xl px-3 py-2 text-sm focus:border-amber-400 focus:outline-none text-white">
+                </div>
+                <button onclick="savePadelInterest()" class="w-full bg-amber-500 hover:bg-amber-400 text-gray-900 font-bold py-2.5 rounded-xl text-sm transition shadow mt-2">تسجيل بياناتي كمهتم 📝</button>
+            </div>
+
+            <button onclick="closePadelModal()" class="w-full bg-gray-800 hover:bg-gray-700 text-white font-bold py-2.5 rounded-xl text-sm transition">متابعة الحجز في ملاعب القدم ⚽</button>
+        </div>
+    </div>
+
     <!-- التذكرة المنبثقة -->
     <div id="ticket-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-[#1a1a18] border border-[#C5A059] rounded-2xl max-w-md w-full p-6 space-y-5 shadow-2xl relative">
@@ -257,7 +286,7 @@
             <div class="flex justify-between items-center border-b border-gray-800 pb-4">
                 <div>
                     <h2 class="text-2xl font-black text-[#C5A059]">لوحة تحكم دانه كامب</h2>
-                    <p class="text-xs text-gray-400">إدارة الحجوزات ولوحة شرف الكابتنز الشهرية</p>
+                    <p class="text-xs text-gray-400">إدارة الحجوزات ومهتمي ملعب البادل</p>
                 </div>
                 <div class="flex gap-2">
                     <button onclick="openManualBookingModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-2 rounded-xl text-xs font-bold transition">➕ حجز يدوي مباشر</button>
@@ -282,6 +311,14 @@
                     <span>🏆</span> لوحة شرف الكابتنز للشهر الحالي (أكثر الأشخاص حجزاً هذا الشهر)
                 </h3>
                 <div id="top-bookers-list" class="space-y-2 text-sm"></div>
+            </div>
+
+            <!-- قائمة مهتمي ملعب البادل للإدارة -->
+            <div class="space-y-3 bg-[#141413] p-4 rounded-xl border border-amber-500/30">
+                <h3 class="text-md font-bold text-amber-400 flex items-center gap-2">
+                    <span>🎾</span> قائمة الكابتنز المهتمين بملعب البادل
+                </h3>
+                <div id="admin-padel-list" class="space-y-2 text-sm max-h-40 overflow-y-auto"></div>
             </div>
 
             <div class="space-y-3">
@@ -450,7 +487,7 @@
                             ${c.comingSoon ? '<span class="text-xs font-bold text-amber-400 bg-amber-400/10 px-2.5 py-1 rounded-full">قريباً جداً</span>' : `<span class="text-sm font-bold text-[#C5A059]">${c.price} جنيه</span> <span class="text-xs text-gray-400">/ساعة</span>`}
                         </div>
                         ${c.comingSoon ? 
-                            `<button onclick="alert('ملعب البادل قادم قريباً في دانه كامب! ترقبوا الافتتاح.')" class="bg-amber-500/20 text-amber-300 px-4 py-2 rounded-xl text-xs font-bold">سجل اهتمامك</button>` :
+                            `<button onclick="openPadelModal()" class="bg-amber-500/20 hover:bg-amber-500 hover:text-gray-900 text-amber-300 px-4 py-2 rounded-xl text-xs font-bold transition">سجل اهتمامك</button>` :
                             `<button onclick="selectCourt(${c.id})" class="bg-[#C5A059] hover:bg-[#b08d4b] text-gray-900 px-4 py-2 rounded-xl text-xs font-black transition">اختر الملعب</button>`
                         }
                     </div>
@@ -720,6 +757,34 @@
             document.getElementById('monthly-offer-modal').classList.add('hidden');
         }
 
+        // دوال نافذة ملعب البادل (سجل اهتمامك)
+        function openPadelModal() {
+            document.getElementById('padel-interest-modal').classList.remove('hidden');
+            document.getElementById('padel-name').value = '';
+            document.getElementById('padel-phone').value = '';
+        }
+
+        function closePadelModal() {
+            document.getElementById('padel-interest-modal').classList.add('hidden');
+        }
+
+        function savePadelInterest() {
+            const name = document.getElementById('padel-name').value.trim();
+            const phone = document.getElementById('padel-phone').value.trim();
+
+            if (!name || !phone) {
+                alert('يرجى إدخال الاسم ورقم الهاتف بشكل صحيح');
+                return;
+            }
+
+            let padelList = JSON.parse(localStorage.getItem('dana_camp_padel_interests') || '[]');
+            padelList.push({ name, phone, date: new Date().toLocaleString() });
+            localStorage.setItem('dana_camp_padel_interests', JSON.stringify(padelList));
+
+            alert('شكراً لك يا كابتن! تم تسجيل بياناتك بنجاح وسنبلغك فور افتتاح ملعب البادل.');
+            closePadelModal();
+        }
+
         function openAdminModal() { document.getElementById('admin-login-modal').classList.remove('hidden'); }
         function closeAdminLoginModal() { document.getElementById('admin-login-modal').classList.add('hidden'); }
         
@@ -766,6 +831,20 @@
                     <div class="flex justify-between items-center bg-black/40 p-2 rounded-lg border border-gray-800">
                         <span class="text-white font-semibold">${idx + 1}. كابتن: ${namePhone}</span>
                         <span class="bg-[#C5A059]/20 text-[#C5A059] text-xs font-bold px-2.5 py-1 rounded-full">${count} حجوزات هذا الشهر</span>
+                    </div>
+                `).join('');
+            }
+
+            // عرض مهتمي البادل في لوحة الإدارة
+            let padelList = JSON.parse(localStorage.getItem('dana_camp_padel_interests') || '[]');
+            const padelContainer = document.getElementById('admin-padel-list');
+            if (padelList.length === 0) {
+                padelContainer.innerHTML = `<p class="text-xs text-gray-500">لا توجد طلبات اهتمام مسجلة حتى الآن.</p>`;
+            } else {
+                padelContainer.innerHTML = padelList.reverse().map((p, idx) => `
+                    <div class="flex justify-between items-center bg-black/40 p-2 rounded-lg border border-gray-800">
+                        <span class="text-white font-semibold">${idx + 1}. ${p.name} (${p.phone})</span>
+                        <span class="text-[10px] text-gray-400">${p.date}</span>
                     </div>
                 `).join('');
             }
