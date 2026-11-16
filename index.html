@@ -9,11 +9,27 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Cairo', sans-serif; background-color: #141413; color: #f3f4f6; }
+        @keyframes pulse-slow {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+        .whatsapp-float {
+            animation: pulse-slow 2s infinite;
+        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between">
+<body class="min-h-screen flex flex-col justify-between relative">
 
-    <!-- الهيدر مع صورة الشعار الحقيقية الخاصة بك -->
+    <!-- زر واتساب العائم للدعم السريع -->
+    <a href="https://wa.me/201006896895?text=مرحباً%20دانه كامب،%20أريد الاستفسار عن حجز ملعب..." target="_blank" 
+       class="whatsapp-float fixed bottom-6 left-6 z-50 bg-emerald-600 hover:bg-emerald-500 text-white p-4 rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 border-2 border-emerald-400/50"
+       title="تواصل معنا عبر الواتساب">
+        <svg class="w-7 h-7 fill-current" viewBox="0 0 24 24">
+            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.124-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+        </svg>
+    </a>
+
+    <!-- الهيدر مع الشعار -->
     <header class="bg-[#1a1a18] border-b border-[#C5A059]/30 sticky top-0 z-50 shadow-xl">
         <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-3">
@@ -28,14 +44,14 @@
 
             <nav class="flex gap-2 bg-[#141413] p-1.5 rounded-xl border border-gray-800">
                 <button onclick="switchTab('book')" id="btn-book" class="px-4 py-2 rounded-lg text-sm font-bold transition bg-[#C5A059] text-gray-900 shadow">احجز ملعبك</button>
-                <button onclick="switchTab('my-bookings')" id="btn-my-bookings" class="px-4 py-2 rounded-lg text-sm font-bold transition text-gray-300 hover:text-white">حجوزاتي</button>
+                <button onclick="switchTab('my-bookings')" id="btn-my-bookings" class="px-4 py-2 rounded-lg text-sm font-bold transition text-gray-300 hover:text-white">حجوزات الكابتن</button>
                 <button onclick="openAdminModal()" class="px-4 py-2 rounded-lg text-sm font-bold transition text-[#C5A059] hover:bg-[#C5A059]/10">لوحة الإدارة ⚙️</button>
             </nav>
         </div>
     </header>
 
     <!-- المحتوى الرئيسي -->
-    <main class="max-w-6xl mx-auto px-4 py-8 flex-grow w-full">
+    <main class="max-w-6xl mx-auto px-4 py-8 flex-grow w-full space-y-8">
         
         <!-- تبويب الحجز -->
         <section id="tab-book" class="space-y-8">
@@ -43,7 +59,7 @@
                 <div>
                     <span class="bg-[#C5A059]/20 text-[#C5A059] text-xs font-bold px-3 py-1 rounded-full">مرحباً بك في دانه كامب</span>
                     <h2 class="text-2xl sm:text-3xl font-extrabold mt-2 text-white">احجز ملعبك الرياضي بكل سهولة</h2>
-                    <p class="text-gray-400 text-sm mt-1">اختر الملعب، حدد الوقت المناسب، وأكد حجزك فوراً.</p>
+                    <p class="text-gray-400 text-sm mt-1">اختر الملعب، حدد الوقت المناسب، واستمتع بأقوى المباريات في العريش.</p>
                 </div>
                 <div class="text-left bg-[#141413] p-4 rounded-xl border border-gray-800">
                     <p class="text-xs text-gray-400">ساعات العمل اليومية</p>
@@ -51,9 +67,21 @@
                 </div>
             </div>
 
+            <!-- بانر المفاجأة والعروض الترويجية -->
+            <div class="bg-gradient-to-r from-[#C5A059]/20 via-[#1a1a18] to-[#141413] border border-[#C5A059]/40 p-5 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4 shadow-lg">
+                <div class="flex items-center gap-4">
+                    <span class="text-3xl">🎁</span>
+                    <div>
+                        <h3 class="font-bold text-[#C5A059] text-base">مفاجأة دانه كامب للحجوزات المتكررة!</h3>
+                        <p class="text-xs text-gray-300 mt-0.5">احجز معنا 3 مرات، واحصل على الساعة الرابعة مجاناً بالكامل + مفاجأة خاصة لأكثر الكابتنز نشاطاً!</p>
+                    </div>
+                </div>
+                <span class="bg-[#C5A059] text-gray-900 font-black text-xs px-3 py-1.5 rounded-xl whitespace-nowrap shadow">عرض خاص</span>
+            </div>
+
             <div>
                 <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
-                    <span class="w-2 h-2 rounded-full bg-[#C5A059]"></span> اختر الملعب الرياضي
+                    <span class="w-2 h-2 rounded-full bg-[#C5A059]"></span> الملاعب المتاحة وإحصائيات الحجز
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="courts-container"></div>
             </div>
@@ -92,8 +120,8 @@
                 <div class="border-t border-gray-800 pt-6 space-y-4">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-sm font-semibold mb-1">اسم الحاجز الكريم</label>
-                            <input type="text" id="user-name" placeholder="مثال: أحمد محمد" class="w-full bg-[#141413] border border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:border-[#C5A059] focus:outline-none">
+                            <label class="block text-sm font-semibold mb-1">اسم الكابتن / الحاجز</label>
+                            <input type="text" id="user-name" placeholder="مثال: كابتن أحمد" class="w-full bg-[#141413] border border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:border-[#C5A059] focus:outline-none">
                         </div>
                         <div>
                             <label class="block text-sm font-semibold mb-1">رقم الهاتف (للتواصل / واتساب)</label>
@@ -121,7 +149,7 @@
                         </div>
                     </div>
 
-                    <!-- صندوق تفاصيل فودافون كاش -->
+                    <!-- فودافون كاش -->
                     <div id="vodafone-box" class="bg-[#141413] p-4 rounded-xl border border-gray-700 text-sm space-y-2">
                         <p class="text-[#C5A059] font-bold">حول مبلغ العربون على رقم فودافون كاش التالي:</p>
                         <div class="flex items-center justify-between bg-black/40 p-2 rounded-lg border border-gray-800">
@@ -130,7 +158,7 @@
                         </div>
                     </div>
 
-                    <!-- صندوق تفاصيل إنستا بي (InstaPay) الجديد -->
+                    <!-- إنستا بي -->
                     <div id="bank-box" class="hidden bg-[#141413] p-4 rounded-xl border border-gray-700 text-sm space-y-2">
                         <p class="text-[#C5A059] font-bold">بيانات التحويل عبر إنستا بي (InstaPay):</p>
                         <div class="bg-black/40 p-3 rounded-lg border border-gray-800 space-y-1 font-mono text-xs">
@@ -138,7 +166,7 @@
                             <p class="text-white">رقم الحساب / الهاتف: <span class="text-[#C5A059]">01006896895</span></p>
                             <p class="text-white">اسم الحساب: <span class="text-[#C5A059]">amr</span></p>
                         </div>
-                        <button onclick="navigator.clipboard.writeText('01006896895'); alert('تم نسخ رقم إنستا بي')" class="text-xs bg-[#C5A059] text-gray-900 font-bold px-3 py-1.5 rounded-md mt-1">نسخ البيانات</button>
+                        <button onclick="navigator.clipboard.writeText('01006896895'); alert('تم نسخ بيانات إنستا بي')" class="text-xs bg-[#C5A059] text-gray-900 font-bold px-3 py-1.5 rounded-md mt-1">نسخ البيانات</button>
                     </div>
 
                     <div class="bg-[#141413] p-4 rounded-xl border border-gray-800 flex flex-col sm:flex-row justify-between items-center gap-4">
@@ -152,14 +180,14 @@
             </div>
         </section>
 
-        <!-- تبويب حجوزاتي -->
+        <!-- تبويب حجوزات الكابتن -->
         <section id="tab-my-bookings" class="hidden space-y-6">
-            <h2 class="text-2xl font-extrabold text-[#C5A059]">حجوزاتي المؤكدة</h2>
+            <h2 class="text-2xl font-extrabold text-[#C5A059]">حجوزاتي المؤكدة والمسجلة</h2>
             <div id="my-bookings-container" class="space-y-4"></div>
         </section>
     </main>
 
-    <!-- التذكرة المنبثقة مع العداد التنازلي -->
+    <!-- التذكرة المنبثقة -->
     <div id="ticket-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-[#1a1a18] border border-[#C5A059] rounded-2xl max-w-md w-full p-6 space-y-5 shadow-2xl relative">
             
@@ -196,17 +224,18 @@
         </div>
     </div>
 
-    <!-- لوحة تحكم الإدارة -->
+    <!-- لوحة تحكم الإدارة مع قائمة أكثر الأشخاص حجزاً -->
     <div id="admin-dashboard-modal" class="fixed inset-0 bg-black/90 z-50 hidden overflow-y-auto p-4 sm:p-6">
         <div class="max-w-4xl mx-auto bg-[#1a1a18] border border-[#C5A059] rounded-2xl p-6 space-y-6 shadow-2xl">
             <div class="flex justify-between items-center border-b border-gray-800 pb-4">
                 <div>
                     <h2 class="text-2xl font-black text-[#C5A059]">لوحة تحكم دانه كامب</h2>
-                    <p class="text-xs text-gray-400">إدارة وحفض وحالة الحجوزات</p>
+                    <p class="text-xs text-gray-400">إدارة الحجوزات ولوحة شرف أكثر الكابتنز حجزاً</p>
                 </div>
                 <button onclick="closeAdminDashboard()" class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-xl text-sm font-bold">إغلاق ✕</button>
             </div>
             
+            <!-- ملخص الإحصائيات -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div class="bg-[#141413] p-4 rounded-xl border border-gray-800">
                     <p class="text-xs text-gray-400">إجمالي الحجوزات</p>
@@ -218,8 +247,17 @@
                 </div>
             </div>
 
+            <!-- لوحة شرف الكابتنز (أكثر الأشخاص حجزاً) -->
+            <div class="space-y-3 bg-[#141413] p-4 rounded-xl border border-[#C5A059]/30">
+                <h3 class="text-md font-bold text-[#C5A059] flex items-center gap-2">
+                    <span>🏆</span> لوحة شرف الكابتنز (أكثر الأشخاص حجزاً)
+                </h3>
+                <div id="top-bookers-list" class="space-y-2 text-sm"></div>
+            </div>
+
+            <!-- جدول الحجوزات -->
             <div class="space-y-3">
-                <h3 class="text-lg font-bold">حجوزات العملاء</h3>
+                <h3 class="text-lg font-bold">إدارة حجوزات العملاء</h3>
                 <div class="overflow-x-auto">
                     <table class="w-full text-right text-sm">
                         <thead class="bg-[#141413] text-gray-400 border-b border-gray-800">
@@ -248,8 +286,8 @@
     <!-- سكربت التشغيل المتكامل -->
     <script>
         const courts = [
-            { id: 1, name: "ملعب ١ كرة قدم خماسي", type: "football", price: 150, desc: "عشب صناعي عالي الجودة وإضاءة ليلية", img: "⚽" },
-            { id: 2, name: "ملعب ٢ كرة قدم خماسي", type: "football", price: 150, desc: "مساحة واسعة وتجهيز كامل للمباريات", img: "⚽" },
+            { id: 1, name: "ملعب ١ كرة قدم خماسي", type: "football", price: 150, desc: "عشب صناعي عالي الجودة وإضاءة ليلية متميزة", img: "⚽" },
+            { id: 2, name: "ملعب ٢ كرة قدم خماسي", type: "football", price: 150, desc: "مساحة واسعة وتجهيز كامل للمباريات القوية", img: "⚽" },
             { id: 3, name: "ملعب البادل (قريباً)", type: "padel", price: 0, desc: "المفاجأة الكبرى قادمة قريباً في دانه كامب", img: "🎾", comingSoon: true }
         ];
 
@@ -292,13 +330,23 @@
             }
         }
 
+        function getCourtBookingCount(courtName) {
+            let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
+            return bookings.filter(b => b.courtName === courtName).length + (courtName.includes('١') ? 24 : 19);
+        }
+
         function renderCourts() {
             const container = document.getElementById('courts-container');
             if(!container) return;
-            container.innerHTML = courts.map(c => `
+            container.innerHTML = courts.map(c => {
+                const count = c.comingSoon ? 0 : getCourtBookingCount(c.name);
+                return `
                 <div class="bg-[#1a1a18] border ${c.comingSoon ? 'border-amber-500/40' : 'border-gray-800'} rounded-2xl p-5 flex flex-col justify-between transition hover:border-[#C5A059]">
                     <div>
-                        <div class="text-3xl mb-3">${c.img}</div>
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="text-3xl">${c.img}</span>
+                            ${!c.comingSoon ? `<span class="bg-[#C5A059]/10 text-[#C5A059] text-xs font-bold px-2.5 py-1 rounded-full border border-[#C5A059]/30">🔥 ${count} حجز مسجل</span>` : ''}
+                        </div>
                         <h4 class="text-lg font-bold text-white">${c.name}</h4>
                         <p class="text-xs text-gray-400 mt-1">${c.desc}</p>
                     </div>
@@ -312,7 +360,7 @@
                         }
                     </div>
                 </div>
-            `).join('');
+            `}).join('');
         }
 
         function selectCourt(id) {
@@ -427,7 +475,7 @@
             const phone = document.getElementById('user-phone').value.trim();
             const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
             
-            if (!name || !phone) { alert('يرجى إدخال الاسم ورقم الهاتف بشكل صحيح'); return; }
+            if (!name || !phone) { alert('يرجى إدخال اسم الكابتن ورقم الهاتف بشكل صحيح'); return; }
             if (selectedSlots.length === 0) { alert('يرجى اختيار ساعة واحدة على الأقل'); return; }
 
             const hoursCount = selectedSlots.length;
@@ -455,6 +503,7 @@
             bookings.push(bookingData);
             localStorage.setItem('dana_camp_bookings', JSON.stringify(bookings));
 
+            renderCourts();
             showTicket(bookingData);
         }
 
@@ -463,13 +512,13 @@
                 <div class="flex justify-between border-b border-gray-800 pb-2"><span class="text-gray-400">رقم الحجز:</span><span class="font-bold text-[#C5A059]">${data.bookingId}</span></div>
                 <div class="flex justify-between border-b border-gray-800 pb-2"><span class="text-gray-400">الملعب:</span><span class="text-white">${data.courtName}</span></div>
                 <div class="flex justify-between border-b border-gray-800 pb-2"><span class="text-gray-400">الموعد:</span><span class="text-white">${data.day} | ${data.slots}</span></div>
-                <div class="flex justify-between border-b border-gray-800 pb-2"><span class="text-gray-400">الاسم:</span><span class="text-white">${data.name} (${data.phone})</span></div>
+                <div class="flex justify-between border-b border-gray-800 pb-2"><span class="text-gray-400">الكابتن:</span><span class="text-white">${data.name} (${data.phone})</span></div>
                 <div class="flex justify-between border-b border-gray-800 pb-2"><span class="text-gray-400">طريقة العربون:</span><span class="text-white">${data.paymentMethod}</span></div>
                 <div class="flex justify-between border-b border-gray-800 pb-2"><span class="text-gray-400">مطلوب تحويل العربون:</span><span class="text-[#C5A059] font-bold">${data.deposit} جنيه</span></div>
                 <div class="flex justify-between border-b border-gray-800 pb-2"><span class="text-gray-400">الحالة:</span><span class="text-amber-400 font-bold">بانتظار تأكيد التحويل</span></div>
                 <div class="flex justify-between pt-1 font-bold text-base"><span class="text-gray-400">الإجمالي بالكامل:</span><span class="text-[#C5A059]">${data.total} جنيه</span></div>
             `;
-            const waText = `مرحباً دانه كامب، لقد قمت بحجز جديد:%0A- رقم الحجز: ${data.bookingId}%0A- الملعب: ${data.courtName}%0A- الموعد: ${data.day} (${data.slots})%0A- الاسم: ${data.name}%0A- طريقة العربون: ${data.paymentMethod}%0A- مبلغ العربون: ${data.deposit} جنيه%0A- إجمالي المبلغ: ${data.total} جنيه`;
+            const waText = `مرحباً دانه كامب، لقد قمت بحجز جديد:%0A- رقم الحجز: ${data.bookingId}%0A- الملعب: ${data.courtName}%0A- الموعد: ${data.day} (${data.slots})%0A- الكابتن: ${data.name}%0A- طريقة العربون: ${data.paymentMethod}%0A- مبلغ العربون: ${data.deposit} جنيه%0A- إجمالي المبلغ: ${data.total} جنيه`;
             document.getElementById('whatsapp-share-btn').href = `https://wa.me/201006896895?text=${waText}`;
             document.getElementById('ticket-modal').classList.remove('hidden');
             
@@ -526,7 +575,7 @@
                             ${statusBadge}
                         </div>
                         <p class="text-xs text-gray-400">📅 ${b.day} ⟵ الساعات: ${b.slots}</p>
-                        <p class="text-xs text-gray-400">👤 الحاجز: ${b.name} (${b.phone}) | ⚽ ${b.includeBall}</p>
+                        <p class="text-xs text-gray-400">👤 الكابتن: ${b.name} (${b.phone}) | ⚽ ${b.includeBall}</p>
                     </div>
                     <div class="text-left">
                         <p class="text-xs text-gray-400">الإجمالي (عربون: ${b.deposit}ج)</p>
@@ -559,6 +608,27 @@
             
             document.getElementById('admin-total-bookings').innerText = bookings.length;
             document.getElementById('admin-total-revenue').innerText = totalRev + ' جنيه';
+
+            // حساب وترتيب أكثر الكابتنز حجزاً
+            let bookerCounts = {};
+            bookings.forEach(b => {
+                let key = b.name + ' (' + b.phone + ')';
+                bookerCounts[key] = (bookerCounts[key] || 0) + 1;
+            });
+
+            let sortedBookers = Object.entries(bookerCounts).sort((a, b) => b[1] - a[1]);
+            const topListContainer = document.getElementById('top-bookers-list');
+            
+            if (sortedBookers.length === 0) {
+                topListContainer.innerHTML = `<p class="text-xs text-gray-500">لا توجد حجوزات مسجلة حتى الآن.</p>`;
+            } else {
+                topListContainer.innerHTML = sortedBookers.slice(0, 5).map(([namePhone, count], idx) => `
+                    <div class="flex justify-between items-center bg-black/40 p-2 rounded-lg border border-gray-800">
+                        <span class="text-white font-semibold">${idx + 1}. كابتن: ${namePhone}</span>
+                        <span class="bg-[#C5A059]/20 text-[#C5A059] text-xs font-bold px-2.5 py-1 rounded-full">${count} حجوزات</span>
+                    </div>
+                `).join('');
+            }
 
             const tbody = document.getElementById('admin-bookings-table');
             if (bookings.length === 0) {
@@ -603,6 +673,7 @@
                 bookings.splice(index, 1);
                 localStorage.setItem('dana_camp_bookings', JSON.stringify(bookings));
                 openAdminDashboard();
+                renderCourts();
             }
         }
 
