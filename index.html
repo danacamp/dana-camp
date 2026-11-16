@@ -66,7 +66,7 @@
         </svg>
     </a>
 
-    <!-- الهيدر مع الشعار والكرة في الفراغ يمينه -->
+    <!-- الهيدر -->
     <header class="bg-[#1a1a18] border-b border-[#C5A059]/30 sticky top-0 z-50 shadow-xl">
         <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-3">
@@ -91,7 +91,6 @@
     <!-- المحتوى الرئيسي -->
     <main class="max-w-6xl mx-auto px-4 py-8 flex-grow w-full space-y-8">
         
-        <!-- تبويب الحجز -->
         <section id="tab-book" class="space-y-8">
             <div class="bg-gradient-to-r from-[#1f1f1c] to-[#141413] border border-[#C5A059]/20 p-6 rounded-2xl shadow-xl flex flex-col md:flex-row justify-between items-center gap-6">
                 <div>
@@ -126,6 +125,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="courts-container"></div>
             </div>
 
+            <!-- قسم تفاصيل الحجز والساعات -->
             <div id="booking-section" class="hidden bg-[#1a1a18] border border-gray-800 p-6 rounded-2xl space-y-6 shadow-xl">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-gray-800 pb-4">
                     <div>
@@ -237,7 +237,7 @@
         </section>
     </main>
 
-    <!-- نافذة العرض الشهري ولوحة شرف الكابتنز -->
+    <!-- نافذة العرض الشهري -->
     <div id="monthly-offer-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-[#1a1a18] border border-[#C5A059] rounded-2xl max-w-md w-full p-6 space-y-5 shadow-2xl relative">
             <div class="flex justify-between items-center border-b border-gray-800 pb-3">
@@ -255,7 +255,7 @@
         </div>
     </div>
 
-    <!-- نافذة ملعب البادل -->
+    <!-- نافذة ملعب البادل (قريباً) -->
     <div id="padel-interest-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-[#1a1a18] border border-amber-500/50 rounded-2xl max-w-md w-full p-6 space-y-5 shadow-2xl relative">
             <div class="flex justify-between items-center border-b border-gray-800 pb-3">
@@ -265,7 +265,7 @@
                 </div>
                 <button onclick="closePadelModal()" class="text-gray-400 hover:text-white font-bold text-lg">✕</button>
             </div>
-            <p class="text-xs text-gray-300">سجل بياناتك معنا لتكون من أوائل الكابتنز الذين يتم إبلاغهم فور افتتاح الملعب.</p>
+            <p class="text-xs text-gray-300">سجل بياناتك معنا لتكون من أوائل الكابتنز الذين يتم إبلاغهم فور افتتاح ملعب البادل.</p>
             <div class="space-y-3 bg-[#141413] p-4 rounded-xl border border-gray-800">
                 <div>
                     <label class="block text-xs font-semibold mb-1 text-gray-300">اسم الكابتن:</label>
@@ -384,7 +384,7 @@
                     <label class="block text-xs font-semibold mb-1">اختر الملعب:</label>
                     <select id="manual-court" class="w-full bg-[#141413] border border-gray-700 rounded-xl px-3 py-2 text-sm focus:border-[#C5A059] focus:outline-none text-white">
                         <option value="ملعب 1 كرة قدم خماسي">ملعب 1 كرة قدم خماسي</option>
-                        <option value="ملعب 2 بادل تنس">ملعب 2 بادل تنس</option>
+                        <option value="ملعب 2 كرة قدم خماسي">ملعب 2 كرة قدم خماسي</option>
                     </select>
                 </div>
                 <div>
@@ -423,10 +423,11 @@
 
     <!-- سكربت التشغيل -->
     <script>
+        // تعريف الملاعب بدقة: ملعبين كرة قدم خماسي + ملعب بادل قريباً
         const courts = [
             { id: 1, name: "ملعب 1 كرة قدم خماسي", price: 150, desc: "عشب صناعي عالي الجودة وإضاءة ليلية متميزة", img: "⚽" },
-            { id: 2, name: "ملعب 2 بادل تنس", price: 200, desc: "ملاعب بادل احترافية ومجهزة بالكامل", img: "🎾" },
-            { id: 3, name: "ملعب إضافي (قريباً)", price: 0, desc: "المفاجأة الكبرى قادمة قريباً في دانه كامب", img: "⭐", comingSoon: true }
+            { id: 2, name: "ملعب 2 كرة قدم خماسي", price: 150, desc: "مساحة واسعة وتجهيز كامل للمباريات القوية", img: "⚽" },
+            { id: 3, name: "ملعب البادل (قريباً)", price: 0, desc: "المفاجأة الكبرى قادمة قريباً في دانه كامب", img: "🎾", comingSoon: true }
         ];
 
         let selectedCourt = null;
@@ -443,7 +444,13 @@
             { label: "08:00 م - 09:00 م" },
             { label: "09:00 م - 10:00 م" },
             { label: "10:00 م - 11:00 م" },
-            { label: "11:00 م - 12:00 ص" }
+            { label: "11:00 م - 12:00 ص" },
+            { label: "12:00 ص - 01:00 ص" },
+            { label: "01:00 ص - 02:00 ص" },
+            { label: "02:00 ص - 03:00 ص" },
+            { label: "03:00 ص - 04:00 ص" },
+            { label: "04:00 ص - 05:00 ص" },
+            { label: "05:00 ص - 06:00 ص" }
         ];
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -475,7 +482,7 @@
 
         function getCourtBookingCount(courtName) {
             let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
-            return bookings.filter(b => b.courtName === courtName).length + 15;
+            return bookings.filter(b => b.courtName === courtName).length + (courtName.includes('1') ? 24 : 19);
         }
 
         function renderCourts() {
