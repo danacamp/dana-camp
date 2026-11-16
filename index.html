@@ -67,7 +67,7 @@
                 </div>
             </div>
 
-            <!-- بانر العرض التحفيزي الجديد -->
+            <!-- بانر العرض التحفيزي مع زر العرض الشهري التفاعلي -->
             <div class="bg-gradient-to-r from-[#C5A059]/20 via-[#1a1a18] to-[#141413] border border-[#C5A059]/40 p-5 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4 shadow-lg">
                 <div class="flex items-center gap-4">
                     <span class="text-3xl">🎁</span>
@@ -76,7 +76,9 @@
                         <p class="text-xs text-gray-300 mt-0.5">احجز معنا 4 مرات خلال الشهر، واحصل على الحجز الخامس مجاناً بالكامل + مفاجأة خاصة لأكثر الكابتنز نشاطاً!</p>
                     </div>
                 </div>
-                <span class="bg-[#C5A059] text-gray-900 font-black text-xs px-3 py-1.5 rounded-xl whitespace-nowrap shadow">عرض شهري</span>
+                <button onclick="openMonthlyOfferModal()" class="bg-[#C5A059] hover:bg-[#b08d4b] text-gray-900 font-black text-xs px-5 py-2.5 rounded-xl whitespace-nowrap shadow transition flex items-center gap-2">
+                    <span>🏆</span> عرض شهري
+                </button>
             </div>
 
             <div>
@@ -186,6 +188,31 @@
             <div id="my-bookings-container" class="space-y-4"></div>
         </section>
     </main>
+
+    <!-- نافذة العرض الشهري ولوحة شرف الكابتنز للعملاء -->
+    <div id="monthly-offer-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-[#1a1a18] border border-[#C5A059] rounded-2xl max-w-md w-full p-6 space-y-5 shadow-2xl relative">
+            <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl">🏆</span>
+                    <h3 class="text-lg font-bold text-[#C5A059]">لوحة شرف الكابتنز (الشهر الحالي)</h3>
+                </div>
+                <button onclick="closeMonthlyOfferModal()" class="text-gray-400 hover:text-white font-bold text-lg">✕</button>
+            </div>
+            
+            <div class="bg-[#141413] p-4 rounded-xl border border-gray-800 space-y-3">
+                <p class="text-xs text-gray-300 text-center">أكثر الكابتنز نشاطاً وتصدرًا لحجوزات الملاعب هذا الشهر (أعلى 3 كابتنز):</p>
+                <div id="modal-top-bookers-list" class="space-y-2 text-sm"></div>
+            </div>
+
+            <div class="bg-[#C5A059]/10 border border-[#C5A059]/30 p-3 rounded-xl text-center">
+                <p class="text-xs text-[#C5A059] font-bold">🎁 عرض: خللي 4 عليك والـ 5 علينا!</p>
+                <p class="text-[11px] text-gray-300 mt-0.5">احجز 4 مرات خلال الشهر واحصل على الحجز الخامس مجاناً.</p>
+            </div>
+
+            <button onclick="closeMonthlyOfferModal()" class="w-full bg-[#C5A059] hover:bg-[#b08d4b] text-gray-900 font-bold py-2.5 rounded-xl text-sm transition shadow">متابعة الحجز واللعب ⚽</button>
+        </div>
+    </div>
 
     <!-- التذكرة المنبثقة -->
     <div id="ticket-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
@@ -569,7 +596,7 @@
                 deposit,
                 status: 'قيد المراجعة',
                 createdAt: new Date().toLocaleString(),
-                rawDate: new Date().toISOString() // لتصفية شهرية دقيقة
+                rawDate: new Date().toISOString()
             };
 
             let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
@@ -658,6 +685,41 @@
             `}).join('');
         }
 
+        // دوال نافذة العرض الشهري للعملاء
+        function openMonthlyOfferModal() {
+            document.getElementById('monthly-offer-modal').classList.remove('hidden');
+            let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
+            const now = new Date();
+            const currentYearMonth = now.toISOString().slice(0, 7);
+
+            let bookerCounts = {};
+            bookings.forEach(b => {
+                let bookingMonth = b.rawDate ? b.rawDate.slice(0, 7) : currentYearMonth;
+                if (bookingMonth === currentYearMonth) {
+                    let key = b.name + ' (' + b.phone + ')';
+                    bookerCounts[key] = (bookerCounts[key] || 0) + 1;
+                }
+            });
+
+            let sortedBookers = Object.entries(bookerCounts).sort((a, b) => b[1] - a[1]);
+            const modalListContainer = document.getElementById('modal-top-bookers-list');
+            
+            if (sortedBookers.length === 0) {
+                modalListContainer.innerHTML = `<p class="text-xs text-gray-500 text-center py-2">لا توجد حجوزات مسجلة خلال الشهر الحالي حتى الآن. كن أول الحاجزين!</p>`;
+            } else {
+                modalListContainer.innerHTML = sortedBookers.slice(0, 3).map(([namePhone, count], idx) => `
+                    <div class="flex justify-between items-center bg-black/40 p-2.5 rounded-lg border border-gray-800">
+                        <span class="text-white font-semibold text-xs">${idx + 1}. كابتن: ${namePhone}</span>
+                        <span class="bg-[#C5A059]/20 text-[#C5A059] text-xs font-bold px-2 py-0.5 rounded-full">${count} حجوزات</span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function closeMonthlyOfferModal() {
+            document.getElementById('monthly-offer-modal').classList.add('hidden');
+        }
+
         function openAdminModal() { document.getElementById('admin-login-modal').classList.remove('hidden'); }
         function closeAdminLoginModal() { document.getElementById('admin-login-modal').classList.add('hidden'); }
         
@@ -682,9 +744,8 @@
             document.getElementById('admin-total-bookings').innerText = bookings.length;
             document.getElementById('admin-total-revenue').innerText = totalRev + ' جنيه';
 
-            // تصفية الحجوزات لتكون لوحة الشرف "شهرية" بناءً على شهر وسنة التاريخ الحالي
             const now = new Date();
-            const currentYearMonth = now.toISOString().slice(0, 7); // مثل "2026-11"
+            const currentYearMonth = now.toISOString().slice(0, 7);
 
             let bookerCounts = {};
             bookings.forEach(b => {
