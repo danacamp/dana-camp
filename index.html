@@ -17,40 +17,46 @@
             animation: pulse-slow 2s infinite;
         }
         
-        /* تأثير حركة الكرة واصطدامها بالجوانب ثم استقرارها */
-        @keyframes bounceAndSettle {
+        /* حركة الكرة داخل الهيدر فقط واصطدامها بجوانبه ثم الاستقرار والدوران */
+        @keyframes headerBallBounce {
             0% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(300px, 150px) rotate(180deg); }
-            50% { transform: translate(100px, 300px) rotate(360deg); }
-            75% { transform: translate(250px, 100px) rotate(540deg); }
-            100% { transform: translate(0, 0) rotate(720deg); }
+            30% { transform: translate(180px, 10px) rotate(180deg); }
+            60% { transform: translate(80px, -15px) rotate(360deg); }
+            90% { transform: translate(240px, 5px) rotate(540deg); }
+            100% { transform: translate(140px, 0px) rotate(720deg); }
         }
         @keyframes gentleRotate {
-            0% { transform: rotate(0deg); }
-            50% { transform: rotate(15deg) scale(1.05); }
-            100% { transform: rotate(0deg); }
+            0% { transform: translate(140px, 0px) rotate(0deg); }
+            50% { transform: translate(140px, 0px) rotate(15deg) scale(1.08); }
+            100% { transform: translate(140px, 0px) rotate(0deg); }
         }
-        .animated-ball {
-            position: fixed;
-            top: 100px;
-            right: 50px;
-            width: 45px;
-            height: 45px;
-            z-index: 40;
+        .header-animated-ball {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            height: 35px;
+            font-size: 24px;
+            position: relative;
+            z-index: 10;
             pointer-events: none;
-            animation: bounceAndSettle 4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            animation: headerBallBounce 3.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
         }
-        .resting-ball {
+        .header-resting-ball {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            height: 35px;
+            font-size: 24px;
+            position: relative;
+            z-index: 10;
+            pointer-events: none;
             animation: gentleRotate 3s ease-in-out infinite;
         }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between relative">
-
-    <!-- الكرة المتحركة -->
-    <div id="moving-ball" class="animated-ball flex items-center justify-center text-3xl select-none" title="دانه كامب">
-        ⚽
-    </div>
 
     <!-- زر واتساب العائم للدعم السريع -->
     <a href="https://wa.me/201006896895?text=مرحباً%20دانه كامب،%20أريد الاستفسار عن حجز ملعب..." target="_blank" 
@@ -61,7 +67,7 @@
         </svg>
     </a>
 
-    <!-- الهيدر مع الشعار -->
+    <!-- الهيدر مع الشعار والكرة المتحركة بداخله فقط -->
     <header class="bg-[#1a1a18] border-b border-[#C5A059]/30 sticky top-0 z-50 shadow-xl">
         <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-3">
@@ -72,6 +78,8 @@
                     <h1 class="text-xl font-black text-[#C5A059] tracking-wider">Dana Camp</h1>
                     <p class="text-xs text-gray-400 font-semibold tracking-widest">El - ARISH</p>
                 </div>
+                <!-- الكرة المتحركة داخل الهيدر حصرياً -->
+                <div id="header-ball" class="header-animated-ball select-none" title="دانه كامب">⚽</div>
             </div>
 
             <nav class="flex gap-2 bg-[#141413] p-1.5 rounded-xl border border-gray-800">
@@ -479,14 +487,14 @@
             { id: 5,  label: "5:00 ص - 6:00 ص (اليوم التالي)", startHour: 5, isNextDay: true }
         ];
 
-        // التحقق من عمل سكريبت الكرة المتحركة عند اكتمال تحميل الصفحة
+        // تفعيل تحويل حركة الكرة داخل الهيدر واستقرارها
         window.addEventListener('DOMContentLoaded', () => {
-            const ball = document.getElementById('moving-ball');
-            if(ball) {
+            const hBall = document.getElementById('header-ball');
+            if(hBall) {
                 setTimeout(() => {
-                    ball.classList.remove('animated-ball');
-                    ball.classList.add('resting-ball');
-                }, 4000);
+                    hBall.classList.remove('header-animated-ball');
+                    hBall.classList.add('header-resting-ball');
+                }, 3500);
             }
             initDays();
             renderCourts();
