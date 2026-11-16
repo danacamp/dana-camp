@@ -276,7 +276,12 @@
             </div>
         </div>
     </div>
-
+<div class="flex gap-2">
+    <button onclick="openManualBookingModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-2 rounded-xl text-xs font-bold transition">➕ حجز يدوي مباشر</button>
+    <!-- أضف السطر التالي هنا -->
+    <button onclick="exportBookingsToCSV()" class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-2 rounded-xl text-xs font-bold transition">📥 تصدير إكسل (CSV)</button>
+    <button onclick="closeAdminDashboard()" class="bg-gray-800 hover:bg-gray-700 text-white px-3 py-2 rounded-xl text-xs font-bold">إغلاق ✕</button>
+</div>
     <!-- نافذة إضافة حجز يدوي مباشر -->
     <div id="manual-booking-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
         <div class="bg-[#1a1a18] border border-[#C5A059] rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
@@ -488,7 +493,44 @@
                         }
                     }
                 }
+function exportBookingsToCSV() {
+    let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
+    if (bookings.length === 0) {
+        alert('لا توجد حجوزات لتصديرها حالياً.');
+        return;
+    }
 
+    // رؤوس الأعمدة باللغة العربية مع دعم ترميز إكسل (UTF-8 BOM)
+    let csvContent = "\uFEFFرقم التذكرة,اسم الكابتن,رقم الهاتف,الملعب,اليوم والتاريخ,الساعات,الكرة,طريقة العربون,الإجمالي (جنيه),العربون (جنيه),الحالة,تاريخ التسجيل\n";
+
+    bookings.forEach(b => {
+        let row = [
+            `"${b.bookingId || ''}"`,
+            `"${b.name || ''}"`,
+            `"${b.phone || ''}"`,
+            `"${b.courtName || ''}"`,
+            `"${b.day || ''}"`,
+            `"${b.slots || ''}"`,
+            `"${b.includeBall || ''}"`,
+            `"${b.paymentMethod || ''}"`,
+            `${b.total || 0}`,
+            `${b.deposit || 0}`,
+            `"${b.status || ''}"`,
+            `"${b.createdAt || ''}"`
+        ];
+        csvContent += row.join(",") + "\n";
+    });
+
+    // إنشاء ملف وهمي وتحميله تلقائياً
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.setAttribute('href', url);
+    a.setAttribute('download', 'dana_camp_bookings_' + new Date().toISOString().slice(0,10) + '.csv');
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
                 // 2. التحقق مما إذا كانت الساعة محجوزة مسبقاً (سواء مؤكدة أو قيد المراجعة)
                 let isAlreadyBooked = bookings.some(b => 
                     b.courtName === selectedCourt.name && 
