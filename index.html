@@ -138,7 +138,7 @@
                 <div>
                     <div class="flex justify-between items-center mb-3">
                         <label class="block text-sm font-bold text-gray-300">اختر الساعات (بلمسة واحدة):</label>
-                        <span class="text-xs text-gray-500">الساعات المنقضية مخفية تلقائياً</span>
+                        <span class="text-xs text-gray-500">نظام السهرة الكروية (من 12 ظهراً حتى 6 صباح اليوم التالي)</span>
                     </div>
                     <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3" id="slots-container"></div>
                 </div>
@@ -435,26 +435,26 @@
         let daysList = [];
         let countdownInterval = null;
 
-        // الساعات مرتبة تصاعدياً من 12 ظهراً وحتى 6 صباح اليوم التالي
+        // الساعات مترتبة تصاعدياً من 12 ظهراً وحتى 6 صباحاً اليوم التالي
         const timeSlotsConfig = [
-            { label: "12:00 م - 01:00 م", startHour: 12 },
-            { label: "01:00 م - 02:00 م", startHour: 13 },
-            { label: "02:00 م - 03:00 م", startHour: 14 },
-            { label: "03:00 م - 04:00 م", startHour: 15 },
-            { label: "04:00 م - 05:00 م", startHour: 16 },
-            { label: "05:00 م - 06:00 م", startHour: 17 },
-            { label: "06:00 م - 07:00 م", startHour: 18 },
-            { label: "07:00 م - 08:00 م", startHour: 19 },
-            { label: "08:00 م - 09:00 م", startHour: 20 },
-            { label: "09:00 م - 10:00 م", startHour: 21 },
-            { label: "10:00 م - 11:00 م", startHour: 22 },
-            { label: "11:00 م - 12:00 ص", startHour: 23 },
-            { label: "12:00 ص - 01:00 ص", startHour: 0 },
-            { label: "01:00 ص - 02:00 ص", startHour: 1 },
-            { label: "02:00 ص - 03:00 ص", startHour: 2 },
-            { label: "03:00 ص - 04:00 ص", startHour: 3 },
-            { label: "04:00 ص - 05:00 ص", startHour: 4 },
-            { label: "05:00 ص - 06:00 ص", startHour: 5 }
+            { label: "12:00 م - 01:00 م", sortHour: 12, isNextDay: false },
+            { label: "01:00 م - 02:00 م", sortHour: 13, isNextDay: false },
+            { label: "02:00 م - 03:00 م", sortHour: 14, isNextDay: false },
+            { label: "03:00 م - 04:00 م", sortHour: 15, isNextDay: false },
+            { label: "04:00 م - 05:00 م", sortHour: 16, isNextDay: false },
+            { label: "05:00 م - 06:00 م", sortHour: 17, isNextDay: false },
+            { label: "06:00 م - 07:00 م", sortHour: 18, isNextDay: false },
+            { label: "07:00 م - 08:00 م", sortHour: 19, isNextDay: false },
+            { label: "08:00 م - 09:00 م", sortHour: 20, isNextDay: false },
+            { label: "09:00 م - 10:00 م", sortHour: 21, isNextDay: false },
+            { label: "10:00 م - 11:00 م", sortHour: 22, isNextDay: false },
+            { label: "11:00 م - 12:00 ص", sortHour: 23, isNextDay: false },
+            { label: "12:00 ص - 01:00 ص", sortHour: 0, isNextDay: true },
+            { label: "01:00 ص - 02:00 ص", sortHour: 1, isNextDay: true },
+            { label: "02:00 ص - 03:00 ص", sortHour: 2, isNextDay: true },
+            { label: "03:00 ص - 04:00 ص", sortHour: 3, isNextDay: true },
+            { label: "04:00 ص - 05:00 ص", sortHour: 4, isNextDay: true },
+            { label: "05:00 ص - 06:00 ص", sortHour: 5, isNextDay: true }
         ];
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -540,7 +540,7 @@
 
         function selectDay(index) {
             selectedDayIndex = index;
-            selectedSlots = []; // إعادة تعيين الساعات المختارة عند تغيير اليوم
+            selectedSlots = [];
             renderDays();
             renderSlots();
             updateTotalPrice();
@@ -551,22 +551,36 @@
             let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
             const currentDateStr = daysList[selectedDayIndex].date;
             const isToday = daysList[selectedDayIndex].isToday;
-            const currentHour = new Date().getHours();
+            
+            const now = new Date();
+            const currentHour = now.getHours(); // 0 إلى 23
 
             container.innerHTML = timeSlotsConfig.map(slot => {
-                // التحقق مما إذا كانت الساعة قد انقضت اليوم
                 let isPastHour = false;
+
                 if (isToday) {
-                    // إذا كانت الساعة ليلاً (0 إلى 5 صباحاً)، تعتبر سارية لليوم الحالي المبكر، أما ساعات النهار الماضية فتعطل
-                    if (slot.startHour >= 12 && slot.startHour <= currentHour) {
-                        isPastHour = true;
+                    // منطق دانه كامب اليومي:
+                    // اليوم يبدأ 12 ظهراً (12) وينتهي 6 صباحاً اليوم التالي (6 صباحاً)
+                    if (currentHour >= 12) {
+                        // نحن في فترة المساء من نفس اليوم (من 12 ظهراً حتى قبل منتصف الليل)
+                        if (!slot.isNextDay && slot.sortHour < currentHour) {
+                            isPastHour = true;
+                        }
+                    } else {
+                        // نحن في فترة الفجر من اليوم الحالي (من منتصف الليل وحتى 6 صباحاً)
+                        if (slot.isNextDay && slot.sortHour <= currentHour) {
+                            isPastHour = true;
+                        } else if (!slot.isNextDay) {
+                            // ساعات النهار من اليوم السابق تعتبر منقضية تماماً
+                            isPastHour = true;
+                        }
                     }
                 }
 
                 if (isPastHour) {
                     return `
                         <div class="p-3 rounded-xl text-xs font-bold bg-[#141413] text-gray-600 border border-gray-900 opacity-30 cursor-not-allowed flex items-center justify-center select-none" title="انقضى وقت هذه الساعة">
-                            ${slot.label} (منقضي)
+                            ${slot.label}
                         </div>
                     `;
                 }
@@ -871,7 +885,7 @@
             const slotVal = document.getElementById('manual-slot').value;
             const name = document.getElementById('manual-name').value.trim();
             const phone = document.getElementById('manual-phone').value.trim();
-            const total = document.getElementById('manual-total').value;
+            const total = document.getElementById('manual-total-total').value || document.getElementById('manual-total').value;
 
             if (!name || !phone || !dateVal) { alert('يرجى إكمال البيانات'); return; }
 
