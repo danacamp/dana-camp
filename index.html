@@ -157,14 +157,14 @@
                     </label>
                 </div>
 
-                <!-- صندوق الحجز المتكرر أسبوعياً (تثبيت الحجز في الأيام التالية) -->
+                <!-- صندوق الحجز المتكرر أسبوعياً (عربون ثابت مرحل) -->
                 <div class="bg-[#141413] p-4 rounded-xl border border-gray-800 space-y-3">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-3">
                             <span class="text-2xl">🔁</span>
                             <div>
                                 <p class="font-bold text-sm">حجز أسبوعي ثابت (للفريق الثابت)</p>
-                                <p class="text-xs text-gray-400">يثبت الميعاد وتلقائياً يُحجز في الأيام التالية أسبوعياً</p>
+                                <p class="text-xs text-gray-400">يثبت الميعاد كل أسبوع مع عربون دائم يُرحل للأسبوع التالي</p>
                             </div>
                         </div>
                         <label class="relative inline-flex items-center cursor-pointer">
@@ -174,13 +174,13 @@
                     </div>
                     
                     <div id="repeat-options-box" class="hidden pt-2 border-t border-gray-800 space-y-2">
-                        <label class="block text-xs font-semibold text-gray-300">عدد الأسابيع المتتالية لتثبيت الحجز:</label>
+                        <label class="block text-xs font-semibold text-gray-300">الجدول الزمني للفرق الثابتة:</label>
                         <select id="repeat-weeks-count" onchange="updateTotalPrice()" class="w-full bg-[#1a1a18] border border-gray-700 rounded-xl px-3 py-2 text-sm text-white focus:border-[#C5A059] focus:outline-none">
                             <option value="4">4 أسابيع متتالية (شهر ثابت)</option>
                             <option value="8">8 أسابيع متتالية (شهرين ثابتين)</option>
                             <option value="12">12 أسبوع (3 شهور ثابتة)</option>
                         </select>
-                        <p class="text-[11px] text-[#C5A059]">💡 سيتم حجز وتثبيت هذا الميعاد تلقائياً في الأسابيع التالية، ويدفع الفريق العربون الدائم مرة واحدة ويُرحل أسبوعياً.</p>
+                        <p class="text-[11px] text-[#C5A059]">💡 يتم تحويل عربون المرة الأولى فقط (عربون دائم)، وفي كل أسبوع يدفع الفريق قيمة الملعب كاملة ويُرحل العربون للأسبوع التالي حتى نهاية الجدول.</p>
                     </div>
                 </div>
 
@@ -308,7 +308,7 @@
         <p class="text-[#C5A059] font-semibold">تصميم وتطوير: م. عمرو الغول</p>
     </footer>
 
-    <!-- سكربت التشغيل مع ميزة تثبيت الحجوزات الأسبوعية في الأيام التالية -->
+    <!-- سكربت التشغيل الكامل والمتكامل -->
     <script>
         const courts = [
             { id: 1, name: "ملعب 1 كرة قدم خماسي", price: 150, desc: "عشب صناعي عالي الجودة وإضاءة ليلية متميزة", img: "⚽" },
@@ -429,13 +429,12 @@
             updateTotalPrice();
         }
 
-       function renderSlots() {
+        function renderSlots() {
             const container = document.getElementById('slots-container');
             let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
             const currentDateStr = daysList[selectedDayIndex].date;
 
             container.innerHTML = timeSlotsConfig.map(slot => {
-                // التحقق بدقة إذا كانت هذه الساعة في هذا التاريخ محجوزة مسبقاً (سواء حجز عادي أو ضمن جدول فريق ثابت)
                 let isAlreadyBooked = bookings.some(b => 
                     b.courtName === selectedCourt.name && 
                     b.day.includes(currentDateStr) && 
@@ -445,11 +444,6 @@
                 if (isAlreadyBooked) {
                     return `<div class="p-3 rounded-xl text-xs font-bold bg-[#141413] text-gray-600 border border-gray-900 line-through opacity-40 cursor-not-allowed flex items-center justify-center select-none" title="محجوزة مسبقاً">${slot.label}</div>`;
                 }
-
-                const isSelected = selectedSlots.includes(slot.label);
-                return `<button type="button" onclick="toggleSlot('${slot.label}')" class="p-3 rounded-xl text-xs font-bold transition border ${isSelected ? 'bg-[#C5A059] text-gray-900 border-[#C5A059] shadow-lg' : 'bg-[#141413] text-gray-300 border-gray-800 hover:border-[#C5A059]'}">${slot.label}</button>`;
-            }).join('');
-        }
 
                 const isSelected = selectedSlots.includes(slot.label);
                 return `<button type="button" onclick="toggleSlot('${slot.label}')" class="p-3 rounded-xl text-xs font-bold transition border ${isSelected ? 'bg-[#C5A059] text-gray-900 border-[#C5A059] shadow-lg' : 'bg-[#141413] text-gray-300 border-gray-800 hover:border-[#C5A059]'}">${slot.label}</button>`;
@@ -497,7 +491,6 @@
             if (tab === 'my-bookings') loadMyBookings();
         }
 
-        // دالة تأكيد وحفظ الحجز (مع توليد وتثبيت الأسابيع المتتالية في الأيام التالية)
         function confirmBooking() {
             const name = document.getElementById('user-name').value.trim();
             const phone = document.getElementById('user-phone').value.trim();
@@ -518,13 +511,11 @@
             let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
             let baseDate = new Date(daysList[selectedDayIndex].date);
 
-            // توليد وحفظ الحجوزات لكل أسبوع متتالي تلقائياً
             for (let i = 0; i < weeksCount; i++) {
                 let currentWeekDate = new Date(baseDate);
                 currentWeekDate.setDate(baseDate.getDate() + (i * 7));
                 let dateStr = currentWeekDate.toISOString().split('T')[0];
                 
-                // تحديد اسم اليوم باللغة العربية
                 const daysNames = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
                 let dayNameText = (i === 0) ? daysList[selectedDayIndex].label : daysNames[currentWeekDate.getDay()];
 
@@ -538,8 +529,8 @@
                     includeBall: includeBall ? 'نعم (+30ج/س)' : 'بدون كرة',
                     paymentMethod: paymentMethod === 'vodafone' ? 'فودافون كاش (01006896895)' : 'إنستا بي (01006896895 - amr)',
                     total: singleTotal,
-                    deposit: (i === 0 ? deposit : 0), // العربون ي registred في الأسبوع الأول فقط
-                    isWeekly: isWeeklyRepeat ? `فريق ثابت (أسبوع ${i+1} من ${weeksCount})` : 'حجز عادي',
+                    deposit: (i === 0 ? deposit : 0),
+                    isWeekly: isWeeklyRepeat ? `فريق ثابت (${weeksCount} أسابيع)` : 'حجز عادي',
                     status: 'قيد المراجعة',
                     createdAt: new Date().toLocaleString(),
                     rawDate: currentWeekDate.toISOString()
