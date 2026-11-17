@@ -125,7 +125,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="courts-container"></div>
             </div>
 
-            <!-- قسم تفاصيل الحجز (زر التاريخ وزر الوقت بجوار بعض في المنتصف) -->
+            <!-- قسم تفاصيل الحجز (التاريخ والوقت في صف، وإضافة الكرة والحجز الأسبوعي في صف متجاور بالمنتصف) -->
             <div id="booking-section" class="hidden bg-[#1a1a18] border border-gray-800 p-6 rounded-2xl space-y-6 shadow-xl">
                 
                 <div class="text-center border-b border-gray-800 pb-4">
@@ -133,8 +133,8 @@
                     <p class="text-sm text-gray-400 mt-1" id="selected-court-price">السعر: 150 جنيه / ساعة</p>
                 </div>
 
-                <!-- أزرار اختيار التاريخ والوقت بجوار بعض في المنتصف -->
-                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 py-2">
+                <!-- الصف الأول: أزرار اختيار التاريخ والوقت بجوار بعض في المنتصف -->
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
                     <!-- زر قائمة التاريخ المنسدلة -->
                     <div class="w-full sm:w-72">
                         <label class="block text-xs font-semibold text-gray-400 mb-1.5 text-center">التاريخ:</label>
@@ -160,55 +160,58 @@
                     </div>
                 </div>
 
-                <div class="bg-[#141413] p-4 rounded-xl border border-gray-800 flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <span class="text-2xl">⚽</span>
-                        <div>
-                            <p class="font-bold text-sm">إضافة كرة قدم للملعب</p>
-                            <p class="text-xs text-gray-400">+30 جنيه للساعة الواحدة</p>
-                        </div>
-                    </div>
-                    <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" id="include-ball" class="sr-only peer" onchange="updateTotalPrice()">
-                        <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#C5A059]"></div>
-                    </label>
-                </div>
-
-                <!-- صندوق الحجز المتكرر أسبوعياً (مرتب ومنسق) -->
-                <div class="bg-[#141413] p-4 rounded-xl border border-gray-800 space-y-3">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                        <div class="flex items-center gap-3">
-                            <span class="text-2xl">🔁</span>
+                <!-- الصف الثاني: إضافة كرة قدم + حجز أسبوعي ثابت بجوار بعض في المنتصف -->
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+                    <!-- إضافة كرة قدم -->
+                    <div class="w-full sm:w-72 bg-[#141413] p-4 rounded-xl border border-gray-800 flex items-center justify-between">
+                        <div class="flex items-center gap-2.5">
+                            <span class="text-2xl">⚽</span>
                             <div>
-                                <p class="font-bold text-sm text-white">حجز أسبوعي ثابت (للفريق الثابت)</p>
-                                <p class="text-xs text-gray-400">يثبت الميعاد أسبوعياً مع عربون دائم يُرحل للأسبوع التالي</p>
+                                <p class="font-bold text-xs text-white">إضافة كرة قدم</p>
+                                <p class="text-[10px] text-gray-400">+30 جنيه للساعة</p>
                             </div>
                         </div>
-                        <label class="relative inline-flex items-center cursor-pointer self-start sm:self-center">
-                            <input type="checkbox" id="repeat-weekly-check" class="sr-only peer" onchange="toggleWeeklyRepeat()">
-                            <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#C5A059]"></div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="include-ball" class="sr-only peer" onchange="updateTotalPrice()">
+                            <div class="w-9 h-5 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#C5A059]"></div>
                         </label>
                     </div>
-                    
-                    <div id="repeat-options-box" class="hidden pt-3 border-t border-gray-800 space-y-2">
-                        <label class="block text-xs font-semibold text-gray-300">الجدول الزمني للفرق الثابتة:</label>
-                        <select id="repeat-weeks-count" onchange="updateTotalPrice()" class="w-full bg-[#1a1a18] border border-gray-700 rounded-xl px-3 py-2 text-sm text-white focus:border-[#C5A059] focus:outline-none">
-                            <option value="4">4 أسابيع متتالية (شهر ثابت)</option>
-                            <option value="8">8 أسابيع متتالية (شهرين ثابتين)</option>
-                            <option value="12">12 أسبوع (3 شهور ثابتة)</option>
-                        </select>
-                        <p class="text-[11px] text-[#C5A059]">💡 يتم تحويل عربون المرة الأولى فقط (عربون دائم)، وفي كل أسبوع يدفع الفريق قيمة الملعب كاملة ويُرحل العربون للأسبوع التالي حتى نهاية الجدول.</p>
+
+                    <!-- حجز أسبوعي ثابت -->
+                    <div class="w-full sm:w-72 bg-[#141413] p-4 rounded-xl border border-gray-800 flex items-center justify-between">
+                        <div class="flex items-center gap-2.5">
+                            <span class="text-2xl">🔁</span>
+                            <div>
+                                <p class="font-bold text-xs text-white">حجز أسبوعي ثابت</p>
+                                <p class="text-[10px] text-gray-400">عربون دائم يُرحل أسبوعياً</p>
+                            </div>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="repeat-weekly-check" class="sr-only peer" onchange="toggleWeeklyRepeat()">
+                            <div class="w-9 h-5 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#C5A059]"></div>
+                        </label>
                     </div>
+                </div>
+
+                <!-- صندوق إعدادات الجدول الزمني (يظهر عند تفعيل الحجز الأسبوعي) -->
+                <div id="repeat-options-box" class="hidden bg-[#141413] p-4 rounded-xl border border-gray-800 space-y-2 max-w-md mx-auto">
+                    <label class="block text-xs font-semibold text-gray-300 text-center">الجدول الزمني للفرق الثابتة:</label>
+                    <select id="repeat-weeks-count" onchange="updateTotalPrice()" class="w-full bg-[#1a1a18] border border-gray-700 rounded-xl px-3 py-2 text-xs text-white focus:border-[#C5A059] focus:outline-none">
+                        <option value="4">4 أسابيع متتالية (شهر ثابت)</option>
+                        <option value="8">8 أسابيع متتالية (شهرين ثابتين)</option>
+                        <option value="12">12 أسبوع (3 شهور ثابتة)</option>
+                    </select>
+                    <p class="text-[10px] text-[#C5A059] text-center">💡 يتم تحويل عربون المرة الأولى فقط، وفي كل أسبوع يدفع الفريق قيمة الملعب كاملة ويُرحل العربون حتى نهاية الجدول.</p>
                 </div>
 
                 <!-- صندوق الحساب التلقائي -->
-                <div class="bg-[#141413] border border-[#C5A059]/30 p-4 rounded-xl space-y-2 text-xs">
+                <div class="bg-[#141413] border border-[#C5A059]/30 p-4 rounded-xl space-y-2 text-xs max-w-lg mx-auto">
                     <div class="flex justify-between text-gray-300">
                         <span>إجمالي تكلفة الميعاد (للمرة الواحدة):</span>
                         <span id="display-single-total" class="font-bold text-white text-sm">0 جنيه</span>
                     </div>
                     <div class="flex justify-between text-gray-300">
-                        <span>عربون الضمان الدائم المطلوب تحويله الآن (مرحل أسبوعياً):</span>
+                        <span>عربون الضمان الدائم المطلوب تحويله الآن:</span>
                         <span id="display-deposit" class="font-bold text-[#C5A059] text-sm">0 جنيه</span>
                     </div>
                     <div class="flex justify-between text-gray-300 border-t border-gray-800 pt-2" id="weekly-details-row">
@@ -365,7 +368,7 @@
         <p class="text-[#C5A059] font-semibold">تصميم وتطوير: م. عمرو الغول</p>
     </footer>
 
-    <!-- سكربت التشغيل المتكامل -->
+    <!-- سكربت التشغيل والمتطلبات -->
     <script>
         const courts = [
             { id: 1, name: "ملعب 1 كرة قدم خماسي", price: 150, desc: "عشب صناعي عالي الجودة وإضاءة ليلية متميزة", img: "⚽" },
@@ -461,7 +464,6 @@
             updateTotalPrice();
         }
 
-        // تحكم نافذة التاريخ المنسدلة
         function openDateDropdownModal() {
             document.getElementById('date-dropdown-modal').classList.remove('hidden');
         }
@@ -474,7 +476,7 @@
             const val = document.getElementById('modal-date-picker').value;
             if(!val) { alert('يرجى اختيار التاريخ'); return; }
             selectedDateStr = val;
-            selectedSlots = []; // إعادة تعيين الساعات عند تغيير التاريخ لتجنب التعارض
+            selectedSlots = [];
             updateDateDisplay();
             updateTimeDisplay();
             updateTotalPrice();
@@ -487,7 +489,6 @@
             display.className = 'text-xs font-bold text-[#C5A059]';
         }
 
-        // تحكم نافذة الوقت المنسدلة
         function openTimeDropdownModal() {
             const container = document.getElementById('modal-slots-container');
             let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
@@ -577,7 +578,6 @@
             if (tab === 'my-bookings') loadMyBookings();
         }
 
-        // دالة تأكيد الحجز وتوليد الأسابيع المستقبلية بدقة متناهية
         function confirmBooking() {
             const name = document.getElementById('user-name').value.trim();
             const phone = document.getElementById('user-phone').value.trim();
