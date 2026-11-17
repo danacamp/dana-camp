@@ -157,14 +157,14 @@
                     </label>
                 </div>
 
-                <!-- صندوق الحجز المتكرر أسبوعياً (عربون ثابت مرحل) -->
+                <!-- صندوق الحجز المتكرر أسبوعياً (تثبيت الحجز في الأيام التالية) -->
                 <div class="bg-[#141413] p-4 rounded-xl border border-gray-800 space-y-3">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-3">
                             <span class="text-2xl">🔁</span>
                             <div>
                                 <p class="font-bold text-sm">حجز أسبوعي ثابت (للفريق الثابت)</p>
-                                <p class="text-xs text-gray-400">يثبت الميعاد كل أسبوع مع عربون دائم يُرحل للأسبوع التالي</p>
+                                <p class="text-xs text-gray-400">يثبت الميعاد وتلقائياً يُحجز في الأيام التالية أسبوعياً</p>
                             </div>
                         </div>
                         <label class="relative inline-flex items-center cursor-pointer">
@@ -174,13 +174,13 @@
                     </div>
                     
                     <div id="repeat-options-box" class="hidden pt-2 border-t border-gray-800 space-y-2">
-                        <label class="block text-xs font-semibold text-gray-300">الجدول الزمني للفرق الثابتة:</label>
+                        <label class="block text-xs font-semibold text-gray-300">عدد الأسابيع المتتالية لتثبيت الحجز:</label>
                         <select id="repeat-weeks-count" onchange="updateTotalPrice()" class="w-full bg-[#1a1a18] border border-gray-700 rounded-xl px-3 py-2 text-sm text-white focus:border-[#C5A059] focus:outline-none">
                             <option value="4">4 أسابيع متتالية (شهر ثابت)</option>
                             <option value="8">8 أسابيع متتالية (شهرين ثابتين)</option>
                             <option value="12">12 أسبوع (3 شهور ثابتة)</option>
                         </select>
-                        <p class="text-[11px] text-[#C5A059]">💡 يتم تحويل عربون المرة الأولى فقط (عربون دائم)، وفي كل أسبوع يدفع الفريق قيمة الملعب كاملة ويُرحل العربون للأسبوع التالي حتى نهاية الجدول.</p>
+                        <p class="text-[11px] text-[#C5A059]">💡 سيتم حجز وتثبيت هذا الميعاد تلقائياً في الأسابيع التالية، ويدفع الفريق العربون الدائم مرة واحدة ويُرحل أسبوعياً.</p>
                     </div>
                 </div>
 
@@ -291,8 +291,8 @@
             </div>
             <div class="text-center space-y-1">
                 <div class="w-14 h-14 bg-[#C5A059]/20 text-[#C5A059] rounded-full flex items-center justify-center mx-auto text-2xl font-bold">✓</div>
-                <h3 class="text-xl font-extrabold text-white">تم إرسال طلب حجز الفريق بنجاح!</h3>
-                <p class="text-xs text-gray-400">يرجى تحويل العربون الدائم وسيتم تأكيد الجدول الثابت فوراً</p>
+                <h3 class="text-xl font-extrabold text-white">تم تثبيت جدول الحجز الأسبوعي بنجاح!</h3>
+                <p class="text-xs text-gray-400">تم حجز المواعيد في الأسابيع التالية وتثبيتها في النظام</p>
             </div>
             <div id="ticket-content" class="bg-[#141413] border border-gray-800 p-4 rounded-xl space-y-3 font-mono text-sm"></div>
             <div class="flex gap-3">
@@ -308,7 +308,7 @@
         <p class="text-[#C5A059] font-semibold">تصميم وتطوير: م. عمرو الغول</p>
     </footer>
 
-    <!-- سكربت التشغيل الموحد والنظيف -->
+    <!-- سكربت التشغيل مع ميزة تثبيت الحجوزات الأسبوعية في الأيام التالية -->
     <script>
         const courts = [
             { id: 1, name: "ملعب 1 كرة قدم خماسي", price: 150, desc: "عشب صناعي عالي الجودة وإضاءة ليلية متميزة", img: "⚽" },
@@ -429,7 +429,6 @@
             updateTotalPrice();
         }
 
-        // الدالة الموحدة لعرض الساعات (مفتوحة دائماً للحجز، وتمنع الساعات المحجوزة مسبقاً فقط)
         function renderSlots() {
             const container = document.getElementById('slots-container');
             let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
@@ -487,6 +486,7 @@
             if (tab === 'my-bookings') loadMyBookings();
         }
 
+        // دالة تأكيد وحفظ الحجز (مع توليد وتثبيت الأسابيع المتتالية في الأيام التالية)
         function confirmBooking() {
             const name = document.getElementById('user-name').value.trim();
             const phone = document.getElementById('user-phone').value.trim();
@@ -502,42 +502,64 @@
 
             const singleTotal = (hoursCount * selectedCourt.price) + (includeBall ? (hoursCount * 30) : 0);
             const deposit = hoursCount * 50;
-            const bookingId = 'DC-' + Math.floor(100000 + Math.random() * 900000);
+            const baseBookingId = 'DC-' + Math.floor(100000 + Math.random() * 900000);
             
-            const bookingData = {
-                bookingId,
-                courtName: selectedCourt.name,
-                day: daysList[selectedDayIndex].label + ' (' + daysList[selectedDayIndex].date + ')',
-                slots: selectedSlots.join(', '),
-                name,
-                phone,
-                includeBall: includeBall ? 'نعم (+30ج/س)' : 'بدون كرة',
-                paymentMethod: paymentMethod === 'vodafone' ? 'فودافون كاش (01006896895)' : 'إنستا بي (01006896895 - amr)',
-                total: singleTotal,
-                deposit,
-                isWeekly: isWeeklyRepeat ? `فريق ثابت (${weeksCount} أسابيع)` : 'حجز عادي',
-                status: 'قيد المراجعة',
-                createdAt: new Date().toLocaleString(),
-                rawDate: new Date().toISOString()
-            };
-
             let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
-            bookings.push(bookingData);
+            let baseDate = new Date(daysList[selectedDayIndex].date);
+
+            // توليد وحفظ الحجوزات لكل أسبوع متتالي تلقائياً
+            for (let i = 0; i < weeksCount; i++) {
+                let currentWeekDate = new Date(baseDate);
+                currentWeekDate.setDate(baseDate.getDate() + (i * 7));
+                let dateStr = currentWeekDate.toISOString().split('T')[0];
+                
+                // تحديد اسم اليوم باللغة العربية
+                const daysNames = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+                let dayNameText = (i === 0) ? daysList[selectedDayIndex].label : daysNames[currentWeekDate.getDay()];
+
+                let weeklyBookingData = {
+                    bookingId: baseBookingId + (i > 0 ? `-W${i+1}` : ''),
+                    courtName: selectedCourt.name,
+                    day: dayNameText + ' (' + dateStr + ')',
+                    slots: selectedSlots.join(', '),
+                    name,
+                    phone,
+                    includeBall: includeBall ? 'نعم (+30ج/س)' : 'بدون كرة',
+                    paymentMethod: paymentMethod === 'vodafone' ? 'فودافون كاش (01006896895)' : 'إنستا بي (01006896895 - amr)',
+                    total: singleTotal,
+                    deposit: (i === 0 ? deposit : 0), // العربون ي registred في الأسبوع الأول فقط
+                    isWeekly: isWeeklyRepeat ? `فريق ثابت (أسبوع ${i+1} من ${weeksCount})` : 'حجز عادي',
+                    status: 'قيد المراجعة',
+                    createdAt: new Date().toLocaleString(),
+                    rawDate: currentWeekDate.toISOString()
+                };
+                bookings.push(weeklyBookingData);
+            }
+
             localStorage.setItem('dana_camp_bookings', JSON.stringify(bookings));
 
             renderCourts();
-            showTicket(bookingData);
+            showTicket({
+                bookingId: baseBookingId,
+                courtName: selectedCourt.name,
+                day: daysList[selectedDayIndex].label + ' (' + daysList[selectedDayIndex].date + ') + الأسابيع التالية',
+                slots: selectedSlots.join(', '),
+                name,
+                phone,
+                deposit,
+                total: singleTotal,
+                isWeekly: isWeeklyRepeat ? `فريق ثابت (${weeksCount} أسابيع متتالية)` : 'حجز عادي'
+            });
         }
 
         function showTicket(data) {
             document.getElementById('ticket-content').innerHTML = `
-                <div>📌 رقم الحجز: <b>#${data.bookingId}</b></div>
+                <div>📌 رقم الحجز الأساسي: <b>#${data.bookingId}</b></div>
                 <div>🏟️ الملعب: <b>${data.courtName}</b></div>
                 <div>📅 الموعد الثابت: <b>${data.day} (${data.slots})</b></div>
                 <div>🔁 النوع: <b class="text-[#C5A059]">${data.isWeekly}</b></div>
                 <div>👤 الكابتن: <b>${data.name} (${data.phone})</b></div>
-                <div>💳 طريقة العربون الدائم: <b>${data.paymentMethod}</b></div>
-                <div>💰 العربون الدائم المحول (مرحل أسبوعياً): <b class="text-[#C5A059]">${data.deposit} جنيه</b></div>
+                <div>💰 العربون الدائم المطلوب تحويله: <b class="text-[#C5A059]">${data.deposit} جنيه</b></div>
                 <div>💵 قيمة كل أسبوع عند الحضور: <b class="text-emerald-400">${data.total} جنيه</b></div>
                 <div>🟢 الحالة: <span class="text-amber-400">بانتظار تأكيد الإدارة</span></div>
             `;
@@ -597,7 +619,7 @@
                     </div>
                     <div class="text-left">
                         <p class="text-xs text-gray-400">قيمة الأسبوع: <span class="text-[#C5A059] font-bold">${b.total}ج</span></p>
-                        <p class="text-xs text-emerald-400">العربون الدائم: ${b.deposit}ج</p>
+                        <p class="text-xs text-emerald-400">عربون: ${b.deposit}ج</p>
                     </div>
                 </div>
             `}).join('');
