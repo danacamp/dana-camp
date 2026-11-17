@@ -308,7 +308,7 @@
         <p class="text-[#C5A059] font-semibold">تصميم وتطوير: م. عمرو الغول</p>
     </footer>
 
-    <!-- سكربت التشغيل المعدل (إلغاء قفل الساعات الصباحية) -->
+    <!-- سكربت التشغيل الموحد والنظيف -->
     <script>
         const courts = [
             { id: 1, name: "ملعب 1 كرة قدم خماسي", price: 150, desc: "عشب صناعي عالي الجودة وإضاءة ليلية متميزة", img: "⚽" },
@@ -429,16 +429,16 @@
             updateTotalPrice();
         }
 
+        // الدالة الموحدة لعرض الساعات (مفتوحة دائماً للحجز، وتمنع الساعات المحجوزة مسبقاً فقط)
         function renderSlots() {
             const container = document.getElementById('slots-container');
             let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
             const currentDateStr = daysList[selectedDayIndex].date;
 
             container.innerHTML = timeSlotsConfig.map(slot => {
-                // تم إزالة قفل الساعات الصباحية تماماً ليتسنى للكابتن الحجز في أي وقت دون قيود
                 let isAlreadyBooked = bookings.some(b => b.courtName === selectedCourt.name && b.day.includes(currentDateStr) && b.slots.includes(slot.label));
                 if (isAlreadyBooked) {
-                    return `<div class="p-3 rounded-xl text-xs font-bold bg-[#141413] text-gray-600 border border-gray-900 line-through opacity-40 cursor-not-allowed flex items-center justify-center select-none">${slot.label}</div>`;
+                    return `<div class="p-3 rounded-xl text-xs font-bold bg-[#141413] text-gray-600 border border-gray-900 line-through opacity-40 cursor-not-allowed flex items-center justify-center select-none" title="محجوزة مسبقاً">${slot.label}</div>`;
                 }
 
                 const isSelected = selectedSlots.includes(slot.label);
