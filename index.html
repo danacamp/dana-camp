@@ -125,14 +125,18 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="courts-container"></div>
             </div>
 
-            <!-- قسم تفاصيل الحجز والساعات -->
+            <!-- قسم تفاصيل الحجز والساعات (مع قائمة التاريخ المستقبلي) -->
             <div id="booking-section" class="hidden bg-[#1a1a18] border border-gray-800 p-6 rounded-2xl space-y-6 shadow-xl">
+                <!-- قسم اختيار التاريخ (مستقبلي مفتوح لأي يوم) -->
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-gray-800 pb-4">
                     <div>
                         <h3 id="selected-court-title" class="text-xl font-bold text-[#C5A059]">ملعب 1 كرة قدم خماسي</h3>
                         <p class="text-sm text-gray-400" id="selected-court-price">السعر: 150 جنيه / ساعة</p>
                     </div>
-                    <div class="flex items-center gap-2 overflow-x-auto w-full sm:w-auto py-2" id="days-container"></div>
+                    <div class="flex items-center gap-2 bg-[#141413] p-2 rounded-xl border border-gray-800 w-full sm:w-auto">
+                        <span class="text-xs text-gray-400 whitespace-nowrap">📅 اختر تاريخ الحجز:</span>
+                        <input type="date" id="booking-date-input" onchange="onDateChanged()" class="bg-[#1a1a18] border border-gray-700 rounded-lg px-3 py-1.5 text-sm text-white focus:border-[#C5A059] focus:outline-none w-full">
+                    </div>
                 </div>
 
                 <div>
@@ -157,23 +161,23 @@
                     </label>
                 </div>
 
-                <!-- صندوق الحجز المتكرر أسبوعياً (عربون ثابت مرحل) -->
+                <!-- صندوق الحجز المتكرر أسبوعياً (مرتب ومنسق) -->
                 <div class="bg-[#141413] p-4 rounded-xl border border-gray-800 space-y-3">
-                    <div class="flex items-center justify-between">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <div class="flex items-center gap-3">
                             <span class="text-2xl">🔁</span>
                             <div>
-                                <p class="font-bold text-sm">حجز أسبوعي ثابت (للفريق الثابت)</p>
-                                <p class="text-xs text-gray-400">يثبت الميعاد كل أسبوع مع عربون دائم يُرحل للأسبوع التالي</p>
+                                <p class="font-bold text-sm text-white">حجز أسبوعي ثابت (للفريق الثابت)</p>
+                                <p class="text-xs text-gray-400">يثبت الميعاد أسبوعياً مع عربون دائم يُرحل للأسبوع التالي</p>
                             </div>
                         </div>
-                        <label class="relative inline-flex items-center cursor-pointer">
+                        <label class="relative inline-flex items-center cursor-pointer self-start sm:self-center">
                             <input type="checkbox" id="repeat-weekly-check" class="sr-only peer" onchange="toggleWeeklyRepeat()">
                             <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#C5A059]"></div>
                         </label>
                     </div>
                     
-                    <div id="repeat-options-box" class="hidden pt-2 border-t border-gray-800 space-y-2">
+                    <div id="repeat-options-box" class="hidden pt-3 border-t border-gray-800 space-y-2">
                         <label class="block text-xs font-semibold text-gray-300">الجدول الزمني للفرق الثابتة:</label>
                         <select id="repeat-weeks-count" onchange="updateTotalPrice()" class="w-full bg-[#1a1a18] border border-gray-700 rounded-xl px-3 py-2 text-sm text-white focus:border-[#C5A059] focus:outline-none">
                             <option value="4">4 أسابيع متتالية (شهر ثابت)</option>
@@ -308,7 +312,7 @@
         <p class="text-[#C5A059] font-semibold">تصميم وتطوير: م. عمرو الغول</p>
     </footer>
 
-    <!-- سكربت التشغيل الكامل والمتكامل -->
+    <!-- سكربت التشغيل مع قائمة التاريخ المنسدلة المرنة -->
     <script>
         const courts = [
             { id: 1, name: "ملعب 1 كرة قدم خماسي", price: 150, desc: "عشب صناعي عالي الجودة وإضاءة ليلية متميزة", img: "⚽" },
@@ -317,9 +321,8 @@
         ];
 
         let selectedCourt = null;
-        let selectedDayIndex = 0;
+        let selectedDateStr = ''; // التاريخ المستقبلي المختار
         let selectedSlots = [];
-        let daysList = [];
         let countdownInterval = null;
 
         const timeSlotsConfig = [
@@ -351,21 +354,8 @@
                     hBall.classList.add('header-resting-ball');
                 }, 3500);
             }
-            initDays();
             renderCourts();
         });
-
-        function initDays() {
-            daysList = [];
-            const daysNames = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
-            for (let i = 0; i < 7; i++) {
-                const d = new Date();
-                d.setDate(d.getDate() + i);
-                const dayName = i === 0 ? 'اليوم' : daysNames[d.getDay()];
-                const dateStr = d.toISOString().split('T')[0];
-                daysList.push({ label: dayName, date: dateStr, isToday: (i === 0) });
-            }
-        }
 
         function getCourtBookingCount(courtName) {
             let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
@@ -407,39 +397,40 @@
             document.getElementById('selected-court-price').innerText = `السعر: ${selectedCourt.price} جنيه / ساعة`;
             document.getElementById('booking-section').classList.remove('hidden');
             document.getElementById('booking-section').scrollIntoView({ behavior: 'smooth' });
-            renderDays();
+            
+            // تعيين تاريخ اليوم كافتراضي
+            const todayStr = new Date().toISOString().split('T')[0];
+            const dateInput = document.getElementById('booking-date-input');
+            dateInput.value = todayStr;
+            dateInput.min = todayStr;
+            selectedDateStr = todayStr;
+
             renderSlots();
             updateTotalPrice();
         }
 
-        function renderDays() {
-            const container = document.getElementById('days-container');
-            container.innerHTML = daysList.map((d, index) => `
-                <button onclick="selectDay(${index})" class="px-3 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap ${selectedDayIndex === index ? 'bg-[#C5A059] text-gray-900' : 'bg-[#141413] text-gray-300 border border-gray-800'}">
-                    ${d.label} (${d.date.slice(5)})
-                </button>
-            `).join('');
-        }
-
-        function selectDay(index) {
-            selectedDayIndex = index;
+        function onDateChanged() {
+            selectedDateStr = document.getElementById('booking-date-input').value;
             selectedSlots = [];
-            renderDays();
             renderSlots();
             updateTotalPrice();
         }
 
+        // دالة عرض الساعات مع فحص الحجوزات المستقبلية بدقة
         function renderSlots() {
             const container = document.getElementById('slots-container');
             let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
-            const currentDateStr = daysList[selectedDayIndex].date;
 
             container.innerHTML = timeSlotsConfig.map(slot => {
-                let isAlreadyBooked = bookings.some(b => 
-                    b.courtName === selectedCourt.name && 
-                    b.day.includes(currentDateStr) && 
-                    b.slots.includes(slot.label)
-                );
+                let isAlreadyBooked = bookings.some(b => {
+                    if (b.courtName !== selectedCourt.name) return false;
+                    if (!b.slots.includes(slot.label)) return false;
+                    
+                    if (b.day && b.day.includes(selectedDateStr)) return true;
+                    if (b.rawDate && b.rawDate.startsWith(selectedDateStr)) return true;
+                    
+                    return false;
+                });
 
                 if (isAlreadyBooked) {
                     return `<div class="p-3 rounded-xl text-xs font-bold bg-[#141413] text-gray-600 border border-gray-900 line-through opacity-40 cursor-not-allowed flex items-center justify-center select-none" title="محجوزة مسبقاً">${slot.label}</div>`;
@@ -491,6 +482,7 @@
             if (tab === 'my-bookings') loadMyBookings();
         }
 
+        // دالة تأكيد الحجز وتوليد الأسابيع المستقبلية بدقة متناهية
         function confirmBooking() {
             const name = document.getElementById('user-name').value.trim();
             const phone = document.getElementById('user-phone').value.trim();
@@ -498,6 +490,7 @@
             
             if (!name || !phone) { alert('يرجى إدخال اسم الكابتن ورقم الهاتف'); return; }
             if (selectedSlots.length === 0) { alert('يرجى اختيار ساعة واحدة على الأقل'); return; }
+            if (!selectedDateStr) { alert('يرجى اختيار تاريخ الحجز'); return; }
 
             const hoursCount = selectedSlots.length;
             const includeBall = document.getElementById('include-ball').checked;
@@ -509,7 +502,7 @@
             const baseBookingId = 'DC-' + Math.floor(100000 + Math.random() * 900000);
             
             let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
-            let baseDate = new Date(daysList[selectedDayIndex].date);
+            let baseDate = new Date(selectedDateStr);
 
             for (let i = 0; i < weeksCount; i++) {
                 let currentWeekDate = new Date(baseDate);
@@ -517,7 +510,7 @@
                 let dateStr = currentWeekDate.toISOString().split('T')[0];
                 
                 const daysNames = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
-                let dayNameText = (i === 0) ? daysList[selectedDayIndex].label : daysNames[currentWeekDate.getDay()];
+                let dayNameText = daysNames[currentWeekDate.getDay()];
 
                 let weeklyBookingData = {
                     bookingId: baseBookingId + (i > 0 ? `-W${i+1}` : ''),
@@ -544,7 +537,7 @@
             showTicket({
                 bookingId: baseBookingId,
                 courtName: selectedCourt.name,
-                day: daysList[selectedDayIndex].label + ' (' + daysList[selectedDayIndex].date + ') + الأسابيع التالية',
+                day: selectedDateStr + ' (+ الأسابيع التالية)',
                 slots: selectedSlots.join(', '),
                 name,
                 phone,
