@@ -343,12 +343,25 @@
     </div>
 
     <!-- التذكرة المنبثقة -->
+    <!-- التذكرة المنبثقة (محدثة لتتلاءم تماماً مع شاشات الموبايل) -->
     <div id="ticket-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-[#1a1a18] border border-[#C5A059] rounded-2xl max-w-md w-full p-6 space-y-5 shadow-2xl relative">
+        <div class="bg-[#1a1a18] border border-[#C5A059] rounded-2xl max-w-md w-full max-h-[90vh] overflow-y-auto p-5 space-y-4 shadow-2xl relative flex flex-col">
             <div class="bg-[#C5A059]/10 border border-[#C5A059]/40 rounded-xl p-2.5 text-center flex items-center justify-between px-4">
                 <span class="text-xs text-gray-300">مهلة تأكيد تحويل العربون:</span>
                 <span id="countdown-timer" class="font-mono font-black text-[#C5A059] text-base tracking-widest">10:00</span>
             </div>
+            <div class="text-center space-y-1">
+                <div class="w-12 h-12 bg-[#C5A059]/20 text-[#C5A059] rounded-full flex items-center justify-center mx-auto text-xl font-bold">✓</div>
+                <h3 class="text-lg font-extrabold text-white">تم تثبيت جدول الحجز الأسبوعي بنجاح!</h3>
+                <p class="text-xs text-gray-400">تم حجز المواعيد في الأسابيع التالية وتثبيتها في النظام</p>
+            </div>
+            <div id="ticket-content" class="bg-[#141413] border border-gray-800 p-3 rounded-xl space-y-2 font-mono text-xs"></div>
+            <div class="flex gap-2 pt-2 border-t border-gray-800 sticky bottom-0 bg-[#1a1a18] pb-1">
+                <a id="whatsapp-share-btn" href="#" target="_blank" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl transition text-center text-xs flex items-center justify-center gap-1">إرسال للإدارة واتساب 💬</a>
+                <button onclick="closeTicketModal()" class="flex-1 bg-gray-800 hover:bg-gray-700 text-white font-bold py-2.5 rounded-xl transition text-xs">إغلاق</button>
+            </div>
+        </div>
+    </div>
             <div class="text-center space-y-1">
                 <div class="w-14 h-14 bg-[#C5A059]/20 text-[#C5A059] rounded-full flex items-center justify-center mx-auto text-2xl font-bold">✓</div>
                 <h3 class="text-xl font-extrabold text-white">تم تثبيت جدول الحجز الأسبوعي بنجاح!</h3>
