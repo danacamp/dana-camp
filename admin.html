@@ -24,12 +24,12 @@
         <a href="index.html" class="block text-center text-xs text-gray-400 hover:text-white pt-2">⟵ العودة لموقع الحجز الرئيسي</a>
     </div>
 
-    <!-- لوحة التحكم الفعالة -->
+    <!-- لوحة التحكم الفعلية -->
     <div id="admin-dashboard-screen" class="max-w-5xl mx-auto bg-[#1a1a18] border border-[#C5A059] rounded-2xl p-6 space-y-6 shadow-2xl hidden w-full">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-gray-800 pb-4">
             <div>
                 <h2 class="text-2xl font-black text-[#C5A059]">لوحة تحكم دانه كامب - الإدارة</h2>
-                <p class="text-xs text-gray-400">إدارة الحجوزات والفرق الثابتة بشكل مدمج</p>
+                <p class="text-xs text-gray-400">إدارة الحجوزات ومهتمي ملعب البادل</p>
             </div>
             <div class="flex flex-wrap gap-2">
                 <button onclick="openManualBookingModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-2 rounded-xl text-xs font-bold transition">➕ حجز يدوي مباشر</button>
@@ -40,11 +40,11 @@
         
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div class="bg-[#141413] p-4 rounded-xl border border-gray-800">
-                <p class="text-xs text-gray-400">إجمالي الحجوزات الفردية والثابتة</p>
+                <p class="text-xs text-gray-400">إجمالي الحجوزات</p>
                 <p class="text-2xl font-black text-white mt-1" id="admin-total-bookings">0</p>
             </div>
             <div class="bg-[#141413] p-4 rounded-xl border border-gray-800">
-                <p class="text-xs text-gray-400">الإيرادات المؤكدة للأسبوع الأول</p>
+                <p class="text-xs text-gray-400">الإيرادات المؤكدة</p>
                 <p class="text-2xl font-black text-[#C5A059] mt-1" id="admin-total-revenue">0 جنيه</p>
             </div>
         </div>
@@ -56,11 +56,15 @@
             <div id="top-bookers-list" class="space-y-2 text-sm"></div>
         </div>
 
+        <div class="space-y-3 bg-[#141413] p-4 rounded-xl border border-amber-500/30">
+            <h3 class="text-md font-bold text-amber-400 flex items-center gap-2">
+                <span>🎾</span> قائمة الكابتنز المهتمين بملعب البادل
+            </h3>
+            <div id="admin-padel-list" class="space-y-2 text-sm max-h-40 overflow-y-auto"></div>
+        </div>
+
         <div class="space-y-3">
-            <div class="flex justify-between items-center">
-                <h3 class="text-lg font-bold">إدارة حجوزات العملاء (الصفوف المدمجة)</h3>
-                <button onclick="clearAllBookings()" class="text-xs bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white px-3 py-1.5 rounded-lg transition">🗑️ مسح كافة الحجوزات</button>
-            </div>
+            <h3 class="text-lg font-bold">إدارة حجوزات العملاء</h3>
             <div class="overflow-x-auto">
                 <table class="w-full text-right text-sm">
                     <thead class="bg-[#141413] text-gray-400 border-b border-gray-800">
@@ -68,9 +72,8 @@
                             <th class="p-3">رقم التذكرة</th>
                             <th class="p-3">العميل</th>
                             <th class="p-3">الملعب</th>
-                            <th class="p-3">الساعة الثابتة</th>
-                            <th class="p-3">نوع الحجز وتفاصيل التكرار</th>
-                            <th class="p-3">العربون الدائم</th>
+                            <th class="p-3">اليوم والساعة</th>
+                            <th class="p-3">العربون / الإجمالي</th>
                             <th class="p-3">إجراء الأدمن</th>
                         </tr>
                     </thead>
@@ -80,37 +83,54 @@
         </div>
     </div>
 
-    <!-- نافذة إضافة حجز يدوي -->
+    <!-- نافذة إضافة حجز يدوي (محدثة بالقوائم المنسدلة) -->
     <div id="manual-booking-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
         <div class="bg-[#1a1a18] border border-[#C5A059] rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
             <h3 class="text-lg font-bold text-[#C5A059]">تسجيل حجز يدوي مباشر</h3>
             <div class="space-y-3 text-sm">
                 <div>
-                    <label class="block text-xs font-semibold mb-1">اختر الملعب:</label>
-                    <select id="manual-court" class="w-full bg-[#141413] border border-gray-700 rounded-xl px-3 py-2 text-sm focus:border-[#C5A059] focus:outline-none text-white">
+                    <label class="block text-xs font-semibold mb-1 text-gray-300">اختر الملعب:</label>
+                    <select id="manual-court" class="w-full bg-[#141413] border border-gray-700 rounded-xl px-3 py-2.5 text-sm focus:border-[#C5A059] focus:outline-none text-white">
                         <option value="ملعب 1 كرة قدم خماسي">ملعب 1 كرة قدم خماسي</option>
                         <option value="ملعب 2 كرة قدم خماسي">ملعب 2 كرة قدم خماسي</option>
                     </select>
                 </div>
+
+                <!-- زر اختيار التاريخ منسدل -->
                 <div>
-                    <label class="block text-xs font-semibold mb-1">التاريخ:</label>
-                    <input type="date" id="manual-date" class="w-full bg-[#141413] border border-gray-700 rounded-xl px-3 py-2 text-sm text-white">
+                    <label class="block text-xs font-semibold mb-1 text-gray-300">التاريخ:</label>
+                    <button type="button" onclick="openAdminDateModal()" class="w-full bg-[#141413] hover:bg-[#1f1f1d] border border-gray-700 hover:border-[#C5A059] rounded-xl p-3 flex items-center justify-between transition">
+                        <div class="flex items-center gap-2">
+                            <span>📅</span>
+                            <span id="admin-selected-date-display" class="text-xs font-bold text-gray-300">اختر التاريخ...</span>
+                        </div>
+                        <span class="text-[11px] text-[#C5A059] bg-[#C5A059]/10 px-2 py-1 rounded-lg border border-[#C5A059]/30">تغيير ▾</span>
+                    </button>
+                </div>
+
+                <!-- زر اختيار الوقت منسدل -->
+                <div>
+                    <label class="block text-xs font-semibold mb-1 text-gray-300">الساعة / الوقت:</label>
+                    <button type="button" onclick="openAdminTimeModal()" class="w-full bg-[#141413] hover:bg-[#1f1f1d] border border-gray-700 hover:border-[#C5A059] rounded-xl p-3 flex items-center justify-between transition">
+                        <div class="flex items-center gap-2">
+                            <span>🕒</span>
+                            <span id="admin-selected-time-display" class="text-xs font-bold text-gray-300">اختر الساعات...</span>
+                        </div>
+                        <span class="text-[11px] text-[#C5A059] bg-[#C5A059]/10 px-2 py-1 rounded-lg border border-[#C5A059]/30">اختيار ▾</span>
+                    </button>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold mb-1 text-gray-300">اسم الكابتن:</label>
+                    <input type="text" id="manual-name" placeholder="اسم الكابتن" class="w-full bg-[#141413] border border-gray-700 rounded-xl px-3 py-2.5 text-sm text-white focus:border-[#C5A059] focus:outline-none">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold mb-1">الساعة:</label>
-                    <input type="text" id="manual-slot" placeholder="مثال: 02:00 ص - 03:00 ص" class="w-full bg-[#141413] border border-gray-700 rounded-xl px-3 py-2 text-sm text-white">
+                    <label class="block text-xs font-semibold mb-1 text-gray-300">رقم الهاتف:</label>
+                    <input type="tel" id="manual-phone" placeholder="01xxxxxxxx" class="w-full bg-[#141413] border border-gray-700 rounded-xl px-3 py-2.5 text-sm text-white focus:border-[#C5A059] focus:outline-none">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold mb-1">اسم الكابتن:</label>
-                    <input type="text" id="manual-name" placeholder="اسم الكابتن" class="w-full bg-[#141413] border border-gray-700 rounded-xl px-3 py-2 text-sm text-white">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold mb-1">رقم الهاتف:</label>
-                    <input type="tel" id="manual-phone" placeholder="01xxxxxxxx" class="w-full bg-[#141413] border border-gray-700 rounded-xl px-3 py-2 text-sm text-white">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold mb-1">إجمالي المبلغ:</label>
-                    <input type="number" id="manual-total" value="150" class="w-full bg-[#141413] border border-gray-700 rounded-xl px-3 py-2 text-sm text-white">
+                    <label class="block text-xs font-semibold mb-1 text-gray-300">إجمالي المبلغ:</label>
+                    <input type="number" id="manual-total" value="150" class="w-full bg-[#141413] border border-gray-700 rounded-xl px-3 py-2.5 text-sm text-white focus:border-[#C5A059] focus:outline-none">
                 </div>
             </div>
             <div class="flex gap-2 pt-2">
@@ -120,17 +140,58 @@
         </div>
     </div>
 
+    <!-- نافذة منسدلة اختيار التاريخ للأدمن -->
+    <div id="admin-date-dropdown-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[70] hidden flex items-center justify-center p-4">
+        <div class="bg-[#1a1a18] border border-[#C5A059] rounded-2xl max-w-sm w-full p-6 space-y-4 shadow-2xl relative">
+            <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+                <h3 class="text-base font-bold text-[#C5A059]">اختر تاريخ الحجز المباشر</h3>
+                <button onclick="closeAdminDateModal()" class="text-gray-400 hover:text-white font-bold text-lg">✕</button>
+            </div>
+            <input type="date" id="admin-modal-date-picker" class="w-full bg-[#141413] border border-gray-700 rounded-xl px-4 py-3 text-sm text-white focus:border-[#C5A059] focus:outline-none">
+            <button onclick="confirmAdminDateSelection()" class="w-full bg-[#C5A059] text-gray-900 font-bold py-3 rounded-xl text-sm transition">تأكيد التاريخ ✓</button>
+        </div>
+    </div>
+
+    <!-- نافذة منسدلة اختيار الوقت للأدمن -->
+    <div id="admin-time-dropdown-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[70] hidden flex items-center justify-center p-4">
+        <div class="bg-[#1a1a18] border border-[#C5A059] rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl relative max-h-[90vh] flex flex-col">
+            <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+                <h3 class="text-lg font-bold text-[#C5A059]">اختر ساعات السهرة الكروية</h3>
+                <button onclick="closeAdminTimeModal()" class="text-gray-400 hover:text-white font-bold text-lg">✕</button>
+            </div>
+            <p class="text-xs text-gray-400">اختر الساعة المطلوبة:</p>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 overflow-y-auto p-1 flex-grow max-h-[50vh]" id="admin-modal-slots-container"></div>
+            <button onclick="closeAdminTimeModal()" class="w-full bg-[#C5A059] text-gray-900 font-black py-3 rounded-xl text-sm transition">تم وتأكيد الاختيار ✓</button>
+        </div>
+    </div>
+
     <!-- التذييل -->
     <footer class="text-center text-xs text-gray-500 py-4 mt-auto">
         <p>© 2026 دانه كامب - لوحة الإدارة</p>
     </footer>
 
-    <!-- سكربت الإدارة (دمج الحجوزات المتكررة في صف واحد ذكي) -->
+    <!-- سكربت الإدارة الكامل -->
     <script>
+        let adminSelectedDate = '';
+        let adminSelectedSlots = [];
+
+        const timeSlotsConfig = [
+            { label: "12:00 م - 01:00 م" }, { label: "01:00 م - 02:00 م" },
+            { label: "02:00 م - 03:00 م" }, { label: "03:00 م - 04:00 م" },
+            { label: "04:00 م - 05:00 م" }, { label: "05:00 م - 06:00 م" },
+            { label: "06:00 م - 07:00 م" }, { label: "07:00 م - 08:00 م" },
+            { label: "08:00 م - 09:00 م" }, { label: "09:00 م - 10:00 م" },
+            { label: "10:00 م - 11:00 م" }, { label: "11:00 م - 12:00 ص" },
+            { label: "12:00 ص - 01:00 ص" }, { label: "01:00 ص - 02:00 ص" },
+            { label: "02:00 ص - 03:00 ص" }, { label: "03:00 ص - 04:00 ص" },
+            { label: "04:00 ص - 05:00 ص" }, { label: "05:00 ص - 06:00 ص" }
+        ];
+
         window.addEventListener('DOMContentLoaded', () => {
             const todayStr = new Date().toISOString().split('T')[0];
-            const manualDateEl = document.getElementById('manual-date');
-            if(manualDateEl) manualDateEl.value = todayStr;
+            adminSelectedDate = todayStr;
+            document.getElementById('admin-modal-date-picker').value = todayStr;
+            updateAdminDateDisplay();
         });
 
         function verifyAdmin() {
@@ -145,144 +206,185 @@
         }
 
         function loadAdminData() {
-            let rawBookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
-            
-            // دمج الحجوزات المتتالية التي لها نفس رقم التذكرة الأساسي أو نفس الكابتن والملعب والساعة في صف مدمج
-            let groupedMap = {};
-            rawBookings.forEach((b, index) => {
-                let cleanId = b.bookingId ? b.bookingId.split('-W')[0] : 'DC-' + index;
-                if (!groupedMap[cleanId]) {
-                    groupedMap[cleanId] = {
-                        bookingId: cleanId,
-                        name: b.name,
-                        phone: b.phone,
-                        courtName: b.courtName,
-                        slots: b.slots,
-                        total: b.total,
-                        deposit: b.deposit,
-                        status: b.status,
-                        isWeekly: b.isWeekly,
-                        allDates: [b.day],
-                        rawIndices: [index]
-                    };
-                } else {
-                    groupedMap[cleanId].allDates.push(b.day);
-                    groupedMap[cleanId].rawIndices.push(index);
-                }
-            });
-
-            let bookings = Object.values(groupedMap);
+            let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
             let totalRev = bookings.filter(b => b.status === 'مؤكد').reduce((sum, b) => sum + Number(b.total || 0), 0);
             
-            document.getElementById('admin-total-bookings').innerText = rawBookings.length;
+            document.getElementById('admin-total-bookings').innerText = bookings.length;
             document.getElementById('admin-total-revenue').innerText = totalRev + ' جنيه';
 
             let bookerCounts = {};
             bookings.forEach(b => {
-                if (b.name && b.phone) {
-                    let key = b.name + ' (' + b.phone + ')';
-                    bookerCounts[key] = (bookerCounts[key] || 0) + b.allDates.length;
-                }
+                let key = b.name + ' (' + b.phone + ')';
+                bookerCounts[key] = (bookerCounts[key] || 0) + 1;
             });
 
             let sortedBookers = Object.entries(bookerCounts).sort((a, b) => b[1] - a[1]);
             document.getElementById('top-bookers-list').innerHTML = sortedBookers.length === 0 ? 
                 `<p class="text-xs text-gray-500">لا توجد حجوزات مسجلة.</p>` : 
-                sortedBookers.slice(0, 5).map(([name, count], idx) => `<div class="flex justify-between bg-black/40 p-2 rounded"><span>${idx+1}. ${name}</span><span class="text-[#C5A059]">${count} مواعيد</span></div>`).join('');
+                sortedBookers.slice(0, 5).map(([name, count], idx) => `<div class="flex justify-between bg-black/40 p-2 rounded"><span>${idx+1}. ${name}</span><span class="text-[#C5A059]">${count} حجوزات</span></div>`).join('');
+
+            let padelList = JSON.parse(localStorage.getItem('dana_camp_padel_interests') || '[]');
+            document.getElementById('admin-padel-list').innerHTML = padelList.length === 0 ? 
+                `<p class="text-xs text-gray-500">لا توجد طلبات اهتمام بملعب البادل.</p>` : 
+                padelList.map(p => `<div class="flex justify-between bg-black/40 p-2 rounded"><span>${p.name} (${p.phone})</span></div>`).join('');
 
             const tbody = document.getElementById('admin-bookings-table');
-            tbody.innerHTML = bookings.length === 0 ? `<tr><td colspan="7" class="p-4 text-center text-gray-500">لا توجد حجوزات مسجلة</td></tr>` : 
-            bookings.slice().reverse().map((b) => {
+            tbody.innerHTML = bookings.length === 0 ? `<tr><td colspan="6" class="p-4 text-center text-gray-500">لا توجد حجوزات مسجلة</td></tr>` : 
+            bookings.slice().reverse().map((b, index) => {
+                let realIdx = bookings.length - 1 - index;
                 let statusBadge = b.status === 'مؤكد' 
                     ? '<span class="text-emerald-400 font-bold">✓ مؤكد</span>' 
                     : '<span class="text-amber-400 font-bold">⏳ قيد المراجعة</span>';
 
-                let datesSummary = b.allDates.length > 1 
-                    ? `<span class="text-[#C5A059] font-bold">🔁 ${b.isWeekly}</span><br><span class="text-[11px] text-gray-400">(${b.allDates.length} مواعيد أسبوعية متتالية)</span>` 
-                    : `<span class="text-gray-300">حجز فردي</span><br><span class="text-[11px] text-gray-400">${b.allDates[0]}</span>`;
-
-                // تخزين مؤشرات الحذف المرتبطة بهذا الصف المدمج
-                let indicesStr = JSON.stringify(b.rawIndices);
-
                 return `
                 <tr class="border-b border-gray-800">
                     <td class="p-3 font-mono text-[#C5A059]">${b.bookingId}</td>
-                    <td class="p-3 font-bold text-white">${b.name || 'غير معروف'}<br><span class="text-xs text-gray-400 font-mono">${b.phone || ''}</span></td>
-                    <td class="p-3">${b.courtName || '-'}</td>
-                    <td class="p-3 text-xs font-bold text-[#C5A059]">${b.slots || '-'}</td>
-                    <td class="p-3 text-xs">${datesSummary}</td>
-                    <td class="p-3"><span class="font-bold text-[#C5A059]">${b.total || 0}ج/أسبوع</span><br><span class="text-xs text-emerald-400">عربون دائم: ${b.deposit || 0}ج</span></td>
+                    <td class="p-3">${b.name}<br><span class="text-xs text-gray-400">${b.phone}</span></td>
+                    <td class="p-3">${b.courtName}</td>
+                    <td class="p-3 text-xs">${b.day}<br>${b.slots}</td>
+                    <td class="p-3"><span class="font-bold text-[#C5A059]">${b.total}ج</span><br><span class="text-xs text-gray-400">عربون: ${b.deposit}ج</span></td>
                     <td class="p-3 flex gap-2 items-center">
                         ${statusBadge}
-                        ${b.status !== 'مؤكد' ? `<button onclick='approveGroup(${indicesStr})' class="bg-emerald-500/20 text-emerald-400 px-2 py-1 rounded text-xs hover:bg-emerald-500 hover:text-white transition">تأكيد</button>` : ''}
-                        <button onclick='deleteGroup(${indicesStr})' class="bg-red-500/20 text-red-400 px-2 py-1 rounded text-xs hover:bg-red-500 hover:text-white transition">حذف الجدول</button>
+                        ${b.status !== 'مؤكد' ? `<button onclick="approveBooking(${realIdx})" class="bg-emerald-500/20 text-emerald-400 px-2 py-1 rounded text-xs hover:bg-emerald-500 hover:text-white transition">تأكيد</button>` : ''}
+                        <button onclick="deleteBooking(${realIdx})" class="bg-red-500/20 text-red-400 px-2 py-1 rounded text-xs hover:bg-red-500 hover:text-white transition">حذف</button>
                     </td>
                 </tr>`;
             }).join('');
         }
 
-        function approveGroup(indices) {
-            let rawBookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
-            indices.forEach(idx => {
-                if(rawBookings[idx]) rawBookings[idx].status = 'مؤكد';
-            });
-            localStorage.setItem('dana_camp_bookings', JSON.stringify(rawBookings));
+        function approveBooking(index) {
+            let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
+            bookings[index].status = 'مؤكد';
+            localStorage.setItem('dana_camp_bookings', JSON.stringify(bookings));
             loadAdminData();
         }
 
-        function deleteGroup(indices) {
-            if (confirm('هل أنت متأكد من حذف هذا الجدول الثابت بكافة مواعيده؟')) {
-                let rawBookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
-                // حذف العناصر العكسية لكي لا تتغير المؤشرات أثناء الحذف
-                indices.sort((a, b) => b - a).forEach(idx => {
-                    rawBookings.splice(idx, 1);
-                });
-                localStorage.setItem('dana_camp_bookings', JSON.stringify(rawBookings));
+        function deleteBooking(index) {
+            if (confirm('هل أنت متأكد من حذف هذا الحجز؟')) {
+                let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
+                bookings.splice(index, 1);
+                localStorage.setItem('dana_camp_bookings', JSON.stringify(bookings));
                 loadAdminData();
             }
         }
 
-        function clearAllBookings() {
-            if (confirm('تحذير: هل تريد مسح جميع الحجوزات نهائياً؟')) {
-                localStorage.removeItem('dana_camp_bookings');
-                loadAdminData();
-                alert('تم مسح جميع الحجوزات بنجاح.');
-            }
+        function openManualBookingModal() {
+            adminSelectedSlots = [];
+            updateAdminTimeDisplay();
+            document.getElementById('manual-booking-modal').classList.remove('hidden');
         }
-
-        function openManualBookingModal() { document.getElementById('manual-booking-modal').classList.remove('hidden'); }
         function closeManualBookingModal() { document.getElementById('manual-booking-modal').classList.add('hidden'); }
+
+        function openAdminDateModal() { document.getElementById('admin-date-dropdown-modal').classList.remove('hidden'); }
+        function closeAdminDateModal() { document.getElementById('admin-date-dropdown-modal').classList.add('hidden'); }
+        
+        function confirmAdminDateSelection() {
+            const val = document.getElementById('admin-modal-date-picker').value;
+            if(!val) { alert('يرجى اختيار التاريخ'); return; }
+            adminSelectedDate = val;
+            updateAdminDateDisplay();
+            closeAdminDateModal();
+        }
+
+        function updateAdminDateDisplay() {
+            document.getElementById('admin-selected-date-display').innerText = adminSelectedDate;
+            document.getElementById('admin-selected-date-display').className = 'text-xs font-bold text-[#C5A059]';
+        }
+
+        function openAdminTimeModal() {
+            const container = document.getElementById('admin-modal-slots-container');
+            const courtName = document.getElementById('manual-court').value;
+            let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
+
+            container.innerHTML = timeSlotsConfig.map(slot => {
+                let isAlreadyBooked = bookings.some(b => {
+                    if (b.courtName !== courtName) return false;
+                    if (!b.slots.includes(slot.label)) return false;
+                    if (b.day && b.day.includes(adminSelectedDate)) return true;
+                    if (b.rawDate && b.rawDate.startsWith(adminSelectedDate)) return true;
+                    return false;
+                });
+
+                if (isAlreadyBooked) {
+                    return `
+                    <div class="bg-[#141413] border border-gray-900 rounded-xl p-3 flex flex-col items-center justify-center opacity-40 cursor-not-allowed select-none">
+                        <span class="text-xs font-bold text-gray-500 line-through">${slot.label}</span>
+                        <span class="text-[10px] text-red-400 font-semibold mt-0.5">محجوز</span>
+                    </div>`;
+                }
+
+                const isSelected = adminSelectedSlots.includes(slot.label);
+                return `
+                <button type="button" onclick="toggleAdminSlot('${slot.label}')" class="rounded-xl p-3 flex flex-col items-center justify-center transition border ${isSelected ? 'bg-[#C5A059] text-gray-900 border-[#C5A059] shadow-lg scale-105' : 'bg-[#141413] text-gray-200 border-gray-800 hover:border-[#C5A059] hover:bg-[#1f1f1d]'}">
+                    <span class="text-xs font-bold">${slot.label}</span>
+                    <span class="text-[10px] ${isSelected ? 'text-gray-900 font-bold' : 'text-emerald-400'} mt-0.5">${isSelected ? 'تم الاختيار' : 'متاح'}</span>
+                </button>`;
+            }).join('');
+
+            document.getElementById('admin-time-dropdown-modal').classList.remove('hidden');
+        }
+
+        function toggleAdminSlot(time) {
+            const index = adminSelectedSlots.indexOf(time);
+            if (index > -1) adminSelectedSlots.splice(index, 1);
+            else adminSelectedSlots.push(time);
+            openAdminTimeModal();
+            updateAdminTimeDisplay();
+        }
+
+        function closeAdminTimeModal() { document.getElementById('admin-time-dropdown-modal').classList.add('hidden'); }
+
+        function updateAdminTimeDisplay() {
+            const display = document.getElementById('admin-selected-time-display');
+            if (adminSelectedSlots.length === 0) {
+                display.innerText = 'اختر الساعات...';
+                display.className = 'text-xs font-semibold text-gray-400';
+            } else {
+                display.innerText = adminSelectedSlots.join(', ');
+                display.className = 'text-xs font-bold text-[#C5A059]';
+            }
+        }
 
         function saveManualBooking() {
             const courtName = document.getElementById('manual-court').value;
-            const dateVal = document.getElementById('manual-date').value;
-            const slotVal = document.getElementById('manual-slot').value;
             const name = document.getElementById('manual-name').value.trim();
             const phone = document.getElementById('manual-phone').value.trim();
             const total = document.getElementById('manual-total').value;
 
-            if (!name || !phone || !dateVal || !slotVal) { alert('يرجى إكمال جميع بيانات الحجز اليدوي'); return; }
+            if (!name || !phone || !adminSelectedDate || adminSelectedSlots.length === 0) { 
+                alert('يرجى إكمال جميع بيانات الحجز (التاريخ، الساعات، الاسم، الهاتف)'); 
+                return; 
+            }
 
             let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
             bookings.push({
                 bookingId: 'DC-M-' + Math.floor(1000 + Math.random() * 9000),
-                courtName, day: 'حضور مباشر (' + dateVal + ')', slots: slotVal, name, phone,
-                includeBall: 'حضور مباشر', paymentMethod: 'يدوي بالموقع', total: Number(total),
-                deposit: Number(total), remaining: 0, isWeekly: 'حجز يدوي', status: 'مؤكد', 
-                createdAt: new Date().toLocaleString(), rawDate: dateVal + 'T00:00:00.000Z'
+                courtName, 
+                day: 'حضور مباشر (' + adminSelectedDate + ')', 
+                slots: adminSelectedSlots.join(', '), 
+                name, 
+                phone,
+                includeBall: 'حضور مباشر', 
+                paymentMethod: 'يدوي بالموقع', 
+                total: Number(total),
+                deposit: Number(total), 
+                remaining: 0, 
+                status: 'مؤكد', 
+                createdAt: new Date().toLocaleString(),
+                rawDate: new Date().toISOString()
             });
             localStorage.setItem('dana_camp_bookings', JSON.stringify(bookings));
             closeManualBookingModal();
             loadAdminData();
-            alert('تم تسجيل الحجز اليدوي بنجاح!');
+            alert('تم تسجيل الحجز اليدوي المباشر بنجاح!');
         }
 
         function exportBookingsToCSV() {
             let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
             if (bookings.length === 0) { alert('لا توجد حجوزات لتصديرها.'); return; }
-            let csv = "\uFEFFرقم التذكرة,الاسم,الهاتف,الملعب,اليوم,الساعات,نوع الحجز,الإجمالي,العربون,الحالة\n";
+            let csv = "\uFEFFرقم التذكرة,الاسم,الهاتف,الملعب,اليوم,الساعات,الإجمالي,العربون,الحالة\n";
             bookings.forEach(b => {
-                csv += `"${b.bookingId}","${b.name}","${b.phone}","${b.courtName}","${b.day}","${b.slots}","${b.isWeekly}",${b.total},${b.deposit},"${b.status}"\n`;
+                csv += `"${b.bookingId}","${b.name}","${b.phone}","${b.courtName}","${b.day}","${b.slots}",${b.total},${b.deposit},"${b.status}"\n`;
             });
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
             const url = URL.createObjectURL(blob);
