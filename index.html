@@ -125,32 +125,39 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="courts-container"></div>
             </div>
 
-            <!-- قسم تفاصيل الحجز (قائمة منسدلة لاختيار الوقت تفتح نافذة الساعات مثل التطبيق الاحترافي) -->
+            <!-- قسم تفاصيل الحجز (زر التاريخ وزر الوقت بجوار بعض في المنتصف) -->
             <div id="booking-section" class="hidden bg-[#1a1a18] border border-gray-800 p-6 rounded-2xl space-y-6 shadow-xl">
                 
-                <!-- سطر اختيار التاريخ -->
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-gray-800 pb-4">
-                    <div>
-                        <h3 id="selected-court-title" class="text-xl font-bold text-[#C5A059]">ملعب 1 كرة قدم خماسي</h3>
-                        <p class="text-sm text-gray-400" id="selected-court-price">السعر: 150 جنيه / ساعة</p>
-                    </div>
-                    
-                    <div class="flex items-center gap-2 bg-[#141413] p-2.5 rounded-xl border border-gray-800 w-full sm:w-auto">
-                        <span class="text-xs text-gray-400 whitespace-nowrap">📅 تاريخ الحجز:</span>
-                        <input type="date" id="booking-date-input" onchange="onDateChanged()" class="bg-[#1a1a18] border border-gray-700 rounded-lg px-3 py-1.5 text-sm text-white focus:border-[#C5A059] focus:outline-none w-full">
-                    </div>
+                <div class="text-center border-b border-gray-800 pb-4">
+                    <h3 id="selected-court-title" class="text-xl font-bold text-[#C5A059]">ملعب 1 كرة قدم خماسي</h3>
+                    <p class="text-sm text-gray-400 mt-1" id="selected-court-price">السعر: 150 جنيه / ساعة</p>
                 </div>
 
-                <!-- زر القائمة المنسدلة لاختيار الوقت (يشبه الصورة الاحترافية المطلوبة) -->
-                <div class="space-y-2">
-                    <label class="block text-sm font-bold text-gray-300">الوقت:</label>
-                    <button type="button" onclick="openTimeDropdownModal()" class="w-full bg-[#141413] hover:bg-[#1f1f1d] border border-gray-700 hover:border-[#C5A059] rounded-xl p-4 flex items-center justify-between transition shadow-md">
-                        <div class="flex items-center gap-3">
-                            <span class="text-xl">🕒</span>
-                            <span id="selected-time-display" class="text-sm font-semibold text-gray-300">اختر الوقت...</span>
-                        </div>
-                        <span class="text-xs text-[#C5A059] bg-[#C5A059]/10 px-3 py-1.5 rounded-lg border border-[#C5A059]/30 font-bold">فتح القائمة ▾</span>
-                    </button>
+                <!-- أزرار اختيار التاريخ والوقت بجوار بعض في المنتصف -->
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 py-2">
+                    <!-- زر قائمة التاريخ المنسدلة -->
+                    <div class="w-full sm:w-72">
+                        <label class="block text-xs font-semibold text-gray-400 mb-1.5 text-center">التاريخ:</label>
+                        <button type="button" onclick="openDateDropdownModal()" class="w-full bg-[#141413] hover:bg-[#1f1f1d] border border-gray-700 hover:border-[#C5A059] rounded-xl p-3.5 flex items-center justify-between transition shadow-md">
+                            <div class="flex items-center gap-2.5">
+                                <span class="text-lg">📅</span>
+                                <span id="selected-date-display" class="text-xs font-bold text-gray-300">اختر التاريخ...</span>
+                            </div>
+                            <span class="text-[11px] text-[#C5A059] bg-[#C5A059]/10 px-2.5 py-1 rounded-lg border border-[#C5A059]/30 font-bold">تغيير ▾</span>
+                        </button>
+                    </div>
+
+                    <!-- زر قائمة الوقت المنسدلة -->
+                    <div class="w-full sm:w-72">
+                        <label class="block text-xs font-semibold text-gray-400 mb-1.5 text-center">الوقت:</label>
+                        <button type="button" onclick="openTimeDropdownModal()" class="w-full bg-[#141413] hover:bg-[#1f1f1d] border border-gray-700 hover:border-[#C5A059] rounded-xl p-3.5 flex items-center justify-between transition shadow-md">
+                            <div class="flex items-center gap-2.5">
+                                <span class="text-lg">🕒</span>
+                                <span id="selected-time-display" class="text-xs font-bold text-gray-300">اختر الوقت...</span>
+                            </div>
+                            <span class="text-[11px] text-[#C5A059] bg-[#C5A059]/10 px-2.5 py-1 rounded-lg border border-[#C5A059]/30 font-bold">اختيار ▾</span>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="bg-[#141413] p-4 rounded-xl border border-gray-800 flex items-center justify-between">
@@ -274,7 +281,25 @@
         </section>
     </main>
 
-    <!-- نافذة القائمة المنسدلة لاختيار الساعات (مثل التطبيق الاحترافي) -->
+    <!-- نافذة القائمة المنسدلة لاختيار التاريخ -->
+    <div id="date-dropdown-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-[#1a1a18] border border-[#C5A059] rounded-2xl max-w-sm w-full p-6 space-y-5 shadow-2xl relative">
+            <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+                <div class="flex items-center gap-2">
+                    <span class="text-xl">📅</span>
+                    <h3 class="text-base font-bold text-[#C5A059]">اختر تاريخ الحجز</h3>
+                </div>
+                <button onclick="closeDateDropdownModal()" class="text-gray-400 hover:text-white font-bold text-lg p-1">✕</button>
+            </div>
+            <div class="space-y-3">
+                <label class="block text-xs text-gray-400">حدد اليوم المستقبلي للحجز:</label>
+                <input type="date" id="modal-date-picker" class="w-full bg-[#141413] border border-gray-700 rounded-xl px-4 py-3 text-sm text-white focus:border-[#C5A059] focus:outline-none">
+            </div>
+            <button onclick="confirmDateSelection()" class="w-full bg-[#C5A059] hover:bg-[#b08d4b] text-gray-900 font-bold py-3 rounded-xl text-sm transition shadow">تم وتأكيد التاريخ ✓</button>
+        </div>
+    </div>
+
+    <!-- نافذة القائمة المنسدلة لاختيار الساعات -->
     <div id="time-dropdown-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-[#1a1a18] border border-[#C5A059] rounded-2xl max-w-lg w-full p-6 space-y-5 shadow-2xl relative max-h-[90vh] flex flex-col">
             <div class="flex justify-between items-center border-b border-gray-800 pb-3">
@@ -340,7 +365,7 @@
         <p class="text-[#C5A059] font-semibold">تصميم وتطوير: م. عمرو الغول</p>
     </footer>
 
-    <!-- سكربت التشغيل (مع نافذة القائمة المنسدلة التفاعلية للساعات) -->
+    <!-- سكربت التشغيل المتكامل -->
     <script>
         const courts = [
             { id: 1, name: "ملعب 1 كرة قدم خماسي", price: 150, desc: "عشب صناعي عالي الجودة وإضاءة ليلية متميزة", img: "⚽" },
@@ -349,7 +374,7 @@
         ];
 
         let selectedCourt = null;
-        let selectedDateStr = ''; // التاريخ المستقبلي المختار
+        let selectedDateStr = '';
         let selectedSlots = [];
         let countdownInterval = null;
 
@@ -427,22 +452,42 @@
             document.getElementById('booking-section').scrollIntoView({ behavior: 'smooth' });
             
             const todayStr = new Date().toISOString().split('T')[0];
-            const dateInput = document.getElementById('booking-date-input');
-            dateInput.value = todayStr;
-            dateInput.min = todayStr;
             selectedDateStr = todayStr;
+            document.getElementById('modal-date-picker').value = todayStr;
+            document.getElementById('modal-date-picker').min = todayStr;
 
+            updateDateDisplay();
             updateTimeDisplay();
             updateTotalPrice();
         }
 
-        function onDateChanged() {
-            selectedDateStr = document.getElementById('booking-date-input').value;
-            selectedSlots = [];
-            updateTimeDisplay();
-            updateTotalPrice();
+        // تحكم نافذة التاريخ المنسدلة
+        function openDateDropdownModal() {
+            document.getElementById('date-dropdown-modal').classList.remove('hidden');
         }
 
+        function closeDateDropdownModal() {
+            document.getElementById('date-dropdown-modal').classList.add('hidden');
+        }
+
+        function confirmDateSelection() {
+            const val = document.getElementById('modal-date-picker').value;
+            if(!val) { alert('يرجى اختيار التاريخ'); return; }
+            selectedDateStr = val;
+            selectedSlots = []; // إعادة تعيين الساعات عند تغيير التاريخ لتجنب التعارض
+            updateDateDisplay();
+            updateTimeDisplay();
+            updateTotalPrice();
+            closeDateDropdownModal();
+        }
+
+        function updateDateDisplay() {
+            const display = document.getElementById('selected-date-display');
+            display.innerText = selectedDateStr;
+            display.className = 'text-xs font-bold text-[#C5A059]';
+        }
+
+        // تحكم نافذة الوقت المنسدلة
         function openTimeDropdownModal() {
             const container = document.getElementById('modal-slots-container');
             let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
@@ -479,7 +524,7 @@
             const index = selectedSlots.indexOf(time);
             if (index > -1) selectedSlots.splice(index, 1);
             else selectedSlots.push(time);
-            openTimeDropdownModal(); // تحديث أشكال المربعات داخل القائمة
+            openTimeDropdownModal();
             updateTimeDisplay();
             updateTotalPrice();
         }
@@ -492,10 +537,10 @@
             const display = document.getElementById('selected-time-display');
             if (selectedSlots.length === 0) {
                 display.innerText = 'اختر الوقت...';
-                display.className = 'text-sm font-semibold text-gray-400';
+                display.className = 'text-xs font-semibold text-gray-400';
             } else {
                 display.innerText = selectedSlots.join(', ');
-                display.className = 'text-sm font-bold text-[#C5A059]';
+                display.className = 'text-xs font-bold text-[#C5A059]';
             }
         }
 
