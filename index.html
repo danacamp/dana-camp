@@ -125,7 +125,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="courts-container"></div>
             </div>
 
-            <!-- قسم تفاصيل الحجز (التاريخ والوقت في صف، وإضافة الكرة والحجز الأسبوعي في صف متجاور بالمنتصف) -->
+            <!-- قسم تفاصيل الحجز -->
             <div id="booking-section" class="hidden bg-[#1a1a18] border border-gray-800 p-6 rounded-2xl space-y-6 shadow-xl">
                 
                 <div class="text-center border-b border-gray-800 pb-4">
@@ -133,9 +133,8 @@
                     <p class="text-sm text-gray-400 mt-1" id="selected-court-price">السعر: 150 جنيه / ساعة</p>
                 </div>
 
-                <!-- الصف الأول: أزرار اختيار التاريخ والوقت بجوار بعض في المنتصف -->
+                <!-- أزرار التاريخ والوقت في المنتصف -->
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <!-- زر قائمة التاريخ المنسدلة -->
                     <div class="w-full sm:w-72">
                         <label class="block text-xs font-semibold text-gray-400 mb-1.5 text-center">التاريخ:</label>
                         <button type="button" onclick="openDateDropdownModal()" class="w-full bg-[#141413] hover:bg-[#1f1f1d] border border-gray-700 hover:border-[#C5A059] rounded-xl p-3.5 flex items-center justify-between transition shadow-md">
@@ -147,7 +146,6 @@
                         </button>
                     </div>
 
-                    <!-- زر قائمة الوقت المنسدلة -->
                     <div class="w-full sm:w-72">
                         <label class="block text-xs font-semibold text-gray-400 mb-1.5 text-center">الوقت:</label>
                         <button type="button" onclick="openTimeDropdownModal()" class="w-full bg-[#141413] hover:bg-[#1f1f1d] border border-gray-700 hover:border-[#C5A059] rounded-xl p-3.5 flex items-center justify-between transition shadow-md">
@@ -160,9 +158,8 @@
                     </div>
                 </div>
 
-                <!-- الصف الثاني: إضافة كرة قدم + حجز أسبوعي ثابت بجوار بعض في المنتصف -->
+                <!-- إضافة كرة قدم وحجز أسبوعي ثابت بجوار بعض -->
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
-                    <!-- إضافة كرة قدم -->
                     <div class="w-full sm:w-72 bg-[#141413] p-4 rounded-xl border border-gray-800 flex items-center justify-between">
                         <div class="flex items-center gap-2.5">
                             <span class="text-2xl">⚽</span>
@@ -177,7 +174,6 @@
                         </label>
                     </div>
 
-                    <!-- حجز أسبوعي ثابت -->
                     <div class="w-full sm:w-72 bg-[#141413] p-4 rounded-xl border border-gray-800 flex items-center justify-between">
                         <div class="flex items-center gap-2.5">
                             <span class="text-2xl">🔁</span>
@@ -193,7 +189,7 @@
                     </div>
                 </div>
 
-                <!-- صندوق إعدادات الجدول الزمني (يظهر عند تفعيل الحجز الأسبوعي) -->
+                <!-- صندوق إعدادات الجدول الزمني -->
                 <div id="repeat-options-box" class="hidden bg-[#141413] p-4 rounded-xl border border-gray-800 space-y-2 max-w-md mx-auto">
                     <label class="block text-xs font-semibold text-gray-300 text-center">الجدول الزمني للفرق الثابتة:</label>
                     <select id="repeat-weeks-count" onchange="updateTotalPrice()" class="w-full bg-[#1a1a18] border border-gray-700 rounded-xl px-3 py-2 text-xs text-white focus:border-[#C5A059] focus:outline-none">
@@ -284,8 +280,8 @@
         </section>
     </main>
 
-    <!-- نافذة القائمة المنسدلة لاختيار التاريخ -->
-    <div id="date-dropdown-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <!-- نافذة القائمة المنسدلة لاختيار التاريخ (مخفية تماماً) -->
+    <div id="date-dropdown-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
         <div class="bg-[#1a1a18] border border-[#C5A059] rounded-2xl max-w-sm w-full p-6 space-y-5 shadow-2xl relative">
             <div class="flex justify-between items-center border-b border-gray-800 pb-3">
                 <div class="flex items-center gap-2">
@@ -302,8 +298,8 @@
         </div>
     </div>
 
-    <!-- نافذة القائمة المنسدلة لاختيار الساعات -->
-    <div id="time-dropdown-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <!-- نافذة القائمة المنسدلة لاختيار الساعات (مخفية تماماً) -->
+    <div id="time-dropdown-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
         <div class="bg-[#1a1a18] border border-[#C5A059] rounded-2xl max-w-lg w-full p-6 space-y-5 shadow-2xl relative max-h-[90vh] flex flex-col">
             <div class="flex justify-between items-center border-b border-gray-800 pb-3">
                 <div class="flex items-center gap-2">
@@ -315,7 +311,6 @@
             
             <p class="text-xs text-gray-400">اضغط على الساعات المتاحة لتحديدها (يمكنك اختيار ساعة أو عدة ساعات متتالية):</p>
             
-            <!-- شبكة الساعات المنظمة داخل المودال -->
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 overflow-y-auto p-1 flex-grow max-h-[50vh]" id="modal-slots-container"></div>
 
             <div class="border-t border-gray-800 pt-3 flex gap-3">
@@ -324,8 +319,8 @@
         </div>
     </div>
 
-    <!-- نافذة العرض الشهري -->
-    <div id="monthly-offer-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <!-- نافذة العرض الشهري (مخفية تماماً) -->
+    <div id="monthly-offer-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
         <div class="bg-[#1a1a18] border border-[#C5A059] rounded-2xl max-w-md w-full p-6 space-y-5 shadow-2xl relative">
             <div class="flex justify-between items-center border-b border-gray-800 pb-3">
                 <div class="flex items-center gap-2">
@@ -342,26 +337,13 @@
         </div>
     </div>
 
-    <!-- التذكرة المنبثقة -->
-    <!-- التذكرة المنبثقة (محدثة لتتلاءم تماماً مع شاشات الموبايل) -->
-    <div id="ticket-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-[#1a1a18] border border-[#C5A059] rounded-2xl max-w-md w-full max-h-[90vh] overflow-y-auto p-5 space-y-4 shadow-2xl relative flex flex-col">
+    <!-- نافذة التذكرة المنبثقة (مخفية تماماً ولا تظهر إلا عند تأكيد الحجز) -->
+    <div id="ticket-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-[#1a1a18] border border-[#C5A059] rounded-2xl max-w-md w-full p-6 space-y-5 shadow-2xl relative">
             <div class="bg-[#C5A059]/10 border border-[#C5A059]/40 rounded-xl p-2.5 text-center flex items-center justify-between px-4">
                 <span class="text-xs text-gray-300">مهلة تأكيد تحويل العربون:</span>
                 <span id="countdown-timer" class="font-mono font-black text-[#C5A059] text-base tracking-widest">10:00</span>
             </div>
-            <div class="text-center space-y-1">
-                <div class="w-12 h-12 bg-[#C5A059]/20 text-[#C5A059] rounded-full flex items-center justify-center mx-auto text-xl font-bold">✓</div>
-                <h3 class="text-lg font-extrabold text-white">تم تثبيت جدول الحجز الأسبوعي بنجاح!</h3>
-                <p class="text-xs text-gray-400">تم حجز المواعيد في الأسابيع التالية وتثبيتها في النظام</p>
-            </div>
-            <div id="ticket-content" class="bg-[#141413] border border-gray-800 p-3 rounded-xl space-y-2 font-mono text-xs"></div>
-            <div class="flex gap-2 pt-2 border-t border-gray-800 sticky bottom-0 bg-[#1a1a18] pb-1">
-                <a id="whatsapp-share-btn" href="#" target="_blank" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl transition text-center text-xs flex items-center justify-center gap-1">إرسال للإدارة واتساب 💬</a>
-                <button onclick="closeTicketModal()" class="flex-1 bg-gray-800 hover:bg-gray-700 text-white font-bold py-2.5 rounded-xl transition text-xs">إغلاق</button>
-            </div>
-        </div>
-    </div>
             <div class="text-center space-y-1">
                 <div class="w-14 h-14 bg-[#C5A059]/20 text-[#C5A059] rounded-full flex items-center justify-center mx-auto text-2xl font-bold">✓</div>
                 <h3 class="text-xl font-extrabold text-white">تم تثبيت جدول الحجز الأسبوعي بنجاح!</h3>
@@ -381,7 +363,7 @@
         <p class="text-[#C5A059] font-semibold">تصميم وتطوير: م. عمرو الغول</p>
     </footer>
 
-    <!-- سكربت التشغيل والمتطلبات -->
+    <!-- سكربت التشغيل والتعديل -->
     <script>
         const courts = [
             { id: 1, name: "ملعب 1 كرة قدم خماسي", price: 150, desc: "عشب صناعي عالي الجودة وإضاءة ليلية متميزة", img: "⚽" },
@@ -478,11 +460,15 @@
         }
 
         function openDateDropdownModal() {
-            document.getElementById('date-dropdown-modal').classList.remove('hidden');
+            const modal = document.getElementById('date-dropdown-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
         }
 
         function closeDateDropdownModal() {
-            document.getElementById('date-dropdown-modal').classList.add('hidden');
+            const modal = document.getElementById('date-dropdown-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
         }
 
         function confirmDateSelection() {
@@ -531,7 +517,9 @@
                 </button>`;
             }).join('');
 
-            document.getElementById('time-dropdown-modal').classList.remove('hidden');
+            const modal = document.getElementById('time-dropdown-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
         }
 
         function toggleSlotModal(time) {
@@ -544,7 +532,9 @@
         }
 
         function closeTimeDropdownModal() {
-            document.getElementById('time-dropdown-modal').classList.add('hidden');
+            const modal = document.getElementById('time-dropdown-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
         }
 
         function updateTimeDisplay() {
@@ -668,7 +658,10 @@
             `;
             const waText = `مرحباً دانه كامب، حجز فريق ثابت جديد:%0A- رقم الحجز: ${data.bookingId}%0A- الملعب: ${data.courtName}%0A- الموعد: ${data.day} (${data.slots})%0A- النوع: ${data.isWeekly}%0A- الكابتن: ${data.name}%0A- العربون الدائم: ${data.deposit}ج`;
             document.getElementById('whatsapp-share-btn').href = `https://wa.me/201006896895?text=${waText}`;
-            document.getElementById('ticket-modal').classList.remove('hidden');
+            
+            const modal = document.getElementById('ticket-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
             startCountdown(10 * 60);
         }
 
@@ -692,7 +685,9 @@
 
         function closeTicketModal() {
             if (countdownInterval) clearInterval(countdownInterval);
-            document.getElementById('ticket-modal').classList.add('hidden');
+            const modal = document.getElementById('ticket-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
             switchTab('my-bookings');
         }
 
@@ -729,7 +724,10 @@
         }
 
         function openMonthlyOfferModal() {
-            document.getElementById('monthly-offer-modal').classList.remove('hidden');
+            const modal = document.getElementById('monthly-offer-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            
             let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
             let bookerCounts = {};
             bookings.forEach(b => {
@@ -751,7 +749,9 @@
         }
 
         function closeMonthlyOfferModal() {
-            document.getElementById('monthly-offer-modal').classList.add('hidden');
+            const modal = document.getElementById('monthly-offer-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
         }
     </script>
 </body>
