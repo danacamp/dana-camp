@@ -308,7 +308,7 @@
         <p class="text-[#C5A059] font-semibold">تصميم وتطوير: م. عمرو الغول</p>
     </footer>
 
-    <!-- سكربت التشغيل الكامل -->
+    <!-- سكربت التشغيل المعدل (إلغاء قفل الساعات الصباحية) -->
     <script>
         const courts = [
             { id: 1, name: "ملعب 1 كرة قدم خماسي", price: 150, desc: "عشب صناعي عالي الجودة وإضاءة ليلية متميزة", img: "⚽" },
@@ -433,24 +433,9 @@
             const container = document.getElementById('slots-container');
             let bookings = JSON.parse(localStorage.getItem('dana_camp_bookings') || '[]');
             const currentDateStr = daysList[selectedDayIndex].date;
-            const isToday = daysList[selectedDayIndex].isToday;
-            const currentHour = new Date().getHours();
 
             container.innerHTML = timeSlotsConfig.map(slot => {
-                let isPastHour = false;
-                if (isToday) {
-                    if (currentHour >= 12) {
-                        if (!slot.isNextDay && slot.sortHour < currentHour) isPastHour = true;
-                    } else {
-                        if (slot.isNextDay && slot.sortHour <= currentHour) isPastHour = true;
-                        else if (!slot.isNextDay) isPastHour = true;
-                    }
-                }
-
-                if (isPastHour) {
-                    return `<div class="p-3 rounded-xl text-xs font-bold bg-[#141413] text-gray-600 border border-gray-900 opacity-30 cursor-not-allowed flex items-center justify-center select-none">${slot.label}</div>`;
-                }
-
+                // تم إزالة قفل الساعات الصباحية تماماً ليتسنى للكابتن الحجز في أي وقت دون قيود
                 let isAlreadyBooked = bookings.some(b => b.courtName === selectedCourt.name && b.day.includes(currentDateStr) && b.slots.includes(slot.label));
                 if (isAlreadyBooked) {
                     return `<div class="p-3 rounded-xl text-xs font-bold bg-[#141413] text-gray-600 border border-gray-900 line-through opacity-40 cursor-not-allowed flex items-center justify-center select-none">${slot.label}</div>`;
